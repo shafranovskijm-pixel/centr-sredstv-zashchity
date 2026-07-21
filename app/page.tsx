@@ -96,18 +96,18 @@ export default function Home() {
         </a>
 
         <nav className="desktop-nav" aria-label="Основная навигация">
-          <a href="#program">Программа</a>
+          <a href="/programmy/pozharnaya-bezopasnost">Программа</a>
           <a href="#education">Об обучении</a>
-          <a href="#sveden">Сведения об организации</a>
+          <a href="/sveden">Сведения об организации</a>
           <a href="#contacts">Контакты</a>
         </nav>
 
         <details className="mobile-nav">
           <summary aria-label="Открыть меню"><span /><span /><span /></summary>
           <nav aria-label="Мобильная навигация">
-            <a href="#program">Программа</a>
+            <a href="/programmy/pozharnaya-bezopasnost">Программа</a>
             <a href="#education">Об обучении</a>
-            <a href="#sveden">Сведения об организации</a>
+            <a href="/sveden">Сведения об организации</a>
             <a href="#contacts">Контакты</a>
           </nav>
         </details>
@@ -122,7 +122,7 @@ export default function Home() {
             </div>
 
             <p className="eyebrow">ООО «Центр средств защиты»</p>
-            <h1>Профессиональное обучение в области пожарной безопасности</h1>
+            <h1>Дополнительное профессиональное образование в области пожарной безопасности</h1>
 
             <div className="program-intro">
               <p>Программа повышения квалификации</p>
@@ -151,7 +151,7 @@ export default function Home() {
               <a className="button button-primary" href="#contacts">
                 Узнать о начале обучения <ArrowIcon />
               </a>
-              <a className="button button-secondary" href="#sveden">
+              <a className="button button-secondary" href="/sveden">
                 Сведения об организации <ArrowIcon />
               </a>
             </div>
@@ -196,6 +196,9 @@ export default function Home() {
             </article>
           ))}
         </div>
+        <a className="text-link course-detail-link" href="/programmy/pozharnaya-bezopasnost">
+          Открыть полное описание и учебный план <ArrowIcon />
+        </a>
       </section>
 
       <section className="section process-section" id="education">
@@ -234,7 +237,7 @@ export default function Home() {
             <div><dt>ИНН / КПП</dt><dd>7728302867 / 772801001</dd></div>
             <div><dt>ОГРН</dt><dd>1037728048819</dd></div>
           </dl>
-          <a className="text-link" href="#contacts">Перейти к контактным сведениям <ArrowIcon /></a>
+          <a className="text-link" href="/sveden">Открыть обязательные подразделы <ArrowIcon /></a>
         </div>
       </section>
 
