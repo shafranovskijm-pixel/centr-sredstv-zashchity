@@ -315,6 +315,8 @@ body:has(#vision-toggle:checked) .eyebrow { text-decoration: underline; }
 .document-list { display: grid; border-top: 1px solid var(--line); }
 .document-list > div { padding: 16px 0; display: grid; grid-template-columns: 1fr auto; gap: 30px; border-bottom: 1px solid var(--line); }
 .document-list strong { font-size: 14px; }.document-list span { color: var(--muted); font-size: 12px; }
+.egrul-download { padding: 16px 0; display: grid; grid-template-columns: minmax(220px, .7fr) 1fr; gap: 30px; border-bottom: 1px solid var(--line); }
+.egrul-download:hover strong, .egrul-download:focus-visible strong { color: var(--accent); }
 .download-pack { margin-top: 24px; padding: 24px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 28px; color: white; background: var(--graphite); border-radius: 8px; }
 .download-pack span { display: block; margin-bottom: 5px; color: #ffcbd1; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
 .download-pack strong { font-size: 20px; }
@@ -411,6 +413,7 @@ body:has(#vision-toggle:checked) .eyebrow { text-decoration: underline; }
   .sveden-nav { grid-template-columns: 1fr; }
   .info-table > div { grid-template-columns: 1fr; gap: 7px; }
   .document-list > div { grid-template-columns: 1fr; gap: 7px; }
+  .egrul-download { grid-template-columns: 1fr; gap: 7px; }
   .download-pack { grid-template-columns: 1fr; }
   .download-pack a { width: 100%; }
   .program-record dl { grid-template-columns: 1fr; }

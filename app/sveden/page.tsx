@@ -123,6 +123,9 @@ export default function SvedenPage() {
               <div><dt>Руководитель</dt><dd>Генеральный директор Баранов Олег Павлович</dd></div>
               <div><dt>ИНН / КПП / ОГРН</dt><dd>7728302867 / 772801001 / 1037728048819</dd></div>
               <div><dt>Место нахождения</dt><dd itemProp="address">117279, г. Москва, вн. тер. г. муниципальный округ Коньково, ул. Профсоюзная, д. 93А, помещ. 1/Ц</dd></div>
+              <div><dt>Уставный капитал</dt><dd>10 000 рублей</dd></div>
+              <div><dt>Основной вид деятельности</dt><dd>ОКВЭД 71.12.12 — разработка проектов промышленных процессов и производств, включая системотехнику и технику безопасности</dd></div>
+              <div><dt>Образовательные виды деятельности</dt><dd>ОКВЭД 85.41, 85.41.9, 85.42 и 85.42.9</dd></div>
               <div><dt>Сведения сверены</dt><dd>По выписке ЕГРЮЛ от 22 июля 2026 года</dd></div>
               <div><dt>Язык образования</dt><dd>Русский</dd></div>
             </dl>
@@ -145,6 +148,12 @@ export default function SvedenPage() {
                 <p>Реквизиты организации сверены по выписке ЕГРЮЛ от 22.07.2026.</p>
               </div>
               <a href="/documents/komplekt-proektov-docx.zip" download>Скачать комплект ZIP</a>
+            </div>
+            <div className="document-list">
+              <a className="egrul-download" href="/documents/ul-1037728048819-20260722152711.pdf" download>
+                <strong>Выписка из ЕГРЮЛ от 22.07.2026</strong>
+                <span>PDF · 13 страниц · сведения об организации по состоянию на 22 июля 2026 года</span>
+              </a>
             </div>
             <div className="draft-document-groups">
               {documentGroups.map((group) => (
