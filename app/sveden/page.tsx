@@ -21,6 +21,55 @@ const sections = [
   { id: "catering", number: "13", title: "Организация питания в образовательной организации" },
 ];
 
+const documentGroups = [
+  {
+    title: "Подготовка и контроль",
+    documents: [
+      ["Карта обязательных сведений и документов сайта", "00-karta-obyazatelnyh-svedeniy.docx"],
+      ["План и чек-лист до подачи через Госуслуги", "20-plan-i-cheklist-gosuslugi.docx"],
+    ],
+  },
+  {
+    title: "Создание Учебного центра",
+    documents: [
+      ["Приказ о создании Учебного центра", "01-prikaz-o-sozdanii-uchebnogo-centra.docx"],
+      ["Положение об Учебном центре", "02-polozhenie-ob-uchebnom-centre.docx"],
+      ["Приказ об утверждении локальных актов", "03-prikaz-ob-utverzhdenii-lokalnyh-aktov.docx"],
+    ],
+  },
+  {
+    title: "Локальные нормативные акты",
+    documents: [
+      ["Положение об организации ДПО и разработке программ", "04-polozhenie-ob-organizacii-dpo.docx"],
+      ["Правила приёма на обучение", "05-pravila-priema-na-obuchenie.docx"],
+      ["Правила внутреннего распорядка обучающихся", "06-pravila-vnutrennego-rasporyadka.docx"],
+      ["Положение о режиме занятий", "07-polozhenie-o-rezhime-zanyatiy.docx"],
+      ["Положение о контроле и аттестации", "08-polozhenie-o-kontrole-i-attestacii.docx"],
+      ["Порядок перевода, отчисления и восстановления", "09-poryadok-perevoda-otchisleniya.docx"],
+      ["Порядок возникновения и прекращения образовательных отношений", "10-poryadok-obrazovatelnyh-otnosheniy.docx"],
+      ["Положение об электронном обучении и ДОТ", "11-polozhenie-ob-elektronnom-obuchenii.docx"],
+      ["Положение о языке образования", "12-polozhenie-o-yazyke-obrazovaniya.docx"],
+      ["Положение о документах о квалификации", "13-polozhenie-o-dokumentah-o-kvalifikacii.docx"],
+      ["Положение о платных образовательных услугах", "14-polozhenie-o-platnyh-uslugah.docx"],
+    ],
+  },
+  {
+    title: "Договор и стоимость",
+    documents: [
+      ["Образец договора на обучение", "15-obrazec-dogovora-na-obuchenie.docx"],
+      ["Приказ об утверждении стоимости", "16-prikaz-ob-utverzhdenii-stoimosti.docx"],
+    ],
+  },
+  {
+    title: "Программа, ЭИОС и сведения для сайта",
+    documents: [
+      ["Программа повышения квалификации — 178 часов", "17-programma-povysheniya-kvalifikacii-178.docx"],
+      ["Сведения о материально-техническом обеспечении и ЭИОС", "18-svedeniya-o-mto-i-eios.docx"],
+      ["Шаблон сведений для разделов сайта", "19-shablon-svedeniy-dlya-sayta.docx"],
+    ],
+  },
+] as const;
+
 function InternalHeader() {
   return (
     <>
@@ -73,9 +122,14 @@ export default function SvedenPage() {
               <div><dt>Дата создания</dt><dd>9 октября 2003 года</dd></div>
               <div><dt>Руководитель</dt><dd>Генеральный директор Баранов Олег Павлович</dd></div>
               <div><dt>ИНН / КПП / ОГРН</dt><dd>7728302867 / 772801001 / 1037728048819</dd></div>
+              <div><dt>Место нахождения</dt><dd itemProp="address">117279, г. Москва, вн. тер. г. муниципальный округ Коньково, ул. Профсоюзная, д. 93А, помещ. 1/Ц</dd></div>
+              <div><dt>Уставный капитал</dt><dd>10 000 рублей</dd></div>
+              <div><dt>Основной вид деятельности</dt><dd>ОКВЭД 71.12.12 — разработка проектов промышленных процессов и производств, включая системотехнику и технику безопасности</dd></div>
+              <div><dt>Образовательные виды деятельности</dt><dd>ОКВЭД 85.41, 85.41.9, 85.42 и 85.42.9</dd></div>
+              <div><dt>Сведения сверены</dt><dd>По выписке ЕГРЮЛ от 22 июля 2026 года</dd></div>
               <div><dt>Язык образования</dt><dd>Русский</dd></div>
             </dl>
-            <DraftNotice>Адрес места нахождения, адрес осуществления образовательной деятельности, режим работы, телефон и электронная почта будут внесены после сверки с клиентом и свежей выпиской ЕГРЮЛ.</DraftNotice>
+            <DraftNotice>Адрес осуществления образовательной деятельности, режим работы, телефон и электронная почта будут внесены после подтверждения заказчиком. Указанный выше адрес является местом нахождения юридического лица по ЕГРЮЛ.</DraftNotice>
           </section>
 
           <section className="info-section" id="struct">
@@ -86,9 +140,40 @@ export default function SvedenPage() {
 
           <section className="info-section" id="document">
             <div className="info-heading"><span>03</span><h2>Документы</h2></div>
+            <DraftNotice>Ниже размещены редактируемые проекты Word для проверки, заполнения и подписания заказчиком. Они не являются утверждёнными локальными актами. После подписания в официальный раздел будут загружены утверждённые PDF.</DraftNotice>
+            <div className="download-pack">
+              <div>
+                <span>Полный комплект</span>
+                <strong>21 редактируемый документ Word</strong>
+                <p>Реквизиты организации сверены по выписке ЕГРЮЛ от 22.07.2026.</p>
+              </div>
+              <a href="/documents/komplekt-proektov-docx.zip" download>Скачать комплект ZIP</a>
+            </div>
+            <div className="document-list">
+              <a className="egrul-download" href="/documents/ul-1037728048819-20260722152711.pdf" download>
+                <strong>Выписка из ЕГРЮЛ от 22.07.2026</strong>
+                <span>PDF · 13 страниц · сведения об организации по состоянию на 22 июля 2026 года</span>
+              </a>
+            </div>
+            <div className="draft-document-groups">
+              {documentGroups.map((group) => (
+                <section className="draft-document-group" key={group.title}>
+                  <h3>{group.title}</h3>
+                  <div className="draft-document-list">
+                    {group.documents.map(([title, file]) => (
+                      <a key={file} href={`/documents/proekty-docx/${file}`} download>
+                        <span><strong>{title}</strong><small>DOCX · проект для заполнения и подписи</small></span>
+                        <b aria-hidden="true">↓</b>
+                      </a>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+            <h3 className="official-documents-title">Статус официальных документов</h3>
             <div className="document-list">
               <div><strong>Устав организации</strong><span>Ожидается файл от заказчика</span></div>
-              <div><strong>Правила внутреннего распорядка обучающихся</strong><span>Проект готовится</span></div>
+              <div><strong>Правила внутреннего распорядка обучающихся</strong><span>Проект доступен выше; ожидается утверждение</span></div>
               <div><strong>Правила внутреннего трудового распорядка</strong><span>Ожидается файл от заказчика</span></div>
               <div><strong>Отчёт о результатах самообследования</strong><span>Будет опубликован в установленный срок</span></div>
               <div><strong>Предписания органов контроля</strong><span>Отсутствуют</span></div>

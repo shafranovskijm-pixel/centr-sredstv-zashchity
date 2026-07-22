@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /documents/proekty-docx/
+Disallow: /documents/komplekt-proektov-docx.zip
