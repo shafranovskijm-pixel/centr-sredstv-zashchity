@@ -81,6 +81,7 @@ function InternalHeader() {
           <a href="/programmy/pozharnaya-bezopasnost">Программа</a>
           <a aria-current="page" href="/sveden">Сведения об организации</a>
         </nav>
+        <a className="internal-phone" href="tel:+74953363555">+7 495 336-35-55</a>
         <label className="vision-toggle" htmlFor="vision-toggle">◉ Версия для слабовидящих</label>
       </header>
     </>
@@ -123,13 +124,14 @@ export default function SvedenPage() {
               <div><dt>Руководитель</dt><dd>Генеральный директор Баранов Олег Павлович</dd></div>
               <div><dt>ИНН / КПП / ОГРН</dt><dd>7728302867 / 772801001 / 1037728048819</dd></div>
               <div><dt>Место нахождения</dt><dd itemProp="address">117279, г. Москва, вн. тер. г. муниципальный округ Коньково, ул. Профсоюзная, д. 93А, помещ. 1/Ц</dd></div>
+              <div><dt>Телефон</dt><dd><a href="tel:+74953363555">+7 495 336-35-55</a></dd></div>
               <div><dt>Уставный капитал</dt><dd>10 000 рублей</dd></div>
               <div><dt>Основной вид деятельности</dt><dd>ОКВЭД 71.12.12 — разработка проектов промышленных процессов и производств, включая системотехнику и технику безопасности</dd></div>
               <div><dt>Образовательные виды деятельности</dt><dd>ОКВЭД 85.41, 85.41.9, 85.42 и 85.42.9</dd></div>
               <div><dt>Сведения сверены</dt><dd>По выписке ЕГРЮЛ от 22 июля 2026 года</dd></div>
               <div><dt>Язык образования</dt><dd>Русский</dd></div>
             </dl>
-            <DraftNotice>Адрес осуществления образовательной деятельности, режим работы, телефон и электронная почта будут внесены после подтверждения заказчиком. Указанный выше адрес является местом нахождения юридического лица по ЕГРЮЛ.</DraftNotice>
+            <DraftNotice>Адрес осуществления образовательной деятельности, режим работы и электронная почта будут внесены после подтверждения заказчиком. Указанный выше адрес является местом нахождения юридического лица по ЕГРЮЛ.</DraftNotice>
           </section>
 
           <section className="info-section" id="struct">
@@ -199,7 +201,7 @@ export default function SvedenPage() {
 
           <section className="info-section" id="managers">
             <div className="info-heading"><span>05</span><h2>Руководство</h2></div>
-            <dl className="person-card"><div><dt>Ф.И.О.</dt><dd>Баранов Олег Павлович</dd></div><div><dt>Должность</dt><dd>Генеральный директор</dd></div><div><dt>Контакты</dt><dd>Будут внесены после подтверждения заказчиком</dd></div></dl>
+            <dl className="person-card"><div><dt>Ф.И.О.</dt><dd>Баранов Олег Павлович</dd></div><div><dt>Должность</dt><dd>Генеральный директор</dd></div><div><dt>Телефон организации</dt><dd><a href="tel:+74953363555">+7 495 336-35-55</a></dd></div></dl>
           </section>
 
           <section className="info-section" id="employees">

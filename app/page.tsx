@@ -35,13 +35,19 @@ function ShieldMark({ decorative = false }: { decorative?: boolean }) {
   return (
     <svg
       className="shield-mark"
-      viewBox="0 0 64 72"
+      viewBox="0 0 100 100"
       role={decorative ? undefined : "img"}
       aria-hidden={decorative ? true : undefined}
       aria-label={decorative ? undefined : "Эмблема Центра средств защиты"}
     >
-      <path d="M32 3 58 12v20c0 17-10.4 29.8-26 37C16.4 61.8 6 49 6 32V12L32 3Z" />
-      <text x="32" y="39" textAnchor="middle">ЦСЗ</text>
+      <circle className="crest-outer" cx="50" cy="50" r="46" />
+      <circle className="crest-inner" cx="50" cy="50" r="40" />
+      <path className="crest-shield" d="M50 19 69 26v17c0 13-7.6 23.2-19 29-11.4-5.8-19-16-19-29V26l19-7Z" />
+      <path className="crest-book" d="M38 39c5-2 8-1 12 2 4-3 7-4 12-2v17c-5-2-8-1-12 2-4-3-7-4-12-2V39Z" />
+      <path className="crest-flame" d="M50 27c5 6 4 10 0 13-4-3-5-7 0-13Z" />
+      <path className="crest-branch" d="M22 57c3 14 12 25 24 31M78 57c-3 14-12 25-24 31" />
+      <text className="crest-initials" x="50" y="53" textAnchor="middle">ЦСЗ</text>
+      <text className="crest-dpo" x="50" y="84" textAnchor="middle">ДПО</text>
     </svg>
   );
 }
@@ -102,6 +108,10 @@ export default function Home() {
           <a href="#contacts">Контакты</a>
         </nav>
 
+        <a className="header-phone" href="tel:+74953363555" aria-label="Позвонить в Центр средств защиты">
+          +7 495 336-35-55
+        </a>
+
         <details className="mobile-nav">
           <summary aria-label="Открыть меню"><span /><span /><span /></summary>
           <nav aria-label="Мобильная навигация">
@@ -109,6 +119,7 @@ export default function Home() {
             <a href="#education">Об обучении</a>
             <a href="/sveden">Сведения об организации</a>
             <a href="#contacts">Контакты</a>
+            <a href="tel:+74953363555">+7 495 336-35-55</a>
           </nav>
         </details>
       </header>
@@ -122,7 +133,7 @@ export default function Home() {
             </div>
 
             <p className="eyebrow">ООО «Центр средств защиты»</p>
-            <h1>Дополнительное профессиональное образование в области пожарной безопасности</h1>
+            <h1>Дополнительное профессиональное образование по пожарной безопасности</h1>
 
             <div className="program-intro">
               <p>Программа повышения квалификации</p>
@@ -164,12 +175,10 @@ export default function Home() {
 
           <div className="hero-graphic" aria-hidden="true">
             <div className="technical-grid" />
-            <div className="graphic-axis"><i /><i /></div>
-            <div className="shield-outline shield-one" />
-            <div className="shield-outline shield-two" />
-            <div className="shield-outline shield-three" />
-            <span className="cross cross-one" />
-            <span className="cross cross-two" />
+            <div className="crest-display">
+              <ShieldMark decorative />
+              <span>Центр средств защиты</span>
+            </div>
           </div>
         </div>
       </section>
@@ -249,17 +258,19 @@ export default function Home() {
           <h2>Информация для будущих слушателей</h2>
         </div>
         <div className="contact-notice">
-          <strong>Сайт находится в стадии подготовки</strong>
+          <strong>Связаться с учебным центром</strong>
+          <a className="contact-phone" href="tel:+74953363555">+7 495 336-35-55</a>
           <p>
             Приём заявок и обучение начнутся после получения образовательной лицензии.
-            Актуальные телефон, электронная почта и адрес осуществления образовательной
-            деятельности будут опубликованы до открытия набора.
+            Электронная почта и адрес осуществления образовательной деятельности будут
+            опубликованы до открытия набора.
           </p>
         </div>
       </section>
 
       <footer className="site-footer">
         <div className="footer-brand"><ShieldMark /><strong>ООО «Центр средств защиты»</strong></div>
+        <a href="tel:+74953363555">+7 495 336-35-55</a>
         <p>ИНН 7728302867 · ОГРН 1037728048819</p>
         <p>© 2026 Центр средств защиты</p>
       </footer>
