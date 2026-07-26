@@ -269,7 +269,7 @@ svg { display: block; }
   border-radius: 50%;
   box-shadow: 0 28px 80px rgba(84, 21, 31, .13);
 }
-.crest-display .shield-mark { position: relative; width: min(440px, 88%); height: auto; filter: drop-shadow(0 10px 24px rgba(84,21,31,.12)); }
+.hero-emblem { position: relative; width: min(480px, 92%); height: auto; object-fit: contain; filter: drop-shadow(0 18px 34px rgba(84,21,31,.17)); }
 .crest-display > span { position: relative; margin-top: 14px; color: var(--accent); font-size: 13px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
 
 .section { width: min(100%, 1440px); margin: 0 auto; padding: clamp(72px, 8vw, 120px) clamp(24px, 4.5vw, 68px); }

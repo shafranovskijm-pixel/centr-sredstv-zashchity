@@ -176,7 +176,13 @@ export default function Home() {
           <div className="hero-graphic" aria-hidden="true">
             <div className="technical-grid" />
             <div className="crest-display">
-              <ShieldMark decorative />
+              <img
+                className="hero-emblem"
+                src="/images/centr-sredstv-zashchity-emblem.png"
+                alt=""
+                width="1254"
+                height="1254"
+              />
               <span>Центр средств защиты</span>
             </div>
           </div>
