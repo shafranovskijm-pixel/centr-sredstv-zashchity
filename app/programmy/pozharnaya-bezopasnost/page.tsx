@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BrandEmblem from "../../brand-emblem";
 
 export const metadata: Metadata = {
   title: "Повышение квалификации по пожарной безопасности — 178 часов",
@@ -28,7 +29,10 @@ export default function ProgramPage() {
   return (
     <main className="internal-page">
       <header className="internal-header">
-        <a className="internal-brand" href="/"><span>ЦСЗ</span><strong>Центр средств защиты</strong></a>
+        <a className="internal-brand" href="/">
+          <BrandEmblem />
+          <strong>Центр средств защиты</strong>
+        </a>
         <nav aria-label="Навигация по сайту"><a href="/">Главная</a><a aria-current="page" href="/programmy/pozharnaya-bezopasnost">Программа</a><a href="/sveden">Сведения об организации</a></nav>
         <a className="internal-phone" href="tel:+74953363555">+7 495 336-35-55</a>
       </header>
