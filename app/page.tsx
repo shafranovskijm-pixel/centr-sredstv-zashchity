@@ -1,3 +1,5 @@
+import BrandEmblem from "./brand-emblem";
+
 const curriculum = [
   {
     number: "01",
@@ -30,27 +32,6 @@ const curriculum = [
     text: "Проверка освоения программы и готовности применять знания на практике.",
   },
 ];
-
-function ShieldMark({ decorative = false }: { decorative?: boolean }) {
-  return (
-    <svg
-      className="shield-mark"
-      viewBox="0 0 100 100"
-      role={decorative ? undefined : "img"}
-      aria-hidden={decorative ? true : undefined}
-      aria-label={decorative ? undefined : "Эмблема Центра средств защиты"}
-    >
-      <circle className="crest-outer" cx="50" cy="50" r="46" />
-      <circle className="crest-inner" cx="50" cy="50" r="40" />
-      <path className="crest-shield" d="M50 19 69 26v17c0 13-7.6 23.2-19 29-11.4-5.8-19-16-19-29V26l19-7Z" />
-      <path className="crest-book" d="M38 39c5-2 8-1 12 2 4-3 7-4 12-2v17c-5-2-8-1-12 2-4-3-7-4-12-2V39Z" />
-      <path className="crest-flame" d="M50 27c5 6 4 10 0 13-4-3-5-7 0-13Z" />
-      <path className="crest-branch" d="M22 57c3 14 12 25 24 31M78 57c-3 14-12 25-24 31" />
-      <text className="crest-initials" x="50" y="53" textAnchor="middle">ЦСЗ</text>
-      <text className="crest-dpo" x="50" y="84" textAnchor="middle">ДПО</text>
-    </svg>
-  );
-}
 
 function ArrowIcon() {
   return (
@@ -94,7 +75,7 @@ export default function Home() {
 
       <header className="site-header">
         <a className="brand" href="#top" aria-label="Центр средств защиты — на главную">
-          <ShieldMark />
+          <BrandEmblem />
           <span>
             <strong>Центр средств защиты</strong>
             <small>Дополнительное профессиональное образование</small>
@@ -235,7 +216,7 @@ export default function Home() {
       <section className="section organization-section" id="sveden">
         <div className="organization-card">
           <div className="organization-title">
-            <ShieldMark decorative />
+            <BrandEmblem decorative />
             <div>
               <p className="eyebrow">Официальная информация</p>
               <h2>Сведения об образовательной организации</h2>
@@ -275,7 +256,7 @@ export default function Home() {
       </section>
 
       <footer className="site-footer">
-        <div className="footer-brand"><ShieldMark /><strong>ООО «Центр средств защиты»</strong></div>
+        <div className="footer-brand"><BrandEmblem /><strong>ООО «Центр средств защиты»</strong></div>
         <a href="tel:+74953363555">+7 495 336-35-55</a>
         <p>ИНН 7728302867 · ОГРН 1037728048819</p>
         <p>© 2026 Центр средств защиты</p>

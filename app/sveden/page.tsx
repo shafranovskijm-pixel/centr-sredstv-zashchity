@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import BrandEmblem from "../brand-emblem";
 
 export const metadata: Metadata = {
   title: "Сведения об образовательной организации — Центр средств защиты",
@@ -75,7 +76,10 @@ function InternalHeader() {
     <>
       <input className="vision-checkbox" type="checkbox" id="vision-toggle" />
       <header className="internal-header">
-        <a className="internal-brand" href="/"><span>ЦСЗ</span><strong>Центр средств защиты</strong></a>
+        <a className="internal-brand" href="/">
+          <BrandEmblem />
+          <strong>Центр средств защиты</strong>
+        </a>
         <nav aria-label="Навигация по сайту">
           <a href="/">Главная</a>
           <a href="/programmy/pozharnaya-bezopasnost">Программа</a>

@@ -9,8 +9,9 @@ export const metadata: Metadata = {
     "codex-preview": "development",
   },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: "/images/centr-sredstv-zashchity-emblem.png",
+    shortcut: "/images/centr-sredstv-zashchity-emblem.png",
+    apple: "/images/centr-sredstv-zashchity-emblem.png",
   },
 };
 
