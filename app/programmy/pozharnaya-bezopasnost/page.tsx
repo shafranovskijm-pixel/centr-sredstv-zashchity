@@ -30,6 +30,7 @@ export default function ProgramPage() {
       <header className="internal-header">
         <a className="internal-brand" href="/"><span>ЦСЗ</span><strong>Центр средств защиты</strong></a>
         <nav aria-label="Навигация по сайту"><a href="/">Главная</a><a aria-current="page" href="/programmy/pozharnaya-bezopasnost">Программа</a><a href="/sveden">Сведения об организации</a></nav>
+        <a className="internal-phone" href="tel:+74953363555">+7 495 336-35-55</a>
       </header>
       <div className="breadcrumb"><a href="/">Главная</a><span>/</span><span>Программы</span><span>/</span><span>Пожарная безопасность</span></div>
       <section className="program-hero">
