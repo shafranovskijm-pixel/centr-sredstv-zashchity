@@ -101,6 +101,7 @@ export default function Home() {
             <a href="/sveden">Сведения об организации</a>
             <a href="#contacts">Контакты</a>
             <a href="tel:+74953363555">+7 495 336-35-55</a>
+            <a href="mailto:CSZDPO@YA.RU">CSZDPO@YA.RU</a>
           </nav>
         </details>
       </header>
@@ -247,10 +248,13 @@ export default function Home() {
         <div className="contact-notice">
           <strong>Связаться с учебным центром</strong>
           <a className="contact-phone" href="tel:+74953363555">+7 495 336-35-55</a>
+          <a href="tel:+79933363555">+7 993 336-35-55</a>
+          <a href="tel:+79933364555">+7 993 336-45-55</a>
+          <a href="mailto:CSZDPO@YA.RU">CSZDPO@YA.RU</a>
           <p>
             Приём заявок и обучение начнутся после получения образовательной лицензии.
-            Электронная почта и адрес осуществления образовательной деятельности будут
-            опубликованы до открытия набора.
+            Обучение планируется исключительно с применением электронного обучения и
+            дистанционных образовательных технологий.
           </p>
         </div>
       </section>
@@ -258,6 +262,7 @@ export default function Home() {
       <footer className="site-footer">
         <div className="footer-brand"><BrandEmblem /><strong>ООО «Центр средств защиты»</strong></div>
         <a href="tel:+74953363555">+7 495 336-35-55</a>
+        <a href="mailto:CSZDPO@YA.RU">CSZDPO@YA.RU</a>
         <p>ИНН 7728302867 · ОГРН 1037728048819</p>
         <p>© 2026 Центр средств защиты</p>
       </footer>
