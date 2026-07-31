@@ -1,3 +1,3 @@
 User-agent: *
-Disallow: /documents/proekty-docx/
-Disallow: /documents/komplekt-proektov-docx.zip
+Disallow: /documents/na-podpis/
+Disallow: /documents/komplekt-na-podpis.zip

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import BrandEmblem from "../../brand-emblem";
 
 export const metadata: Metadata = {
@@ -29,14 +30,14 @@ export default function ProgramPage() {
   return (
     <main className="internal-page">
       <header className="internal-header">
-        <a className="internal-brand" href="/">
+        <Link className="internal-brand" href="/">
           <BrandEmblem />
           <strong>Центр средств защиты</strong>
-        </a>
-        <nav aria-label="Навигация по сайту"><a href="/">Главная</a><a aria-current="page" href="/programmy/pozharnaya-bezopasnost">Программа</a><a href="/sveden">Сведения об организации</a></nav>
+        </Link>
+        <nav aria-label="Навигация по сайту"><Link href="/">Главная</Link><Link aria-current="page" href="/programmy/pozharnaya-bezopasnost">Программа</Link><Link href="/sveden">Сведения об организации</Link></nav>
         <a className="internal-phone" href="tel:+74953363555">+7 495 336-35-55</a>
       </header>
-      <div className="breadcrumb"><a href="/">Главная</a><span>/</span><span>Программы</span><span>/</span><span>Пожарная безопасность</span></div>
+      <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><span>Программы</span><span>/</span><span>Пожарная безопасность</span></div>
       <section className="program-hero">
         <div>
           <p className="eyebrow">Программа повышения квалификации</p>
@@ -59,14 +60,14 @@ export default function ProgramPage() {
           <p>Совершенствование компетенций, необходимых для выполнения лицензируемых работ в области пожарной безопасности.</p>
         </aside>
         <div>
-          <p className="eyebrow">Проект учебного плана</p>
+          <p className="eyebrow">Учебный план</p>
           <h2>Структура программы</h2>
           <div className="plan-table" role="table" aria-label="Учебный план">
             <div className="plan-head" role="row"><span role="columnheader">№</span><span role="columnheader">Раздел</span><span role="columnheader">Часы</span></div>
             {plan.map((row) => <div className="plan-row" role="row" key={row[0]}><span role="cell">{row[0]}</span><span role="cell">{row[1]}</span><strong role="cell">{row[2]}</strong></div>)}
             <div className="plan-total"><span>Итого</span><strong>178 часов</strong></div>
           </div>
-          <div className="legal-note"><strong>Важно</strong><p>Это рабочая версия программы для подготовки сайта и лицензионного пакета. Окончательный учебный план утверждается приказом руководителя и перед началом реализации повторно сверяется с действующими требованиями МЧС России.</p></div>
+          <div className="legal-note"><strong>Статус программы</strong><p>Программа утверждена приказом генерального директора от 30.07.2026 № 2-ОД. Реализация и набор начнутся только после предоставления образовательной лицензии.</p></div>
         </div>
       </section>
     </main>
