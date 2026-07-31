@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import BrandEmblem from "../brand-emblem";
 
 export const metadata: Metadata = {
@@ -24,49 +25,42 @@ const sections = [
 
 const documentGroups = [
   {
-    title: "Подготовка и контроль",
+    title: "Документы с подписью руководителя и печатью",
     documents: [
-      ["Карта обязательных сведений и документов сайта", "00-karta-obyazatelnyh-svedeniy.docx"],
-      ["План и чек-лист до подачи через Госуслуги", "20-plan-i-cheklist-gosuslugi.docx"],
+      ["Договор с образовательной платформой «Синтагма»", "01-dogovor-sintagma.pdf"],
+      ["Приказ № 1-ОД и Положение об Учебном центре", "02-prikaz-1-OD-i-polozhenie-uchebnogo-centra.pdf"],
+      ["Приказ № 2-ОД об утверждении образовательной программы", "03-prikaz-2-OD-ob-utverzhdenii-programmy.pdf"],
+      ["Приказ № 3-ОД об утверждении локальных нормативных актов", "05-prikaz-3-OD-ob-utverzhdenii-lokalnyh-aktov.pdf"],
+      ["Сведения о материально-техническом обеспечении и ЭИОС", "18-svedeniya-o-mto-i-eios.pdf"],
     ],
   },
   {
-    title: "Создание Учебного центра",
+    title: "Утверждённая образовательная программа",
     documents: [
-      ["Приказ о создании Учебного центра", "01-prikaz-o-sozdanii-uchebnogo-centra.docx"],
-      ["Положение об Учебном центре", "02-polozhenie-ob-uchebnom-centre.docx"],
-      ["Приказ об утверждении локальных актов", "03-prikaz-ob-utverzhdenii-lokalnyh-aktov.docx"],
+      ["Программа повышения квалификации — 178 часов", "04-programma-178-chasov.pdf"],
     ],
   },
   {
-    title: "Локальные нормативные акты",
+    title: "Локальные акты, утверждаемые приказом № 3-ОД",
     documents: [
-      ["Положение об организации ДПО и разработке программ", "04-polozhenie-ob-organizacii-dpo.docx"],
-      ["Правила приёма на обучение", "05-pravila-priema-na-obuchenie.docx"],
-      ["Правила внутреннего распорядка обучающихся", "06-pravila-vnutrennego-rasporyadka.docx"],
-      ["Положение о режиме занятий", "07-polozhenie-o-rezhime-zanyatiy.docx"],
-      ["Положение о контроле и аттестации", "08-polozhenie-o-kontrole-i-attestacii.docx"],
-      ["Порядок перевода, отчисления и восстановления", "09-poryadok-perevoda-otchisleniya.docx"],
-      ["Порядок возникновения и прекращения образовательных отношений", "10-poryadok-obrazovatelnyh-otnosheniy.docx"],
-      ["Положение об электронном обучении и ДОТ", "11-polozhenie-ob-elektronnom-obuchenii.docx"],
-      ["Положение о языке образования", "12-polozhenie-o-yazyke-obrazovaniya.docx"],
-      ["Положение о документах о квалификации", "13-polozhenie-o-dokumentah-o-kvalifikacii.docx"],
-      ["Положение о платных образовательных услугах", "14-polozhenie-o-platnyh-uslugah.docx"],
+      ["Положение об организации ДПО и разработке программ", "06-polozhenie-ob-organizacii-dpo.pdf"],
+      ["Правила приёма на обучение", "07-pravila-priema.pdf"],
+      ["Правила внутреннего распорядка обучающихся", "08-pravila-vnutrennego-rasporyadka.pdf"],
+      ["Положение о режиме занятий", "09-polozhenie-o-rezhime-zanyatiy.pdf"],
+      ["Положение о контроле и аттестации", "10-polozhenie-o-kontrole-i-attestacii.pdf"],
+      ["Порядок перевода, отчисления и восстановления", "11-poryadok-perevoda-otchisleniya.pdf"],
+      ["Порядок возникновения и прекращения образовательных отношений", "12-poryadok-obrazovatelnyh-otnosheniy.pdf"],
+      ["Положение об электронном обучении и ДОТ", "13-polozhenie-ob-elektronnom-obuchenii.pdf"],
+      ["Положение о языке образования", "14-polozhenie-o-yazyke-obrazovaniya.pdf"],
+      ["Положение о документах о квалификации", "15-polozhenie-o-dokumentah-o-kvalifikacii.pdf"],
+      ["Положение о платных образовательных услугах", "16-polozhenie-o-platnyh-uslugah.pdf"],
     ],
   },
   {
-    title: "Договор и стоимость",
+    title: "Справочные документы — отдельно не подписываются",
     documents: [
-      ["Образец договора на обучение", "15-obrazec-dogovora-na-obuchenie.docx"],
-      ["Приказ об утверждении стоимости", "16-prikaz-ob-utverzhdenii-stoimosti.docx"],
-    ],
-  },
-  {
-    title: "Программа, ЭИОС и сведения для сайта",
-    documents: [
-      ["Программа повышения квалификации — 178 часов", "17-programma-povysheniya-kvalifikacii-178.docx"],
-      ["Сведения о материально-техническом обеспечении и ЭИОС", "18-svedeniya-o-mto-i-eios.docx"],
-      ["Шаблон сведений для разделов сайта", "19-shablon-svedeniy-dlya-sayta.docx"],
+      ["Образец договора на обучение", "17-obrazec-dogovora-na-obuchenie.pdf"],
+      ["Сведения для официального сайта", "19-svedeniya-dlya-oficialnogo-sayta.pdf"],
     ],
   },
 ] as const;
@@ -76,14 +70,14 @@ function InternalHeader() {
     <>
       <input className="vision-checkbox" type="checkbox" id="vision-toggle" />
       <header className="internal-header">
-        <a className="internal-brand" href="/">
+        <Link className="internal-brand" href="/">
           <BrandEmblem />
           <strong>Центр средств защиты</strong>
-        </a>
+        </Link>
         <nav aria-label="Навигация по сайту">
-          <a href="/">Главная</a>
-          <a href="/programmy/pozharnaya-bezopasnost">Программа</a>
-          <a aria-current="page" href="/sveden">Сведения об организации</a>
+          <Link href="/">Главная</Link>
+          <Link href="/programmy/pozharnaya-bezopasnost">Программа</Link>
+          <Link aria-current="page" href="/sveden">Сведения об организации</Link>
         </nav>
         <a className="internal-phone" href="tel:+74953363555">+7 495 336-35-55</a>
         <label className="vision-toggle" htmlFor="vision-toggle">◉ Версия для слабовидящих</label>
@@ -100,15 +94,14 @@ export default function SvedenPage() {
   return (
     <main className="internal-page">
       <InternalHeader />
-      <div className="breadcrumb"><a href="/">Главная</a><span>/</span><span>Сведения об образовательной организации</span></div>
+      <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><span>Сведения об образовательной организации</span></div>
 
       <section className="internal-hero">
         <p className="eyebrow">Официальный раздел</p>
         <h1>Сведения об образовательной организации</h1>
         <p>
-          Структура раздела подготовлена с учётом требований Рособрнадзора. Сейчас сайт
-          является рабочим проектом: сведения, которые требуют утверждённых документов
-          или подтверждения заказчика, отмечены отдельно и не выдаются за действующие.
+          Структура раздела подготовлена с учётом требований Рособрнадзора. До получения
+          лицензии образовательная деятельность и приём обучающихся не осуществляются.
         </p>
       </section>
 
@@ -137,25 +130,24 @@ export default function SvedenPage() {
               <div><dt>Сведения сверены</dt><dd>По выписке ЕГРЮЛ от 22 июля 2026 года</dd></div>
               <div><dt>Язык образования</dt><dd>Русский</dd></div>
             </dl>
-            <DraftNotice>Указанный выше адрес является местом нахождения юридического лица по ЕГРЮЛ. Образовательная деятельность планируется исключительно дистанционно; режим работы будет утверждён локальным актом.</DraftNotice>
+            <p>Режим работы: понедельник–пятница, 09:00–18:00 по московскому времени. Образовательная деятельность планируется исключительно дистанционно.</p>
           </section>
 
           <section className="info-section" id="struct">
             <div className="info-heading"><span>02</span><h2>Структура и органы управления образовательной организацией</h2></div>
-            <p>Управление организацией осуществляет единоличный исполнительный орган — генеральный директор. Обособленные образовательные структурные подразделения и филиалы не заявлены.</p>
-            <DraftNotice>Организационная структура и положение об образовательном подразделении будут опубликованы после утверждения локальных актов.</DraftNotice>
+            <p>Управление организацией осуществляет генеральный директор. Приказом от 30.07.2026 № 1-ОД создано специализированное структурное образовательное подразделение «Учебный центр». Функции его руководителя исполняет генеральный директор Баранов Олег Павлович. Филиалы отсутствуют.</p>
           </section>
 
           <section className="info-section" id="document">
             <div className="info-heading"><span>03</span><h2>Документы</h2></div>
-            <DraftNotice>Ниже размещены редактируемые проекты Word для проверки, заполнения и подписания заказчиком. Они не являются утверждёнными локальными актами. После подписания в официальный раздел будут загружены утверждённые PDF.</DraftNotice>
+            <div className="draft-notice"><strong>Документы сформированы в PDF</strong><p>Подпись руководителя и печать размещены в предусмотренных полях на основании письменного разрешения генерального директора на использование факсимиле. Локальные акты утверждены приказом № 3-ОД, образовательная программа — приказом № 2-ОД. Образец договора с будущим обучающимся не подписывается заранее.</p></div>
             <div className="download-pack">
               <div>
-                <span>Полный комплект</span>
-                <strong>21 редактируемый документ Word</strong>
-                <p>Реквизиты организации сверены по выписке ЕГРЮЛ от 22.07.2026.</p>
+                <span>Комплект для скачивания</span>
+                <strong>19 документов PDF</strong>
+                <p>Реквизиты сверены по ЕГРЮЛ; номера и даты приказов, сведения о платформе и контакты внесены.</p>
               </div>
-              <a href="/documents/komplekt-proektov-docx.zip" download>Скачать комплект ZIP</a>
+              <a href="/documents/komplekt-utverzhdennyh-pdf.zip" download>Скачать комплект ZIP</a>
             </div>
             <div className="document-list">
               <a className="egrul-download" href="/documents/ul-1037728048819-20260722152711.pdf" download>
@@ -169,8 +161,8 @@ export default function SvedenPage() {
                   <h3>{group.title}</h3>
                   <div className="draft-document-list">
                     {group.documents.map(([title, file]) => (
-                      <a key={file} href={`/documents/proekty-docx/${file}`} download>
-                        <span><strong>{title}</strong><small>DOCX · проект для заполнения и подписи</small></span>
+                      <a key={file} href={`/documents/utverzhdennye-pdf/${file}`} download>
+                        <span><strong>{title}</strong><small>PDF · версия для скачивания</small></span>
                         <b aria-hidden="true">↓</b>
                       </a>
                     ))}
@@ -181,7 +173,7 @@ export default function SvedenPage() {
             <h3 className="official-documents-title">Статус официальных документов</h3>
             <div className="document-list">
               <div><strong>Устав организации</strong><span>Ожидается файл от заказчика</span></div>
-              <div><strong>Правила внутреннего распорядка обучающихся</strong><span>Проект доступен выше; ожидается утверждение</span></div>
+              <div><strong>Правила внутреннего распорядка обучающихся</strong><span>Заполнены; утверждаются приказом № 3-ОД</span></div>
               <div><strong>Правила внутреннего трудового распорядка</strong><span>Ожидается файл от заказчика</span></div>
               <div><strong>Отчёт о результатах самообследования</strong><span>Будет опубликован в установленный срок</span></div>
               <div><strong>Предписания органов контроля</strong><span>Отсутствуют</span></div>
@@ -202,7 +194,7 @@ export default function SvedenPage() {
               </dl>
               <a className="text-link" href="/programmy/pozharnaya-bezopasnost">Описание программы и учебный план →</a>
             </article>
-            <DraftNotice>Рабочая программа, календарный учебный график и методические материалы будут размещены после утверждения приказом руководителя.</DraftNotice>
+            <p>Программа утверждена приказом генерального директора от 30.07.2026 № 2-ОД. До получения лицензии реализация программы не начинается.</p>
           </section>
 
           <section className="info-section" id="managers">
@@ -224,13 +216,12 @@ export default function SvedenPage() {
 
           <section className="info-section" id="objects">
             <div className="info-heading"><span>07</span><h2>Материально-техническое обеспечение и оснащённость образовательного процесса. Доступная среда</h2></div>
-            <p>Для размещения учебных материалов, взаимодействия со слушателями, контроля освоения программы и дистанционной аттестации планируется использовать образовательную платформу «Синтагма».</p>
-            <DraftNotice>Номер, дата, срок действия и стороны договора с правообладателем платформы будут внесены только после подписания фактического договора. Данные доступа к платформе на сайте не публикуются.</DraftNotice>
+            <p>Для размещения учебных материалов, взаимодействия со слушателями, контроля освоения программы и дистанционной аттестации используется образовательная платформа «Синтагма» по договору от 30.07.2026 № СДО-ЦСЗ-01/2026. Срок предоставления доступа — по 29.07.2027. Данные доступа на сайте не публикуются.</p>
           </section>
 
           <section className="info-section" id="paid">
             <div className="info-heading"><span>08</span><h2>Платные образовательные услуги</h2></div>
-            <DraftNotice>Положение о платных образовательных услугах, форма договора, порядок оплаты и документ об утверждении стоимости будут опубликованы до начала приёма.</DraftNotice>
+            <p>Положение о платных образовательных услугах и образец договора подготовлены. Стоимость обучения будет утверждена отдельным приказом до открытия набора и заключения первого договора.</p>
           </section>
 
           <section className="info-section" id="budget">
