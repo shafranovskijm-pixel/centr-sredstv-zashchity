@@ -25,42 +25,42 @@ const sections = [
 
 const documentGroups = [
   {
-    title: "Подписать и поставить печать",
+    title: "Документы с подписью руководителя и печатью",
     documents: [
-      ["Договор с образовательной платформой «Синтагма»", "01-dogovor-sintagma.docx"],
-      ["Приказ № 1-ОД и Положение об Учебном центре", "02-prikaz-1-OD-i-polozhenie-uchebnogo-centra.docx"],
-      ["Приказ № 2-ОД об утверждении образовательной программы", "03-prikaz-2-OD-ob-utverzhdenii-programmy.docx"],
-      ["Приказ № 3-ОД об утверждении локальных нормативных актов", "05-prikaz-3-OD-ob-utverzhdenii-lokalnyh-aktov.docx"],
-      ["Сведения о материально-техническом обеспечении и ЭИОС", "18-svedeniya-o-mto-i-eios.docx"],
+      ["Договор с образовательной платформой «Синтагма»", "01-dogovor-sintagma.pdf"],
+      ["Приказ № 1-ОД и Положение об Учебном центре", "02-prikaz-1-OD-i-polozhenie-uchebnogo-centra.pdf"],
+      ["Приказ № 2-ОД об утверждении образовательной программы", "03-prikaz-2-OD-ob-utverzhdenii-programmy.pdf"],
+      ["Приказ № 3-ОД об утверждении локальных нормативных актов", "05-prikaz-3-OD-ob-utverzhdenii-lokalnyh-aktov.pdf"],
+      ["Сведения о материально-техническом обеспечении и ЭИОС", "18-svedeniya-o-mto-i-eios.pdf"],
     ],
   },
   {
     title: "Утверждённая образовательная программа",
     documents: [
-      ["Программа повышения квалификации — 178 часов", "04-programma-178-chasov.docx"],
+      ["Программа повышения квалификации — 178 часов", "04-programma-178-chasov.pdf"],
     ],
   },
   {
     title: "Локальные акты, утверждаемые приказом № 3-ОД",
     documents: [
-      ["Положение об организации ДПО и разработке программ", "06-polozhenie-ob-organizacii-dpo.docx"],
-      ["Правила приёма на обучение", "07-pravila-priema.docx"],
-      ["Правила внутреннего распорядка обучающихся", "08-pravila-vnutrennego-rasporyadka.docx"],
-      ["Положение о режиме занятий", "09-polozhenie-o-rezhime-zanyatiy.docx"],
-      ["Положение о контроле и аттестации", "10-polozhenie-o-kontrole-i-attestacii.docx"],
-      ["Порядок перевода, отчисления и восстановления", "11-poryadok-perevoda-otchisleniya.docx"],
-      ["Порядок возникновения и прекращения образовательных отношений", "12-poryadok-obrazovatelnyh-otnosheniy.docx"],
-      ["Положение об электронном обучении и ДОТ", "13-polozhenie-ob-elektronnom-obuchenii.docx"],
-      ["Положение о языке образования", "14-polozhenie-o-yazyke-obrazovaniya.docx"],
-      ["Положение о документах о квалификации", "15-polozhenie-o-dokumentah-o-kvalifikacii.docx"],
-      ["Положение о платных образовательных услугах", "16-polozhenie-o-platnyh-uslugah.docx"],
+      ["Положение об организации ДПО и разработке программ", "06-polozhenie-ob-organizacii-dpo.pdf"],
+      ["Правила приёма на обучение", "07-pravila-priema.pdf"],
+      ["Правила внутреннего распорядка обучающихся", "08-pravila-vnutrennego-rasporyadka.pdf"],
+      ["Положение о режиме занятий", "09-polozhenie-o-rezhime-zanyatiy.pdf"],
+      ["Положение о контроле и аттестации", "10-polozhenie-o-kontrole-i-attestacii.pdf"],
+      ["Порядок перевода, отчисления и восстановления", "11-poryadok-perevoda-otchisleniya.pdf"],
+      ["Порядок возникновения и прекращения образовательных отношений", "12-poryadok-obrazovatelnyh-otnosheniy.pdf"],
+      ["Положение об электронном обучении и ДОТ", "13-polozhenie-ob-elektronnom-obuchenii.pdf"],
+      ["Положение о языке образования", "14-polozhenie-o-yazyke-obrazovaniya.pdf"],
+      ["Положение о документах о квалификации", "15-polozhenie-o-dokumentah-o-kvalifikacii.pdf"],
+      ["Положение о платных образовательных услугах", "16-polozhenie-o-platnyh-uslugah.pdf"],
     ],
   },
   {
     title: "Справочные документы — отдельно не подписываются",
     documents: [
-      ["Образец договора на обучение", "17-obrazec-dogovora-na-obuchenie.docx"],
-      ["Сведения для официального сайта", "19-svedeniya-dlya-oficialnogo-sayta.docx"],
+      ["Образец договора на обучение", "17-obrazec-dogovora-na-obuchenie.pdf"],
+      ["Сведения для официального сайта", "19-svedeniya-dlya-oficialnogo-sayta.pdf"],
     ],
   },
 ] as const;
@@ -140,14 +140,14 @@ export default function SvedenPage() {
 
           <section className="info-section" id="document">
             <div className="info-heading"><span>03</span><h2>Документы</h2></div>
-            <div className="draft-notice"><strong>Пакет подготовлен к подписанию</strong><p>Скачайте комплект Word, распечатайте и подпишите пять документов из первой группы, поставьте печать организации при её использовании и пришлите сканы в PDF. Остальные локальные акты отдельно подписывать не нужно: их утверждает приказ № 3-ОД.</p></div>
+            <div className="draft-notice"><strong>Документы сформированы в PDF</strong><p>Подпись руководителя и печать размещены в предусмотренных полях на основании письменного разрешения генерального директора на использование факсимиле. Локальные акты утверждены приказом № 3-ОД, образовательная программа — приказом № 2-ОД. Образец договора с будущим обучающимся не подписывается заранее.</p></div>
             <div className="download-pack">
               <div>
-                <span>Комплект на подпись</span>
-                <strong>19 заполненных документов Word</strong>
-                <p>Реквизиты организации сверены по ЕГРЮЛ. Номера и даты приказов, сведения о платформе и контакты внесены.</p>
+                <span>Комплект для скачивания</span>
+                <strong>19 документов PDF</strong>
+                <p>Реквизиты сверены по ЕГРЮЛ; номера и даты приказов, сведения о платформе и контакты внесены.</p>
               </div>
-              <a href="/documents/komplekt-na-podpis.zip" download>Скачать комплект ZIP</a>
+              <a href="/documents/komplekt-utverzhdennyh-pdf.zip" download>Скачать комплект ZIP</a>
             </div>
             <div className="document-list">
               <a className="egrul-download" href="/documents/ul-1037728048819-20260722152711.pdf" download>
@@ -161,8 +161,8 @@ export default function SvedenPage() {
                   <h3>{group.title}</h3>
                   <div className="draft-document-list">
                     {group.documents.map(([title, file]) => (
-                      <a key={file} href={`/documents/na-podpis/${file}`} download>
-                        <span><strong>{title}</strong><small>DOCX · заполненный документ</small></span>
+                      <a key={file} href={`/documents/utverzhdennye-pdf/${file}`} download>
+                        <span><strong>{title}</strong><small>PDF · версия для скачивания</small></span>
                         <b aria-hidden="true">↓</b>
                       </a>
                     ))}
