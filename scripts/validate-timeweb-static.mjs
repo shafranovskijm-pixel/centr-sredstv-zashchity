@@ -14,7 +14,7 @@ await Promise.all(requiredFiles.map((file) => access(file)));
 
 const sveden = await readFile("out/sveden/index.html", "utf8");
 assert.match(sveden, /19 документов PDF/);
-assert.match(sveden, /Документы сформированы в PDF/);
+assert.match(sveden, /Получены подписанные документы/);
 assert.match(sveden, /komplekt-utverzhdennyh-pdf\.zip/);
 
 console.log("Timeweb static export validated: pages and downloads are present in out/.");
