@@ -120,8 +120,8 @@ export default function Home() {
             <div className="program-intro">
               <p>Программа повышения квалификации</p>
               <h2>
-                Монтаж, техническое обслуживание и ремонт средств обеспечения
-                пожарной безопасности
+                Деятельность по монтажу, техническому обслуживанию и ремонту
+                средств обеспечения пожарной безопасности зданий и сооружений
               </h2>
             </div>
 
@@ -132,7 +132,7 @@ export default function Home() {
               </div>
               <div className="fact-card">
                 <LaptopIcon />
-                <span><strong>Заочно</strong> с применением ДОТ</span>
+                <span><strong>Заочно</strong> исключительно с ЭО и ДОТ</span>
               </div>
               <div className="fact-card">
                 <CertificateIcon />
@@ -235,6 +235,7 @@ export default function Home() {
             <div><dt>ОГРН</dt><dd>1037728048819</dd></div>
             <div><dt>Место нахождения</dt><dd>117279, г. Москва, вн. тер. г. муниципальный округ Коньково, ул. Профсоюзная, д. 93А, помещ. 1/Ц</dd></div>
             <div><dt>Дата создания</dt><dd>9 октября 2003 года</dd></div>
+            <div><dt>Официальный сайт</dt><dd><a href="https://xn-----8kcgjebtk6b7abmdihf9c1dzb.xn--p1ai">центр-средств-защиты.рф</a></dd></div>
           </dl>
           <a className="text-link" href="/sveden">Открыть обязательные подразделы <ArrowIcon /></a>
         </div>
@@ -251,6 +252,7 @@ export default function Home() {
           <a href="tel:+79933363555">+7 993 336-35-55</a>
           <a href="tel:+79933364555">+7 993 336-45-55</a>
           <a href="mailto:CSZDPO@YA.RU">CSZDPO@YA.RU</a>
+          <a href="https://xn-----8kcgjebtk6b7abmdihf9c1dzb.xn--p1ai">Официальный сайт: центр-средств-защиты.рф</a>
           <p>
             Приём заявок и обучение начнутся после получения образовательной лицензии.
             Обучение планируется исключительно с применением электронного обучения и

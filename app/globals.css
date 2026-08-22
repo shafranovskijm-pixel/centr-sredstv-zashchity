@@ -393,7 +393,7 @@ body:has(#vision-toggle:checked) .eyebrow { text-decoration: underline; }
 .plan-head span:last-child, .plan-row strong { border-right: 0; }
 .plan-row { color: var(--muted); border-bottom: 1px solid var(--line); font-size: 13px; line-height: 1.45; }
 .plan-row strong { color: var(--ink); text-align: center; }
-.plan-total { padding: 20px; display: flex; justify-content: flex-end; gap: 30px; color: var(--accent); }
+.plan-total { padding: 20px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px 30px; color: var(--accent); }
 
 @keyframes fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
