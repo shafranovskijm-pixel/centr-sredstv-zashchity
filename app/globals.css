@@ -386,14 +386,14 @@ body:has(#vision-toggle:checked) .eyebrow { text-decoration: underline; }
 .program-body aside p { margin: 9px 0 28px; color: #f7dfe2; font-size: 13px; line-height: 1.6; }
 .program-body aside p:last-child { margin-bottom: 0; }
 .program-body h2 { margin: 0 0 30px; font-size: clamp(35px,4vw,54px); letter-spacing: -.045em; }
-.plan-table { background: white; border: 1px solid var(--line); }
-.plan-head, .plan-row { display: grid; grid-template-columns: 56px 1fr 70px; }
+.plan-table { overflow-x: auto; background: white; border: 1px solid var(--line); }
+.plan-head, .plan-row { min-width: 790px; display: grid; grid-template-columns: 56px minmax(360px,1fr) 82px 130px 70px; }
 .plan-head { color: white; background: var(--graphite); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
 .plan-head span, .plan-row span, .plan-row strong { padding: 14px 16px; border-right: 1px solid var(--line); }
-.plan-head span:last-child, .plan-row strong { border-right: 0; }
+.plan-head span:last-child, .plan-row strong:last-child { border-right: 0; }
 .plan-row { color: var(--muted); border-bottom: 1px solid var(--line); font-size: 13px; line-height: 1.45; }
 .plan-row strong { color: var(--ink); text-align: center; }
-.plan-total { padding: 20px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px 30px; color: var(--accent); }
+.plan-total { min-width: 790px; padding: 20px; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px 30px; color: var(--accent); }
 
 @keyframes fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -453,7 +453,7 @@ body:has(#vision-toggle:checked) .eyebrow { text-decoration: underline; }
   .download-pack { grid-template-columns: 1fr; }
   .download-pack a { width: 100%; }
   .program-record dl { grid-template-columns: 1fr; }
-  .plan-head, .plan-row { grid-template-columns: 38px 1fr 52px; }
+  .plan-head, .plan-row { grid-template-columns: 38px minmax(330px,1fr) 66px 108px 58px; }
   .plan-head span, .plan-row span, .plan-row strong { padding: 11px 9px; }
 }
 
