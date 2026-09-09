@@ -61,6 +61,7 @@ function DraftNotice({ children }: { children: React.ReactNode }) {
 export default function SvedenPage() {
   return (
     <main className="internal-page">
+      <a className="skip-link" href="#common">Перейти к сведениям</a>
       <InternalHeader />
       <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><span>Сведения об образовательной организации</span></div>
 
@@ -71,6 +72,10 @@ export default function SvedenPage() {
           Структура раздела подготовлена с учётом требований Рособрнадзора. До получения
           лицензии образовательная деятельность и приём обучающихся не осуществляются.
         </p>
+        <div className="page-download">
+          <a href="/sveden/" download="svedeniya-csz.html">Скачать текст и таблицы раздела (HTML)</a>
+          <span>Поиск и копирование текста доступны в браузере. Приложения PDF скачиваются отдельно.</span>
+        </div>
       </section>
 
       <div className="sveden-layout">
@@ -84,16 +89,16 @@ export default function SvedenPage() {
             <div className="info-heading"><span>01</span><h2>Основные сведения</h2></div>
             <dl className="info-table">
               <div><dt>Полное наименование</dt><dd itemProp="name">Общество с ограниченной ответственностью «Центр средств защиты»</dd></div>
-              <div><dt>Сокращённое наименование</dt><dd>ООО «Центр средств защиты»</dd></div>
-              <div><dt>Дата создания</dt><dd>9 октября 2003 года</dd></div>
+              <div><dt>Сокращённое наименование</dt><dd itemProp="alternateName">ООО «Центр средств защиты»</dd></div>
+              <div><dt>Дата создания</dt><dd><time itemProp="foundingDate" dateTime="2003-10-09">9 октября 2003 года</time></dd></div>
               <div><dt>Руководитель</dt><dd>Генеральный директор Баранов Олег Павлович</dd></div>
               <div><dt>Участники</dt><dd>Кравченко Владимир Антонович — доля 50%; доля, принадлежащая обществу, — 50%</dd></div>
               <div><dt>ИНН / КПП / ОГРН</dt><dd>7728302867 / 772801001 / 1037728048819</dd></div>
               <div><dt>Место нахождения</dt><dd itemProp="address">117279, г. Москва, вн. тер. г. муниципальный округ Коньково, ул. Профсоюзная, д. 93А, помещ. 1/Ц</dd></div>
-              <div><dt>Телефон</dt><dd><a href="tel:+74953363555">+7 495 336-35-55</a></dd></div>
+              <div><dt>Телефон</dt><dd><a itemProp="telephone" href="tel:+74953363555">+7 495 336-35-55</a></dd></div>
               <div><dt>Дополнительные телефоны</dt><dd><a href="tel:+79933363555">+7 993 336-35-55</a><br /><a href="tel:+79933364555">+7 993 336-45-55</a></dd></div>
-              <div><dt>Электронная почта</dt><dd><a href="mailto:CSZDPO@YA.RU">CSZDPO@YA.RU</a></dd></div>
-              <div><dt>Официальный сайт</dt><dd><a href="https://xn-----8kcgjebtk6b7abmdihf9c1dzb.xn--p1ai">центр-средств-защиты.рф</a></dd></div>
+              <div><dt>Электронная почта</dt><dd><a itemProp="email" href="mailto:CSZDPO@YA.RU">CSZDPO@YA.RU</a></dd></div>
+              <div><dt>Официальный сайт</dt><dd><a itemProp="url" href="https://xn-----8kcgjebtk6b7abmdihf9c1dzb.xn--p1ai">центр-средств-защиты.рф</a></dd></div>
               <div><dt>Уставный капитал</dt><dd>10 000 рублей</dd></div>
               <div><dt>Основной вид деятельности</dt><dd>ОКВЭД 71.12.12 — разработка проектов промышленных процессов и производств, включая системотехнику и технику безопасности</dd></div>
               <div><dt>Образовательные виды деятельности</dt><dd>ОКВЭД 85.41, 85.41.9, 85.42 и 85.42.9</dd></div>
@@ -106,6 +111,7 @@ export default function SvedenPage() {
           <section className="info-section" id="struct">
             <div className="info-heading"><span>02</span><h2>Структура и органы управления образовательной организацией</h2></div>
             <p>Управление организацией осуществляет генеральный директор. Приказом от 30.07.2026 № 1-ОД создано специализированное структурное образовательное подразделение «Учебный центр». Функции его руководителя исполняет генеральный директор Баранов Олег Павлович. Филиалы отсутствуют.</p>
+            <a className="text-link" href="/documents/utverzhdennye-pdf/02-prikaz-1-OD-i-polozhenie-uchebnogo-centra.pdf" download>Приказ о создании и Положение об Учебном центре (PDF)</a>
           </section>
 
           <section className="info-section" id="document">
@@ -142,13 +148,16 @@ export default function SvedenPage() {
             </div>
             <h3 className="official-documents-title">Статус официальных документов</h3>
             <div className="document-list">
-              <div><strong>Устав организации</strong><span>Копия для размещения готовится</span></div>
+              <a className="egrul-download" href="/documents/ustav-csz-public-20260907.pdf" download>
+                <strong>Устав организации и изменения к нему</strong>
+                <span>PDF · 21 страница · публичная копия; паспортные данные и домашние адреса скрыты</span>
+              </a>
               <div><strong>Локальные акты об образовательной деятельности</strong><span>Актуальные редакции готовятся к публикации</span></div>
               <div><strong>Образец договора на оказание платных образовательных услуг</strong><span>Актуальная редакция будет размещена до открытия набора</span></div>
               <div><strong>Правила внутреннего распорядка обучающихся</strong><span>Актуальная редакция готовится к публикации</span></div>
               <div><strong>Правила внутреннего трудового распорядка</strong><span>Копия для размещения готовится</span></div>
               <div><strong>Отчёт о результатах самообследования</strong><span>Образовательная деятельность ещё не начата; отчёт не опубликован</span></div>
-              <div><strong>Предписания органов контроля</strong><span>Отсутствуют</span></div>
+              <div><strong>Предписания органов контроля</strong><span>Сведения уточняются перед публикацией окончательного комплекта документов</span></div>
               <div><strong>Лицензия на образовательную деятельность</strong><span>Не получена. Организация готовится к лицензированию</span></div>
             </div>
           </section>
@@ -171,7 +180,7 @@ export default function SvedenPage() {
 
           <section className="info-section" id="managers">
             <div className="info-heading"><span>05</span><h2>Руководство</h2></div>
-            <dl className="person-card"><div><dt>Ф.И.О.</dt><dd>Баранов Олег Павлович</dd></div><div><dt>Должность</dt><dd>Генеральный директор</dd></div><div><dt>Телефон организации</dt><dd><a href="tel:+74953363555">+7 495 336-35-55</a></dd></div></dl>
+            <dl className="person-card"><div><dt>Ф.И.О.</dt><dd>Баранов Олег Павлович</dd></div><div><dt>Должность</dt><dd>Генеральный директор</dd></div><div><dt>Телефон организации</dt><dd><a href="tel:+74953363555">+7 495 336-35-55</a></dd></div><div><dt>Электронная почта организации</dt><dd><a href="mailto:CSZDPO@YA.RU">CSZDPO@YA.RU</a></dd></div></dl>
           </section>
 
           <section className="info-section" id="employees">
@@ -213,7 +222,7 @@ export default function SvedenPage() {
 
           <section className="info-section" id="catering">
             <div className="info-heading"><span>13</span><h2>Организация питания в образовательной организации</h2></div>
-            <p>Питание обучающихся не организуется в связи с реализацией программы в заочной форме с применением исключительно электронного обучения и дистанционных образовательных технологий. Объекты питания и охраны здоровья отсутствуют.</p>
+            <p>Для планируемой программы в заочной форме с применением исключительно электронного обучения и дистанционных образовательных технологий организация питания в учебном центре не предусмотрена. Сведения об условиях охраны здоровья будут размещены в окончательном описании условий реализации программы.</p>
           </section>
         </div>
       </div>

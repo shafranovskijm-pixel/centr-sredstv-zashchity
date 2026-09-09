@@ -28,6 +28,8 @@ const plan = [
 export default function ProgramPage() {
   return (
     <main className="internal-page">
+      <a className="skip-link" href="#program-plan">Перейти к учебному плану</a>
+      <input className="vision-checkbox" type="checkbox" id="vision-toggle" />
       <header className="internal-header">
         <Link className="internal-brand" href="/">
           <BrandEmblem />
@@ -35,6 +37,7 @@ export default function ProgramPage() {
         </Link>
         <nav aria-label="Навигация по сайту"><Link href="/">Главная</Link><Link aria-current="page" href="/programmy/pozharnaya-bezopasnost">Программа</Link><Link href="/sveden">Сведения об организации</Link></nav>
         <a className="internal-phone" href="tel:+74953363555">+7 495 336-35-55</a>
+        <label className="vision-toggle" htmlFor="vision-toggle">◉ Версия для слабовидящих</label>
       </header>
       <div className="breadcrumb"><Link href="/">Главная</Link><span>/</span><span>Программы</span><span>/</span><span>Пожарная безопасность</span></div>
       <section className="program-hero">
@@ -42,6 +45,10 @@ export default function ProgramPage() {
           <p className="eyebrow">Проект программы повышения квалификации</p>
           <h1>Деятельность по монтажу, техническому обслуживанию и ремонту средств обеспечения пожарной безопасности зданий и сооружений</h1>
           <p>Работники соискателей лицензии или лицензиатов — специалисты, осуществляющие монтаж, техническое обслуживание и ремонт средств обеспечения пожарной безопасности зданий и сооружений.</p>
+          <div className="page-download">
+            <a href="/programmy/pozharnaya-bezopasnost/" download="proekt-programmy-csz.html">Скачать описание и учебный план (HTML)</a>
+            <span>Текст и таблицы проекта доступны для поиска и копирования. Это не утверждённая программа.</span>
+          </div>
         </div>
         <dl>
           <div><dt>Объём</dt><dd>178 академических часов</dd></div>
@@ -54,7 +61,7 @@ export default function ProgramPage() {
         </dl>
       </section>
 
-      <section className="program-body">
+      <section className="program-body" id="program-plan">
         <aside>
           <strong>К обучению допускаются</strong>
           <p>Лица, имеющие или получающие среднее профессиональное и (или) высшее образование.</p>
@@ -64,7 +71,7 @@ export default function ProgramPage() {
         <div>
           <p className="eyebrow">Целевая структура проекта учебного плана</p>
           <h2>Структура программы</h2>
-          <div className="plan-table" role="table" aria-label="Учебный план">
+          <div className="plan-table" role="table" aria-label="Учебный план" tabIndex={0}>
             <div className="plan-head" role="row"><span role="columnheader">№</span><span role="columnheader">Модуль</span><span role="columnheader">Теория</span><span role="columnheader">Практика / аттестация</span><span role="columnheader">Всего</span></div>
             {plan.map((row) => <div className="plan-row" role="row" key={row[0]}><span role="cell">{row[0]}</span><span role="cell">{row[1]}</span><strong role="cell">{row[2]}</strong><strong role="cell">{row[3]}</strong><strong role="cell">{row[4]}</strong></div>)}
             <div className="plan-total"><span>154 часа теории + 22 часа практики + 2 часа итоговой аттестации</span><strong>Итого: 178 часов</strong></div>
