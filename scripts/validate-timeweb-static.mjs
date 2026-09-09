@@ -39,7 +39,7 @@ await Promise.all(forbiddenFiles.map((file) => assert.rejects(() => access(file)
 
 const sveden = await readFile("out/sveden/index.html", "utf8");
 assert.match(sveden, /<html lang="ru" data-scroll-behavior="smooth">/);
-assert.match(sveden, /178 часов · 11 модулей/);
+assert.match(sveden, /34 академических часа · 2 модуля/);
 assert.match(sveden, /href="\/sveden\/" download="svedeniya-csz.html"/);
 assert.match(sveden, /href="\/documents\/ustav-csz-public-20260907.pdf" download=""/);
 assert.match(sveden, /itemProp="email"/);
@@ -52,7 +52,7 @@ assert.match(sveden, /Утверждённая редакция готовитс
 assert.doesNotMatch(sveden, /NO-GO|встречная подпись|01-dogovor-sintagma\.pdf/);
 assert.match(sveden, /Выписка из ЕГРЮЛ от 20\.08\.2026/);
 assert.match(sveden, /\/documents\/egrul-csz-2026-08-20\.pdf/);
-assert.match(sveden, /Учебный курс на 178 часов и электронная библиотека проходят подготовку и проверку/);
+assert.match(sveden, /Учебный курс на 34 академических часа и электронная библиотека проходят подготовку и проверку/);
 assert.match(sveden, /Общежитие/);
 assert.match(sveden, /Интернат/);
 assert.match(sveden, /Сведения уточняются перед публикацией окончательного комплекта документов/);
@@ -73,13 +73,24 @@ assert.match(program, /Общепрофессиональный модуль/);
 assert.match(program, /download="proekt-programmy-csz.html"/);
 assert.match(program, /id="vision-toggle"/);
 assert.match(program, /aria-label="Учебный план" tabindex="0"/);
-assert.match(program, /154 часа теории \+ 22 часа практики \+ 2 часа итоговой аттестации/);
-assert.match(program, /35 уроков/);
-assert.match(program, /67 вопросов/);
-assert.match(program, /Промежуточная аттестация проводится по каждому из 11 модулей/);
+assert.match(program, /28 часов теории \+ 4 часа самостоятельных профессиональных заданий \+ 2 часа итоговой аттестации/);
+assert.match(program, /8 учебных элементов/);
+assert.match(program, /22 вопроса/);
+assert.match(program, /Каждый из двух модулей включает 14 часов теории и 2 часа самостоятельного профессионального задания/);
+assert.match(program, /5 учебных дней по календарному графику проекта/);
+assert.match(program, /модуль 11 Типовой программы/);
+assert.match(program, /Монтаж, техническое обслуживание и ремонт первичных средств пожаротушения/);
 assert.match(program, /Курс и электронная библиотека на платформе «Синтагма» проходят подготовку и проверку/);
 assert.match(program, /Проект программы повышения квалификации/);
 assert.doesNotMatch(program, /видеоматериал|видеосвяз|тренаж[её]р|виртуальн(?:ое|ые|ый|ая) посещение|материал(?:ы)? производителей/iu);
 assert.doesNotMatch(program, /30\.07\.2026 № 2-ОД|Общие вопросы организации обучения/);
 
-console.log("Timeweb static export validated: pages and downloads are present in out/.");
+const home = await readFile("out/index.html", "utf8");
+assert.match(home, /<strong>34<\/strong> академических часа/);
+assert.match(home, /Компетенции для работы с первичными средствами пожаротушения/);
+assert.match(home, /доступ к обучению пока не открыт/);
+for (const page of [home, sveden, program]) {
+  assert.doesNotMatch(page, /178(?:<\/strong>)?[^<]{0,30}(?:академических|час)|11 модулей|35 уроков|67 вопросов/);
+}
+
+console.log("Timeweb static export validated: CSZ34 pages and existing public downloads are present in out/.");
