@@ -359,6 +359,15 @@ body:has(#vision-toggle:checked) .internal-page :is(.draft-notice, .legal-note) 
 .document-list { display: grid; border-top: 1px solid var(--line); }
 .document-list > div { padding: 16px 0; display: grid; grid-template-columns: 1fr auto; gap: 30px; border-bottom: 1px solid var(--line); }
 .document-list strong { font-size: 14px; }.document-list span { color: var(--muted); font-size: 12px; }
+.program-downloads { margin-top: 28px; }
+.official-links { display: grid; gap: 12px; padding: 24px 0; border-top: 1px solid var(--line); line-height: 1.6; }
+.program-downloads > p { color: var(--muted); line-height: 1.6; }
+.program-file-list { border-top: 1px solid var(--line); }
+.program-file { padding: 18px 0; border-bottom: 1px solid var(--line); }
+.program-file h4 { margin: 0 0 8px; font-size: 16px; line-height: 1.45; }
+.program-file p { margin: 0; color: var(--muted); font-size: 13px; }
+.program-file-actions { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 12px; }
+.program-file-actions a { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; font-weight: 600; }
 .egrul-download { padding: 16px 0; display: grid; grid-template-columns: minmax(220px, .7fr) 1fr; gap: 30px; border-bottom: 1px solid var(--line); }
 .egrul-download:hover strong, .egrul-download:focus-visible strong { color: var(--accent); }
 .download-pack { margin-top: 24px; padding: 24px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 28px; color: white; background: var(--graphite); border-radius: 8px; }
