@@ -77,6 +77,11 @@ test("renders the licensing-program structure and official canonical", async () 
   assert.match(html, /Промежуточная аттестация проводится по каждому из 11 модулей/u);
   assert.match(html, /Курс на 178 часов и электронная библиотека на платформе «Синтагма» проходят подготовку и проверку/u);
   assert.match(html, /Проект программы повышения квалификации/u);
+  assert.match(html, /<dt>Вид образования<\/dt><dd>Дополнительное образование<\/dd>/u);
+  assert.match(html, /<dt>Подвид образования<\/dt><dd>Дополнительное профессиональное образование<\/dd>/u);
+  assert.match(html, /<dt>Вид ДПП<\/dt><dd>Программа повышения квалификации<\/dd>/u);
+  assert.match(html, /№ 1156/u);
+  assert.doesNotMatch(html, /№1156/u);
   assert.doesNotMatch(html, /NO-GO/u);
   assert.match(html, /дистанционное документированное наблюдение по видео и технической документации/u);
   assert.match(html, /допустимость предлагаемого способа выполнения этого содержания ещё требует подтверждения/u);
@@ -111,6 +116,11 @@ test("keeps working documents out of the public education-information package", 
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /178 академических часов · 11 модулей/u);
+  assert.match(html, /<dt>Вид образования<\/dt><dd>Дополнительное образование<\/dd>/u);
+  assert.match(html, /<dt>Подвид образования<\/dt><dd>Дополнительное профессиональное образование<\/dd>/u);
+  assert.match(html, /<dt>Вид ДПП<\/dt><dd>Программа повышения квалификации<\/dd>/u);
+  assert.match(html, /№ 1156/u);
+  assert.doesNotMatch(html, /№1156/u);
   assert.match(html, /Программа не утверждена; подписанная редакция пока не опубликована/u);
   assert.doesNotMatch(html, /NO-GO|встречная подпись|01-dogovor-sintagma\.pdf/u);
   assert.doesNotMatch(html, /№ 2-ОД|№ 3-ОД|факсимил/iu);

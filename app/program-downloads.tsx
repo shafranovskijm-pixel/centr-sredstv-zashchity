@@ -6,10 +6,10 @@ const documents = [
 ] as const;
 
 const pdfMetadata: Partial<Record<(typeof documents)[number]["file"], { pages: number; size: string }>> = {
-  "dpp-178h-for-approval-20260913.pdf": { pages: 20, size: "435 КБ" },
-  "module-programs-178h-for-approval-20260913.pdf": { pages: 17, size: "366 КБ" },
-  "assignments-178h-for-approval-20260913.pdf": { pages: 28, size: "469 КБ" },
-  "assessment-procedure-178h-for-approval-20260913.pdf": { pages: 3, size: "190 КБ" },
+  "dpp-178h-for-approval-20260913.pdf": { pages: 20, size: "449 КБ" },
+  "module-programs-178h-for-approval-20260913.pdf": { pages: 17, size: "379 КБ" },
+  "assignments-178h-for-approval-20260913.pdf": { pages: 28, size: "478 КБ" },
+  "assessment-procedure-178h-for-approval-20260913.pdf": { pages: 3, size: "192 КБ" },
 };
 
 export default function ProgramDownloads() {
