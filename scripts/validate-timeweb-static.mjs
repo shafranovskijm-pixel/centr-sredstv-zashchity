@@ -8,9 +8,45 @@ const programFiles = [
   "assessment-procedure-178h-for-approval-20260913.pdf",
 ];
 
+const svedenSections = [
+  ["common", "common", "Основные сведения"],
+  ["struct", "struct", "Структура и органы управления образовательной организацией"],
+  ["document", "document", "Документы"],
+  ["education", "education", "Образование"],
+  ["eduStandarts", "eduStandarts", "Образовательные стандарты и требования"],
+  ["managers", "managers", "Руководство"],
+  ["employees", "employees", "Педагогический состав"],
+  ["objects", "objects", "Материально-техническое обеспечение и оснащённость образовательного процесса. Доступная среда"],
+  ["grants", "grants", "Стипендии и меры поддержки обучающихся"],
+  ["paid", "paid_edu", "Платные образовательные услуги"],
+  ["budget", "budget", "Финансово-хозяйственная деятельность"],
+  ["vacant", "vacant", "Вакантные места для приёма (перевода) обучающихся"],
+  ["inter", "inter", "Международное сотрудничество"],
+  ["catering", "catering", "Организация питания в образовательной организации"],
+];
+
+const requiredItemPropsBySlug = {
+  common: ["fullName", "shortName", "regDate", "uchredLaw", "nameUchred", "address", "workTime", "telephone", "email", "licenseDocLink", "addressPlaceSet", "addressPlacePrac", "addressPlacePodg", "addressPlaceGia", "addressPlaceDop", "addressPlaceOppo"],
+  struct: ["structOrgUprav", "name", "fio", "post", "addressStr", "site", "email", "divisionClauseDocLink", "filInfo", "repInfo"],
+  document: ["ustavDocLink", "localActStud", "localActOrder", "localActCollec", "reportEduDocLink", "prescriptionDocLink", "priemDocLink", "modeDocLink", "tekKontrolDocLink", "perevodDocLink", "vozDocLink"],
+  education: ["eduAccred", "eduCode", "eduName", "eduProf", "eduLevel", "eduForm", "learningTerm", "eduPred", "eduPrac", "languageEl", "eduChislenEl", "eduPriemEl", "eduPerevodEl", "eduOp", "opMain", "educationPlan", "educationRpd", "educationShedule", "eduPr", "methodology", "eduNir", "perechenNir", "napravNir", "resultNir", "baseNir", "graduateJob", "v1", "t1", "accreditationDocLink", "addRef"],
+  eduStandarts: ["eduFedDoc", "eduStandartDoc", "eduFedTreb", "eduStandartTreb"],
+  managers: ["rucovodstvo", "rucovodstvoZam", "rucovodstvoFil", "nameFil", "fio", "post", "telephone", "email"],
+  employees: ["teachingStaff", "fio", "post", "teachingDiscipline", "teachingLevel", "degree", "academStat", "qualification", "profDevelopment", "specExperience", "teachingOp"],
+  objects: ["purposeCab", "addressCab", "nameCab", "osnCab", "ovzCab", "purposePrac", "addressPrac", "namePrac", "osnPrac", "ovzPrac", "purposeLibr", "purposeSport", "objName", "objAddress", "objOvz", "ovz", "purposeFacil", "purposeFacilOvz", "comNet", "comNetOvz", "erList", "erListOvz", "techOvz", "hostelInfo", "interInfo", "hostelNum", "hostelNumOvz", "hostelNumRooms", "interNum", "interNumOvz", "hostelInterOvz", "localActObSt", "localActObPred"],
+  grants: ["grant", "support"],
+  paid_edu: ["paidEdu", "paidDog", "paidSt", "paidParents"],
+  budget: ["finBFVolume", "finBRVolume", "finBMVolume", "finPVolume", "volume", "finYear", "finPost", "finRas", "finPlanDocLink"],
+  vacant: ["vacant", "eduCode", "eduName", "eduLevel", "eduProf", "eduCourse", "eduForm", "numberBFVacant", "numberBRVacant", "numberBMVacant", "numberPVacant"],
+  inter: ["internationalDog", "stateName", "orgName", "dogReg"],
+  catering: ["meals", "objName", "objAddress", "objOvz", "health"],
+};
+
 const requiredFiles = [
   "out/index.html",
+  "out/404.html",
   "out/sveden/index.html",
+  ...svedenSections.map(([, slug]) => `out/sveden/${slug}/index.html`),
   "out/programmy/pozharnaya-bezopasnost/index.html",
   "out/documents/egrul-csz-2026-08-20.pdf",
   "out/documents/ustav-csz-public-20260907.pdf",
@@ -54,9 +90,9 @@ assert.match(sveden, /href="\/documents\/ustav-csz-public-20260907.pdf" download
 assert.match(sveden, /itemProp="email"/);
 assert.ok(sveden.includes('href="https://www.minobrnauki.gov.ru/"'));
 assert.ok(sveden.includes('href="https://edu.gov.ru/"'));
-assert.match(sveden, /itemProp="foundingDate" dateTime="2003-10-09"/);
-for (const id of ["common", "struct", "document", "education", "managers", "employees", "objects", "paid", "budget", "vacant", "grants", "inter", "catering"]) {
-  assert.match(sveden, new RegExp(`href="#${id}"`));
+assert.match(sveden, /itemProp="regDate" dateTime="2003-10-09"/);
+for (const [id, slug] of svedenSections) {
+  assert.match(sveden, new RegExp(`href="/sveden/${slug}/"`));
   assert.match(sveden, new RegExp(`id="${id}"`));
 }
 assert.match(sveden, /Программа не утверждена; подписанная редакция пока не опубликована/);
@@ -66,6 +102,8 @@ assert.match(sveden, /\/documents\/egrul-csz-2026-08-20\.pdf/);
 assert.match(sveden, /Курс на 178 часов и электронная библиотека проходят подготовку и проверку/);
 assert.match(sveden, /Общежитие/);
 assert.match(sveden, /Интернат/);
+assert.match(sveden, /значение 0 без документального основания не заявляется/);
+assert.doesNotMatch(sveden, /количество мест — 0/);
 assert.match(sveden, /Сведения уточняются перед публикацией окончательного комплекта документов/);
 assert.doesNotMatch(sveden, /Предписания органов контроля<\/strong><span>Отсутствуют|Объекты питания и охраны здоровья отсутствуют/);
 assert.doesNotMatch(sveden, /№ 2-ОД|№ 3-ОД|факсимил|Кравченко Вероника Юрьевна|проект назначения/iu);
@@ -112,11 +150,72 @@ const home = await readFile("out/index.html", "utf8");
 assert.match(home, /<strong>178<\/strong> академических часов/);
 assert.match(home, /Общепрофессиональный модуль и все десять видов работ/);
 assert.match(home, /доступ к обучению пока не открыт/);
+
+const sectionPages = [];
+const sectionTitles = new Set();
+const sectionHeadings = new Set();
+const sectionCanonicals = new Set();
+for (const [id, slug, title] of svedenSections) {
+  const page = await readFile(`out/sveden/${slug}/index.html`, "utf8");
+  sectionPages.push(page);
+  const markup = visibleMarkup(page);
+  const titleMatch = markup.match(/<title>([^<]+)<\/title>/u);
+  const headingMatch = markup.match(/<h1>([^<]+)<\/h1>/u);
+  const canonicalMatch = markup.match(/<link(?=[^>]*\brel="canonical")(?=[^>]*\bhref="([^"]+)")[^>]*>/u);
+  assert.equal(titleMatch?.[1], `${title} — Центр средств защиты`, slug);
+  assert.equal(headingMatch?.[1], title, slug);
+  assert.equal(canonicalMatch?.[1], `https://xn-----8kcgjebtk6b7abmdihf9c1dzb.xn--p1ai/sveden/${slug}/`, slug);
+  sectionTitles.add(titleMatch[1]);
+  sectionHeadings.add(headingMatch[1]);
+  sectionCanonicals.add(canonicalMatch[1]);
+  assert.match(markup, new RegExp(`<section class="info-section" id="${id}"`));
+  assert.equal(markup.match(/<section class="info-section"/g)?.length, 1);
+  assert.match(markup, new RegExp(`<a(?=[^>]*href="/sveden/${slug}/")(?=[^>]*aria-current="page")[^>]*>`));
+  assert.doesNotMatch(markup, /\bitcmprop\s*=|\bitemprop=["']copy["']/iu, slug);
+  assert.doesNotMatch(markup, /Общепрофессиональный модуль и все десять видов работ/);
+
+  const itemProps = new Set(collectItemPropRecords(markup).map(({ prop }) => prop));
+  for (const itemProp of requiredItemPropsBySlug[slug]) {
+    assert.ok(itemProps.has(itemProp), `${slug}: missing itemProp=${itemProp}`);
+  }
+  if (slug === "education") assert.ok(itemProps.has("accreditationDocLink"));
+  else assert.ok(!itemProps.has("accreditationDocLink"), `${slug}: accreditationDocLink must be absent`);
+
+  assertSectionNesting(slug, markup);
+
+  if (slug === "education") {
+    const project = markup.match(/<article(?=[^>]*data-program-status="unapproved-project")[^>]*>[\s\S]*?<\/article>/u)?.[0];
+    assert.ok(project, "education: unapproved project marker missing");
+    assert.doesNotMatch(project, /\bitemProp="(?:eduAccred|eduOp|eduNir|graduateJob)"/u);
+    assert.match(project, /Проект дополнительной профессиональной программы/u);
+    assert.match(project, /Программа не утверждена|неутверждённ/u);
+  }
+}
+
+assert.equal(sectionTitles.size, svedenSections.length, "section titles must be unique");
+assert.equal(sectionHeadings.size, svedenSections.length, "section h1 values must be unique");
+assert.equal(sectionCanonicals.size, svedenSections.length, "section canonicals must be unique");
+await assert.rejects(() => access("out/sveden/__missing__/index.html"));
+
+assert.match(sectionPages[svedenSections.findIndex(([, slug]) => slug === "education")], /178 академических часов/);
+assert.notEqual(sectionPages[0], home);
+
 for (const page of [home, sveden, program]) {
   assert.doesNotMatch(page, /34(?:<\/strong>)?[^<]{0,30}(?:академических|час)|program-34h|35 уроков|67 вопросов|8 учебных элементов|22 вопроса/);
   assert.match(page, /[Пп]рограмма не утверждена/);
   assert.match(page, /набор закрыт до получения образовательной лицензии/i);
   assert.doesNotMatch(page, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
+}
+
+for (const page of sectionPages) {
+  assert.doesNotMatch(page, /34(?:<\/strong>)?[^<]{0,30}(?:академических|час)|program-34h|35 уроков|67 вопросов|8 учебных элементов|22 вопроса/);
+  assert.doesNotMatch(page, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
+}
+
+for (const slug of ["document", "education", "objects"]) {
+  const page = sectionPages[svedenSections.findIndex(([, candidate]) => candidate === slug)];
+  assert.match(page, /[Пп]рограмма не утверждена|Подписанная утверждённая редакция пока не опубликована/);
+  assert.match(page, /набор закрыт до получения образовательной лицензии|До получения лицензии/iu);
 }
 
 
@@ -135,4 +234,77 @@ const expectedModuleTitles = [
 ];
 for (const title of expectedModuleTitles) assert.ok(program.includes(title), title);
 
-console.log("Timeweb static export validated: CSZ178 project pages, four approval PDFs and existing public downloads are present in out/.");
+console.log("Timeweb static export validated: CSZ178 project pages, 14 real /sveden/ subsection routes with v10 microdata, four approval PDFs and existing public downloads are present in out/.");
+
+function visibleMarkup(document) {
+  const marker = document.indexOf("<script>self.__next_f.push");
+  return marker === -1 ? document : document.slice(0, marker);
+}
+
+function collectItemPropRecords(markup) {
+  const records = [];
+  const stack = [];
+  const voidTags = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]);
+  const tagPattern = /<(\/)?([a-z][\w:-]*)([^>]*)>/giu;
+  for (const match of markup.matchAll(tagPattern)) {
+    const [, closing, rawTag, attributes] = match;
+    const tag = rawTag.toLowerCase();
+    if (closing) {
+      while (stack.length) {
+        const current = stack.pop();
+        if (current.tag === tag) break;
+      }
+      continue;
+    }
+
+    const ancestors = stack.flatMap(({ props }) => props);
+    const props = [...attributes.matchAll(/\bitemprop=["']([^"']+)["']/giu)].flatMap((property) => property[1].trim().split(/\s+/u));
+    for (const prop of props) records.push({ prop, ancestors });
+
+    const selfClosing = /\/\s*$/u.test(attributes) || voidTags.has(tag);
+    if (!selfClosing) stack.push({ tag, props });
+  }
+  return records;
+}
+
+function assertNestedItemProps(markup, parent, children, slug) {
+  const records = collectItemPropRecords(markup);
+  for (const child of children) {
+    assert.ok(
+      records.some(({ prop, ancestors }) => prop === child && ancestors.includes(parent)),
+      `${slug}: itemProp=${child} must be inside itemProp=${parent}`,
+    );
+  }
+}
+
+function assertSectionNesting(slug, markup) {
+  const relationships = {
+    common: [["uchredLaw", ["nameUchred"]]],
+    struct: [["structOrgUprav", ["name", "fio", "post", "addressStr", "site", "email", "divisionClauseDocLink"]]],
+    education: [
+      ["eduAccred", ["eduCode", "eduName", "eduProf", "eduLevel", "eduForm", "learningTerm", "eduPred", "eduPrac"]],
+      ["eduOp", ["eduCode", "eduName", "eduLevel", "eduProf", "eduForm", "opMain", "educationPlan", "educationRpd", "educationShedule", "eduPr", "methodology"]],
+      ["eduNir", ["eduCode", "eduName", "perechenNir", "eduProf", "eduLevel", "napravNir", "resultNir", "baseNir"]],
+      ["graduateJob", ["eduCode", "eduName", "eduProf", "v1", "t1"]],
+    ],
+    managers: [
+      ["rucovodstvo", ["fio", "post", "telephone", "email"]],
+      ["rucovodstvoZam", ["fio", "post", "telephone", "email"]],
+      ["rucovodstvoFil", ["nameFil", "fio", "post", "telephone", "email"]],
+    ],
+    employees: [["teachingStaff", ["fio", "post", "teachingDiscipline", "teachingLevel", "degree", "academStat", "qualification", "profDevelopment", "specExperience", "teachingOp"]]],
+    objects: [
+      ["purposeCab", ["addressCab", "nameCab", "osnCab", "ovzCab"]],
+      ["purposePrac", ["addressPrac", "namePrac", "osnPrac", "ovzPrac"]],
+      ["purposeLibr", ["objName", "objAddress", "objOvz"]],
+      ["purposeSport", ["objName", "objAddress", "objOvz"]],
+    ],
+    budget: [["volume", ["finYear", "finPost", "finRas"]]],
+    vacant: [["vacant", ["eduCode", "eduName", "eduLevel", "eduProf", "eduCourse", "eduForm", "numberBFVacant", "numberBRVacant", "numberBMVacant", "numberPVacant"]]],
+    inter: [["internationalDog", ["stateName", "orgName", "dogReg"]]],
+    catering: [["meals", ["objName", "objAddress", "objOvz"]]],
+  };
+  for (const [parent, children] of relationships[slug] ?? []) {
+    assertNestedItemProps(markup, parent, children, slug);
+  }
+}

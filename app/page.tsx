@@ -1,3 +1,4 @@
+import Link from "next/link";
 import BrandEmblem from "./brand-emblem";
 import { programModules } from "./program-data";
 
@@ -59,7 +60,7 @@ export default function Home() {
         <nav className="desktop-nav" aria-label="Основная навигация">
           <a href="/programmy/pozharnaya-bezopasnost">Программа</a>
           <a href="#education">Об обучении</a>
-          <a href="/sveden">Сведения об организации</a>
+          <Link href="/sveden">Сведения об организации</Link>
           <a href="#contacts">Контакты</a>
         </nav>
 
@@ -72,7 +73,7 @@ export default function Home() {
           <nav aria-label="Мобильная навигация">
             <a href="/programmy/pozharnaya-bezopasnost">Программа</a>
             <a href="#education">Об обучении</a>
-            <a href="/sveden">Сведения об организации</a>
+            <Link href="/sveden">Сведения об организации</Link>
             <a href="#contacts">Контакты</a>
             <a href="tel:+74953363555">+7 495 336-35-55</a>
             <a href="mailto:CSZDPO@YA.RU">CSZDPO@YA.RU</a>
@@ -118,9 +119,9 @@ export default function Home() {
               <a className="button button-primary" href="#contacts">
                 Узнать о начале обучения <ArrowIcon />
               </a>
-              <a className="button button-secondary" href="/sveden">
+              <Link className="button button-secondary" href="/sveden">
                 Сведения об организации <ArrowIcon />
-              </a>
+              </Link>
             </div>
 
             <p className="audience-note">
@@ -216,7 +217,7 @@ export default function Home() {
             <div><dt>Дата создания</dt><dd>9 октября 2003 года</dd></div>
             <div><dt>Официальный сайт</dt><dd><a href="https://xn-----8kcgjebtk6b7abmdihf9c1dzb.xn--p1ai">центр-средств-защиты.рф</a></dd></div>
           </dl>
-          <a className="text-link" href="/sveden">Открыть обязательные подразделы <ArrowIcon /></a>
+          <Link className="text-link" href="/sveden">Открыть обязательные подразделы <ArrowIcon /></Link>
         </div>
       </section>
 

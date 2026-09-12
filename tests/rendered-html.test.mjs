@@ -125,14 +125,15 @@ test("keeps working documents out of the public education-information package", 
   assert.doesNotMatch(html, /NO-GO|встречная подпись|01-dogovor-sintagma\.pdf/u);
   assert.doesNotMatch(html, /№ 2-ОД|№ 3-ОД|факсимил/iu);
   assert.doesNotMatch(html, /Кравченко Вероника Юрьевна|проект назначения/iu);
-  assert.match(html, /Сведения о преподавателях и их квалификации будут размещены после оформления кадровых документов/u);
+  assert.match(html, /Кадровое обеспечение проекта программы и подтверждающие документы требуют оформления/u);
   assert.match(html, /Курс на 178 часов и электронная библиотека проходят подготовку и проверку/u);
   assertProjectStatus(html);
-  const objects = html.slice(html.indexOf('id="objects"'), html.indexOf('id="paid"'));
-  const grants = html.slice(html.indexOf('id="grants"'), html.indexOf('id="inter"'));
+  const objects = html.slice(html.indexOf('id="objects"'), html.indexOf('id="grants"'));
+  const grants = html.slice(html.indexOf('id="grants"'), html.indexOf('id="paid"'));
   assert.match(objects, /Общежитие/u);
   assert.match(objects, /Интернат/u);
-  assert.match(objects, /количество мест — 0/u);
+  assert.match(objects, /значение 0 без документального основания не заявляется/u);
+  assert.doesNotMatch(objects, /количество мест — 0/u);
   assert.doesNotMatch(grants, /общежит|интернат/iu);
   assert.doesNotMatch(html, /18 документов PDF|komplekt-utverzhdennyh-pdf\.zip/u);
   assert.doesNotMatch(html, /03-prikaz-2-OD-ob-utverzhdenii-programmy\.pdf|04-programma-178-chasov\.pdf|05-prikaz-3-OD-ob-utverzhdenii-lokalnyh-aktov\.pdf|18-svedeniya-o-mto-i-eios\.pdf/u);
@@ -172,6 +173,107 @@ test("keeps working documents out of the public education-information package", 
   assert.equal(existsSync(new URL("../public/documents/utverzhdennye-pdf/01-dogovor-sintagma.pdf", import.meta.url)), false);
 });
 
+test("renders all 14 v10 education-information subsection routes", async () => {
+  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
+  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-sveden-subsections`);
+  const { default: worker } = await import(workerUrl.href);
+  const titles = new Set();
+  const headings = new Set();
+  const canonicals = new Set();
+
+  for (const [id, slug, title] of expectedSvedenSections) {
+    const response = await worker.fetch(
+      new Request(`http://localhost/sveden/${slug}/`, {
+        headers: { accept: "text/html" },
+      }),
+      {
+        ASSETS: {
+          fetch: async () => new Response("Not found", { status: 404 }),
+        },
+      },
+      {
+        waitUntil() {},
+        passThroughOnException() {},
+      },
+    );
+
+    assert.equal(response.status, 200, slug);
+    const html = await response.text();
+    const markup = visibleMarkup(html);
+    const titleMatch = markup.match(/<title>([^<]+)<\/title>/u);
+    const headingMatch = markup.match(/<h1>([^<]+)<\/h1>/u);
+    const canonicalMatch = markup.match(/<link(?=[^>]*\brel=["']canonical["'])(?=[^>]*\bhref=["']([^"']+)["'])[^>]*>/u);
+    assert.equal(titleMatch?.[1], `${title} — Центр средств защиты`, slug);
+    assert.equal(headingMatch?.[1], title, slug);
+    assert.equal(canonicalMatch?.[1], `https://xn-----8kcgjebtk6b7abmdihf9c1dzb.xn--p1ai/sveden/${slug}/`, slug);
+    titles.add(titleMatch[1]);
+    headings.add(headingMatch[1]);
+    canonicals.add(canonicalMatch[1]);
+    assert.match(markup, new RegExp(`<section class=["']info-section["'] id=["']${id}["']`), slug);
+    assert.equal(markup.match(/class=["']info-section["']/g)?.length, 1, slug);
+    assert.match(markup, new RegExp(`/sveden/${slug}/["']`), slug);
+    assert.doesNotMatch(markup, /\bitcmprop\s*=|\bitemprop=["']copy["']/iu, slug);
+    const itemProps = new Set(collectItemProps(markup));
+    for (const itemProp of requiredRouteItemProps[slug]) {
+      assert.ok(itemProps.has(itemProp), `${slug}: missing itemProp=${itemProp}`);
+    }
+    if (slug === "education") assert.ok(itemProps.has("accreditationDocLink"));
+    else assert.ok(!itemProps.has("accreditationDocLink"), `${slug}: accreditationDocLink must be absent`);
+    if (slug === "education") {
+      const project = markup.match(/<article(?=[^>]*data-program-status=["']unapproved-project["'])[^>]*>[\s\S]*?<\/article>/u)?.[0];
+      assert.ok(project, "education: unapproved project marker missing");
+      assert.doesNotMatch(project, /\bitemProp=["'](?:eduAccred|eduOp|eduNir|graduateJob)["']/u);
+    }
+    assert.doesNotMatch(markup, /Общепрофессиональный модуль и все десять видов работ/u, slug);
+    assertProjectStatusOrCleanSubsection(html);
+  }
+
+  assert.equal(titles.size, expectedSvedenSections.length);
+  assert.equal(headings.size, expectedSvedenSections.length);
+  assert.equal(canonicals.size, expectedSvedenSections.length);
+
+  const missingResponse = await worker.fetch(
+    new Request("http://localhost/sveden/__missing__/", { headers: { accept: "text/html" } }),
+    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
+    { waitUntil() {}, passThroughOnException() {} },
+  );
+  assert.equal(missingResponse.status, 404);
+});
+
+const expectedSvedenSections = [
+  ["common", "common", "Основные сведения"],
+  ["struct", "struct", "Структура и органы управления образовательной организацией"],
+  ["document", "document", "Документы"],
+  ["education", "education", "Образование"],
+  ["eduStandarts", "eduStandarts", "Образовательные стандарты и требования"],
+  ["managers", "managers", "Руководство"],
+  ["employees", "employees", "Педагогический состав"],
+  ["objects", "objects", "Материально-техническое обеспечение и оснащённость образовательного процесса. Доступная среда"],
+  ["grants", "grants", "Стипендии и меры поддержки обучающихся"],
+  ["paid", "paid_edu", "Платные образовательные услуги"],
+  ["budget", "budget", "Финансово-хозяйственная деятельность"],
+  ["vacant", "vacant", "Вакантные места для приёма (перевода) обучающихся"],
+  ["inter", "inter", "Международное сотрудничество"],
+  ["catering", "catering", "Организация питания в образовательной организации"],
+];
+
+const requiredRouteItemProps = {
+  common: ["fullName", "shortName", "regDate", "uchredLaw", "nameUchred", "address", "workTime", "telephone", "email", "licenseDocLink", "addressPlaceSet", "addressPlacePrac", "addressPlacePodg", "addressPlaceGia", "addressPlaceDop", "addressPlaceOppo"],
+  struct: ["structOrgUprav", "name", "fio", "post", "addressStr", "site", "email", "divisionClauseDocLink", "filInfo", "repInfo"],
+  document: ["ustavDocLink", "localActStud", "localActOrder", "localActCollec", "reportEduDocLink", "prescriptionDocLink", "priemDocLink", "modeDocLink", "tekKontrolDocLink", "perevodDocLink", "vozDocLink"],
+  education: ["eduAccred", "eduCode", "eduName", "eduProf", "eduLevel", "eduForm", "learningTerm", "eduPred", "eduPrac", "languageEl", "eduChislenEl", "eduPriemEl", "eduPerevodEl", "eduOp", "opMain", "educationPlan", "educationRpd", "educationShedule", "eduPr", "methodology", "eduNir", "perechenNir", "napravNir", "resultNir", "baseNir", "graduateJob", "v1", "t1", "accreditationDocLink", "addRef"],
+  eduStandarts: ["eduFedDoc", "eduStandartDoc", "eduFedTreb", "eduStandartTreb"],
+  managers: ["rucovodstvo", "rucovodstvoZam", "rucovodstvoFil", "nameFil", "fio", "post", "telephone", "email"],
+  employees: ["teachingStaff", "fio", "post", "teachingDiscipline", "teachingLevel", "degree", "academStat", "qualification", "profDevelopment", "specExperience", "teachingOp"],
+  objects: ["purposeCab", "addressCab", "nameCab", "osnCab", "ovzCab", "purposePrac", "addressPrac", "namePrac", "osnPrac", "ovzPrac", "purposeLibr", "purposeSport", "objName", "objAddress", "objOvz", "ovz", "purposeFacil", "purposeFacilOvz", "comNet", "comNetOvz", "erList", "erListOvz", "techOvz", "hostelInfo", "interInfo", "hostelNum", "hostelNumOvz", "hostelNumRooms", "interNum", "interNumOvz", "hostelInterOvz", "localActObSt", "localActObPred"],
+  grants: ["grant", "support"],
+  paid_edu: ["paidEdu", "paidDog", "paidSt", "paidParents"],
+  budget: ["finBFVolume", "finBRVolume", "finBMVolume", "finPVolume", "volume", "finYear", "finPost", "finRas", "finPlanDocLink"],
+  vacant: ["vacant", "eduCode", "eduName", "eduLevel", "eduProf", "eduCourse", "eduForm", "numberBFVacant", "numberBRVacant", "numberBMVacant", "numberPVacant"],
+  inter: ["internationalDog", "stateName", "orgName", "dogReg"],
+  catering: ["meals", "objName", "objAddress", "objOvz", "health"],
+};
+
 const expectedModuleTitles = [
   "Общепрофессиональный модуль",
   "Монтаж, техническое обслуживание и ремонт систем пожаротушения и их элементов, включая диспетчеризацию и проведение пусконаладочных работ",
@@ -191,4 +293,19 @@ function assertProjectStatus(html) {
   assert.match(html, /набор закрыт до получения образовательной лицензии/iu);
   assert.doesNotMatch(html, /34(?:<\/strong>)?[^<]{0,25}(?:академических|час)|program-34h|35 уроков|67 вопросов|8 учебных элементов|22 вопроса/u);
   assert.doesNotMatch(html, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
+}
+
+function assertProjectStatusOrCleanSubsection(html) {
+  assert.doesNotMatch(html, /34(?:<\/strong>)?[^<]{0,25}(?:академических|час)|program-34h|35 уроков|67 вопросов|8 учебных элементов|22 вопроса/u);
+  assert.doesNotMatch(html, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
+}
+
+function visibleMarkup(document) {
+  const marker = document.indexOf("<script>self.__next_f.push");
+  return marker === -1 ? document : document.slice(0, marker);
+}
+
+function collectItemProps(markup) {
+  return [...markup.matchAll(/\bitemprop=["']([^"']+)["']/giu)]
+    .flatMap((match) => match[1].trim().split(/\s+/u));
 }
