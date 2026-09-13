@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
 const developmentPreviewMeta =
@@ -10,6 +11,8 @@ const officialSiteHref =
   /href=["']https:\/\/xn-----8kcgjebtk6b7abmdihf9c1dzb\.xn--p1ai["']/i;
 const programCanonical =
   /<link(?=[^>]*\brel=["']canonical["'])(?=[^>]*\bhref=["']https:\/\/xn-----8kcgjebtk6b7abmdihf9c1dzb\.xn--p1ai\/programmy\/pozharnaya-bezopasnost\/["'])[^>]*>/i;
+
+const sha256 = (data) => createHash("sha256").update(data).digest("hex");
 
 test("renders the production canonical and official IDN site", async () => {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -42,6 +45,8 @@ test("renders the production canonical and official IDN site", async () => {
   assert.match(html, officialSiteHref);
   assert.match(html, /центр-средств-защиты\.рф/u);
   assert.match(html, /<strong>178<\/strong> академических часов/u);
+  assert.match(html, /14 часов теории и 2 часа самостоятельного документарного ситуационного задания/u);
+  assert.match(html, /14 часов теории и 2 часа синхронного дистанционного наблюдения реального объекта с индивидуальным отчётом/u);
   assertProjectStatus(html);
   assert.match(html, /Деятельность по монтажу, техническому обслуживанию и ремонту\s+средств обеспечения пожарной безопасности зданий и сооружений/u);
 });
@@ -83,14 +88,32 @@ test("renders the licensing-program structure and official canonical", async () 
   assert.match(html, /№ 1156/u);
   assert.doesNotMatch(html, /№1156/u);
   assert.doesNotMatch(html, /NO-GO/u);
-  assert.match(html, /дистанционное документированное наблюдение по видео и технической документации/u);
-  assert.match(html, /допустимость предлагаемого способа выполнения этого содержания ещё требует подтверждения/u);
+  assert.match(html, /отдельное синхронное дистанционное практическое занятие продолжительностью 2 академических часа/u);
+  assert.match(html, /Занятие проводится только при наличии объекта, права на его показ, ответственного лица, расписания и работающей синхронной связи/u);
   assert.doesNotMatch(html, /30\.07\.2026 № 2-ОД/u);
   assert.match(html, /5 учебных недель по календарному графику проекта/u);
   assert.match(html, /Комплексный экзамен, 2 академических часа/u);
   assert.equal(html.match(/class=["']plan-row["']/g)?.length, 12);
   for (const title of expectedModuleTitles) assert.ok(html.includes(title), title);
   assertProjectStatus(html);
+});
+
+test("ships the synchronized 178-hour programme files", () => {
+  const expected = {
+    "dpp-178h-for-approval-20260913.pdf": [463825, "299cdf1a3bf2616fc8b6aab101371f4d6d1d52a6db389bdb187f9fca42573b1e"],
+    "module-programs-178h-for-approval-20260913.pdf": [390718, "fe3199fc508d75562a4f3171c1df18cc8180f9d24df40d42a2f9856c1c7797b7"],
+    "assignments-178h-for-approval-20260913.pdf": [491960, "6a9b91c9e189d33ad612dfe930773e9b407c27d4476fd9f10a7d7fca2258e7ae"],
+    "assessment-procedure-178h-for-approval-20260913.pdf": [197817, "a0bf013055bd567d40638ef247bca9c1b4830a9fe1c39901751ef75092f55132"],
+  };
+  for (const [file, [bytes, hash]] of Object.entries(expected)) {
+    const data = readFileSync(new URL(`../public/documents/program-178h/${file}`, import.meta.url));
+    assert.equal(data.length, bytes, file);
+    assert.equal(sha256(data), hash, file);
+  }
+
+  const docx = readFileSync(new URL("../source/documents/proekty-docx/17-programma-povysheniya-kvalifikacii-178.docx", import.meta.url));
+  assert.equal(docx.length, 64319);
+  assert.equal(sha256(docx), "adf2402242465d55b27701d93e27585e6d964a318719092a52b856bd38b2281e");
 });
 
 test("keeps working documents out of the public education-information package", async () => {

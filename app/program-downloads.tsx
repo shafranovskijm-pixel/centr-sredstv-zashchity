@@ -1,15 +1,15 @@
 const documents = [
   { title: "ДПП повышения квалификации — 178 часов", file: "dpp-178h-for-approval-20260913.pdf" },
   { title: "Рабочие программы 11 модулей", file: "module-programs-178h-for-approval-20260913.pdf" },
-  { title: "Методические материалы самостоятельных практических работ", file: "assignments-178h-for-approval-20260913.pdf" },
+  { title: "Методические материалы практических занятий", file: "assignments-178h-for-approval-20260913.pdf" },
   { title: "Порядок дистанционного контроля и аттестации", file: "assessment-procedure-178h-for-approval-20260913.pdf" },
 ] as const;
 
 const pdfMetadata: Partial<Record<(typeof documents)[number]["file"], { pages: number; size: string }>> = {
-  "dpp-178h-for-approval-20260913.pdf": { pages: 20, size: "449 КБ" },
-  "module-programs-178h-for-approval-20260913.pdf": { pages: 17, size: "379 КБ" },
-  "assignments-178h-for-approval-20260913.pdf": { pages: 28, size: "478 КБ" },
-  "assessment-procedure-178h-for-approval-20260913.pdf": { pages: 3, size: "192 КБ" },
+  "dpp-178h-for-approval-20260913.pdf": { pages: 21, size: "453 КБ" },
+  "module-programs-178h-for-approval-20260913.pdf": { pages: 17, size: "382 КБ" },
+  "assignments-178h-for-approval-20260913.pdf": { pages: 28, size: "480 КБ" },
+  "assessment-procedure-178h-for-approval-20260913.pdf": { pages: 3, size: "193 КБ" },
 };
 
 export default function ProgramDownloads() {
