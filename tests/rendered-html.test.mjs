@@ -100,8 +100,8 @@ test("renders the licensing-program structure and official canonical", async () 
 
 test("ships the synchronized 178-hour programme files", () => {
   const expected = {
-    "dpp-178h-for-approval-20260913.pdf": [463825, "299cdf1a3bf2616fc8b6aab101371f4d6d1d52a6db389bdb187f9fca42573b1e"],
-    "module-programs-178h-for-approval-20260913.pdf": [390718, "fe3199fc508d75562a4f3171c1df18cc8180f9d24df40d42a2f9856c1c7797b7"],
+    "dpp-178h-for-approval-20260913.pdf": [463619, "884bf08f907b188a4000809e0dbe719f60106a4c7d4ff20b9557e4a5d75cdbc2"],
+    "module-programs-178h-for-approval-20260913.pdf": [387576, "52c5ddf9e2ed889ee4fe1fb4263358a122e05135699e6933d9647cada94b02b9"],
     "assignments-178h-for-approval-20260913.pdf": [491960, "6a9b91c9e189d33ad612dfe930773e9b407c27d4476fd9f10a7d7fca2258e7ae"],
     "assessment-procedure-178h-for-approval-20260913.pdf": [197817, "a0bf013055bd567d40638ef247bca9c1b4830a9fe1c39901751ef75092f55132"],
   };
@@ -112,8 +112,8 @@ test("ships the synchronized 178-hour programme files", () => {
   }
 
   const docx = readFileSync(new URL("../source/documents/proekty-docx/17-programma-povysheniya-kvalifikacii-178.docx", import.meta.url));
-  assert.equal(docx.length, 64319);
-  assert.equal(sha256(docx), "adf2402242465d55b27701d93e27585e6d964a318719092a52b856bd38b2281e");
+  assert.equal(docx.length, 64533);
+  assert.equal(sha256(docx), "7d0a659ffbf0abbdfd14ce61ed4bd53e589b71e492d0ceba83129264a6d8aeeb");
 });
 
 test("keeps working documents out of the public education-information package", async () => {

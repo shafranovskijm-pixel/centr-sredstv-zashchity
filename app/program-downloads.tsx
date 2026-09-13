@@ -6,8 +6,8 @@ const documents = [
 ] as const;
 
 const pdfMetadata: Partial<Record<(typeof documents)[number]["file"], { pages: number; size: string }>> = {
-  "dpp-178h-for-approval-20260913.pdf": { pages: 21, size: "453 КБ" },
-  "module-programs-178h-for-approval-20260913.pdf": { pages: 17, size: "382 КБ" },
+  "dpp-178h-for-approval-20260913.pdf": { pages: 20, size: "453 КБ" },
+  "module-programs-178h-for-approval-20260913.pdf": { pages: 14, size: "379 КБ" },
   "assignments-178h-for-approval-20260913.pdf": { pages: 28, size: "480 КБ" },
   "assessment-procedure-178h-for-approval-20260913.pdf": { pages: 3, size: "193 КБ" },
 };
