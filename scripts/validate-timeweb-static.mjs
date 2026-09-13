@@ -123,15 +123,18 @@ assert.match(program, /download="proekt-programmy-csz.html"/);
 assert.match(program, /id="vision-toggle"/);
 assert.match(program, /aria-label="Учебный план" tabindex="0"/);
 assert.match(program, /154 часа теории \+ 22 часа практических работ \+ 2 часа итоговой аттестации/);
-assert.match(program, /Каждый из 11 модулей включает 14 часов теории и 2 часа самостоятельной практической работы/);
+assert.match(program, /Каждый из 11 модулей включает 14 часов теории и 2 часа практических занятий/);
+assert.match(program, /десять самостоятельных документарных ситуационных заданий общей продолжительностью 20 часов/);
+assert.match(program, /отдельное двухчасовое синхронное дистанционное наблюдение реального объекта/);
 assert.match(program, /5 учебных недель по календарному графику проекта/);
 assert.match(program, /Итого: 178 часов/);
 assert.equal(program.match(/class=["']plan-row["']/g)?.length, 12);
 assert.match(program, /Монтаж, техническое обслуживание и ремонт первичных средств пожаротушения/);
 assert.match(program, /Курс на 178 часов и электронная библиотека на платформе «Синтагма» проходят подготовку и проверку/);
 assert.match(program, /Проект программы повышения квалификации/);
-assert.match(program, /дистанционное документированное наблюдение по видео и технической документации/);
-assert.match(program, /допустимость предлагаемого способа выполнения этого содержания ещё требует подтверждения/);
+assert.match(program, /наблюдение в реальном времени реального объекта с установленным противопожарным занавесом/);
+assert.match(program, /только при наличии объекта, права на его показ, ответственного лица, расписания и работающей синхронной связи/);
+assert.match(program, /до выполнения этих условий занятие переносится и не засчитывается/);
 assert.doesNotMatch(program, /30\.07\.2026 № 2-ОД/);
 
 // Public assets are limited to four approval drafts; the assessment answer keys remain private.
