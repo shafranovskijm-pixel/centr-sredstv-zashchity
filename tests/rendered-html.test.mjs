@@ -80,7 +80,7 @@ test("renders the licensing-program structure and official canonical", async () 
   assert.match(html, /154 часа теории \+ 22 часа практических работ \+ 2 часа итоговой аттестации/u);
   assert.match(html, /Итого: 178 часов/u);
   assert.match(html, /Промежуточная аттестация проводится по каждому из 11 модулей/u);
-  assert.match(html, /Курс на 178 часов и электронная библиотека на платформе «Синтагма» проходят подготовку и проверку/u);
+  assert.match(html, /Курс на 178 часов и электронные учебные материалы на платформе «Синтагма» доступны проверяющему после входа в СДО/u);
   assert.match(html, /Проект программы повышения квалификации/u);
   assert.match(html, /<dt>Вид образования<\/dt><dd>Дополнительное образование<\/dd>/u);
   assert.match(html, /<dt>Подвид образования<\/dt><dd>Дополнительное профессиональное образование<\/dd>/u);
@@ -146,10 +146,11 @@ test("keeps working documents out of the public education-information package", 
   assert.doesNotMatch(html, /№1156/u);
   assert.match(html, /Программа не утверждена; подписанная редакция пока не опубликована/u);
   assert.doesNotMatch(html, /NO-GO|встречная подпись|01-dogovor-sintagma\.pdf/u);
-  assert.doesNotMatch(html, /№ 2-ОД|№ 3-ОД|факсимил/iu);
+  assert.doesNotMatch(html, /№ 2-ОД|факсимил/iu);
+  assert.match(html, /приказ № 3-ОД от 31\.07\.2026 \(PDF\)/u);
   assert.doesNotMatch(html, /Кравченко Вероника Юрьевна|проект назначения/iu);
   assert.match(html, /Кадровое обеспечение проекта программы и подтверждающие документы требуют оформления/u);
-  assert.match(html, /Курс на 178 часов и электронная библиотека проходят подготовку и проверку/u);
+  assert.match(html, /Курс на 178 часов и электронные учебные материалы доступны проверяющему после входа в СДО/u);
   assertProjectStatus(html);
   const objects = html.slice(html.indexOf('id="objects"'), html.indexOf('id="grants"'));
   const grants = html.slice(html.indexOf('id="grants"'), html.indexOf('id="paid"'));
@@ -161,7 +162,7 @@ test("keeps working documents out of the public education-information package", 
   assert.doesNotMatch(html, /18 документов PDF|komplekt-utverzhdennyh-pdf\.zip/u);
   assert.doesNotMatch(html, /03-prikaz-2-OD-ob-utverzhdenii-programmy\.pdf|04-programma-178-chasov\.pdf|05-prikaz-3-OD-ob-utverzhdenii-lokalnyh-aktov\.pdf|18-svedeniya-o-mto-i-eios\.pdf/u);
   assert.match(html, /Кравченко Владимир Антонович — доля 50%; доля, принадлежащая обществу, — 50%/u);
-  assert.match(html, /Для обучения планируется использовать электронную образовательную среду «Синтагма»/u);
+  assert.match(html, /Для подготовки к обучению используется электронная образовательная среда «Синтагма»/u);
   assert.match(html, /Выписка из ЕГРЮЛ от 20\.08\.2026/u);
   assert.match(html, /\/documents\/egrul-csz-2026-08-20\.pdf/u);
   assert.doesNotMatch(html, /ul-1037728048819-20260722152711\.pdf/u);

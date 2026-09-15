@@ -26,7 +26,8 @@ const documentGroups = [
   {
     title: "Организационные документы",
     documents: [
-      ["Приказ № 1-ОД и Положение об Учебном центре", "02-prikaz-1-OD-i-polozhenie-uchebnogo-centra.pdf"],
+      ["Приказ № 1-ОД от 30.07.2026 и Положение об Учебном центре", "prikaz-1-od-20260730-signed.pdf"],
+      ["Приказ № 3-ОД от 31.07.2026 об утверждении локальных актов", "prikaz-3-od-20260731-signed.pdf"],
     ],
   },
 ] as const;
@@ -54,6 +55,10 @@ function InternalHeader() {
 
 function DraftNotice({ children }: { children: React.ReactNode }) {
   return <div className="draft-notice"><strong>Готовится к публикации</strong><p>{children}</p></div>;
+}
+
+function LocalActStatus() {
+  return <span>Решение об утверждении — <a href="/documents/organizational/prikaz-3-od-20260731-signed.pdf" download>приказ № 3-ОД от 31.07.2026 (PDF)</a>. Электронная копия полного текста акта пока не размещена.</span>;
 }
 
 export default function SvedenContent({ onlySection }: { onlySection?: SvedenSectionId }) {
@@ -129,7 +134,7 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
               <div><dt>Место нахождения</dt><dd itemProp="addressStr">117279, г. Москва, вн. тер. г. муниципальный округ Коньково, ул. Профсоюзная, д. 93А, помещ. 1/Ц</dd></div>
               <div><dt>Электронная почта</dt><dd><a itemProp="email" href="mailto:CSZDPO@YA.RU">CSZDPO@YA.RU</a></dd></div>
               <div><dt>Сайт</dt><dd><a itemProp="site" href="https://xn-----8kcgjebtk6b7abmdihf9c1dzb.xn--p1ai">центр-средств-защиты.рф</a></dd></div>
-              <div><dt>Положение о структурном подразделении</dt><dd><a className="text-link" itemProp="divisionClauseDocLink" href="/documents/utverzhdennye-pdf/02-prikaz-1-OD-i-polozhenie-uchebnogo-centra.pdf" download>Приказ о создании и Положение об Учебном центре (PDF)</a></dd></div>
+              <div><dt>Положение о структурном подразделении</dt><dd><a className="text-link" itemProp="divisionClauseDocLink" href="/documents/organizational/prikaz-1-od-20260730-signed.pdf" download>Подписанный приказ о создании и Положение об Учебном центре (PDF)</a></dd></div>
             </dl>
             <p>Приказом от 30.07.2026 № 1-ОД создано специализированное структурное образовательное подразделение «Учебный центр».</p>
             <p itemProp="filInfo">По выписке ЕГРЮЛ от 20.08.2026 сведения о филиалах не отражены; окончательное подтверждение по уставу требуется перед публикацией.</p>
@@ -162,8 +167,8 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
                   <h3>{group.title}</h3>
                   <div className="draft-document-list">
                     {group.documents.map(([title, file]) => (
-                      <a key={file} href={`/documents/utverzhdennye-pdf/${file}`} download>
-                        <span><strong>{title}</strong><small>PDF · версия для скачивания</small></span>
+                      <a key={file} href={`/documents/organizational/${file}`} download>
+                        <span><strong>{title}</strong><small>PDF · скан подписанного документа</small></span>
                         <b aria-hidden="true">↓</b>
                       </a>
                     ))}
@@ -171,19 +176,20 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
                 </section>
               ))}
             </div>
+            <p>Приказ № 3-ОД относится к июльским документам и предусматривает их введение в действие с даты предоставления лицензии. Актуальная редакция программы на 178 часов представлена выше отдельно для утверждения.</p>
             <h3 className="official-documents-title">Статус официальных документов</h3>
             <div className="document-list">
               <a className="egrul-download" itemProp="ustavDocLink" href="/documents/ustav-csz-public-20260907.pdf" download>
                 <strong>Устав организации и изменения к нему</strong>
                 <span>PDF · 21 страница · публичная копия; паспортные данные и домашние адреса скрыты</span>
               </a>
-              <div itemProp="localActStud"><strong>Правила внутреннего распорядка обучающихся</strong><span>Утверждённая электронная редакция отсутствует; проект подготовлен к подписанию</span></div>
+              <div itemProp="localActStud"><strong>Правила внутреннего распорядка обучающихся</strong><LocalActStatus /></div>
               <div itemProp="localActOrder"><strong>Правила внутреннего трудового распорядка</strong><span>Электронная копия для размещения отсутствует</span></div>
-              <div itemProp="priemDocLink"><strong>Правила приёма обучающихся</strong><span>Утверждённая электронная редакция отсутствует; проект подготовлен к подписанию</span></div>
-              <div itemProp="modeDocLink"><strong>Режим занятий обучающихся</strong><span>Утверждённая электронная редакция отсутствует; проект подготовлен к подписанию</span></div>
-              <div itemProp="tekKontrolDocLink"><strong>Формы, периодичность и порядок текущего контроля и промежуточной аттестации</strong><span>Утверждённая электронная редакция отсутствует; проект подготовлен к подписанию</span></div>
-              <div itemProp="perevodDocLink"><strong>Порядок и основания перевода, отчисления и восстановления обучающихся</strong><span>Утверждённая электронная редакция отсутствует; проект подготовлен к подписанию</span></div>
-              <div itemProp="vozDocLink"><strong>Порядок оформления возникновения, приостановления и прекращения образовательных отношений</strong><span>Утверждённая электронная редакция отсутствует; проект подготовлен к подписанию</span></div>
+              <div itemProp="priemDocLink"><strong>Правила приёма обучающихся</strong><LocalActStatus /></div>
+              <div itemProp="modeDocLink"><strong>Режим занятий обучающихся</strong><LocalActStatus /></div>
+              <div itemProp="tekKontrolDocLink"><strong>Формы, периодичность и порядок текущего контроля и промежуточной аттестации</strong><LocalActStatus /></div>
+              <div itemProp="perevodDocLink"><strong>Порядок и основания перевода, отчисления и восстановления обучающихся</strong><LocalActStatus /></div>
+              <div itemProp="vozDocLink"><strong>Порядок оформления возникновения, приостановления и прекращения образовательных отношений</strong><LocalActStatus /></div>
               <div itemProp="localActCollec"><strong>Коллективный договор</strong><span>Наличие или отсутствие требует подтверждения работодателя</span></div>
               <div itemProp="reportEduDocLink"><strong>Отчёт о результатах самообследования</strong><span>Электронный документ не размещён; статус и необходимость подготовки требуют подтверждения</span></div>
               <div itemProp="prescriptionDocLink"><strong>Предписания органов контроля</strong><span>Сведения уточняются перед публикацией окончательного комплекта документов</span></div>
@@ -308,7 +314,9 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           {sectionIsVisible("objects") && (
           <section className="info-section" id="objects">
             <div className="info-heading"><span>08</span><h2>Материально-техническое обеспечение и оснащённость образовательного процесса. Доступная среда</h2></div>
-            <p>Для обучения планируется использовать электронную образовательную среду «Синтагма». Курс на 178 часов и электронная библиотека проходят подготовку и проверку. Предусмотрены 11 модулей: 20 часов самостоятельных документарных заданий и 2 часа синхронного дистанционного наблюдения реального объекта в модуле 8. Программа не утверждена; набор закрыт до получения образовательной лицензии, доступ к обучению пока не открыт.</p>
+            <p>Для подготовки к обучению используется электронная образовательная среда «Синтагма». Курс на 178 часов и электронные учебные материалы доступны проверяющему после входа в СДО. Предусмотрены 11 модулей: 20 часов самостоятельных документарных заданий и 2 часа синхронного дистанционного наблюдения реального объекта в модуле 8. Программа не утверждена; набор закрыт до получения образовательной лицензии, доступ к обучению пока не открыт.</p>
+            <p><a className="text-link" href="https://синтагма.рф/review/course/7630559a-6caf-42e7-97f9-1cd0e4598c39" target="_blank" rel="noopener noreferrer">Курс и учебные материалы для проверяющего →</a> Доступ предоставляется по индивидуальной учётной записи.</p>
+            <p>Веб-интерфейс СДО СИНТАГМА размещён на хостинге Timeweb Cloud. Серверная часть — Global/Lovable Cloud.</p>
             <dl className="info-table" itemProp="purposeCab">
               <div><dt>Адрес оборудованного учебного кабинета</dt><dd itemProp="addressCab">Требует подтверждения с учётом исключительно дистанционной формы реализации.</dd></div>
               <div><dt>Наименование оборудованного учебного кабинета</dt><dd itemProp="nameCab">Требует подтверждения.</dd></div>
@@ -322,8 +330,8 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
               <div><dt>Приспособленность для использования инвалидами и лицами с ОВЗ</dt><dd itemProp="ovzPrac">Требует фактической проверки и подтверждения.</dd></div>
             </dl>
             <dl className="info-table" itemProp="purposeLibr">
-              <div><dt>Наименование библиотеки</dt><dd itemProp="objName">Электронная библиотека «Синтагма» готовится; завершённость требует проверки через реальный доступ пользователя.</dd></div>
-              <div><dt>Адрес</dt><dd itemProp="objAddress">Адрес ресурса и основание доступа требуют окончательного подтверждения.</dd></div>
+              <div><dt>Наименование библиотеки</dt><dd itemProp="objName">Электронные учебные материалы курса в СДО «Синтагма»: тексты 11 модулей, нормативные и методические материалы, ссылки на видеоматериалы.</dd></div>
+              <div><dt>Адрес</dt><dd itemProp="objAddress"><a href="https://синтагма.рф" target="_blank" rel="noopener noreferrer">синтагма.рф</a>. Учебные материалы доступны в курсе после входа в индивидуальную учётную запись.</dd></div>
               <div><dt>Доступность для инвалидов и лиц с ОВЗ</dt><dd itemProp="objOvz">Требует фактической проверки.</dd></div>
             </dl>
             <dl className="info-table" itemProp="purposeSport">
@@ -333,11 +341,11 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
             </dl>
             <dl className="info-table">
               <div><dt>Обеспечение доступа в здания образовательной организации для инвалидов и лиц с ОВЗ</dt><dd itemProp="ovz">Требует фактической проверки и подтверждения с учётом исключительно дистанционной реализации.</dd></div>
-              <div><dt>Средства обучения и воспитания</dt><dd itemProp="purposeFacil">Состав и фактическая готовность требуют подтверждения.</dd></div>
+              <div><dt>Средства обучения и воспитания</dt><dd itemProp="purposeFacil">Электронные учебные тексты и файлы, задания для самостоятельной работы, промежуточные тесты по 11 модулям и итоговый тест в СДО «Синтагма».</dd></div>
               <div><dt>Средства обучения и воспитания, приспособленные для инвалидов и лиц с ОВЗ</dt><dd itemProp="purposeFacilOvz">Требуют фактической проверки.</dd></div>
-              <div><dt>Доступ к информационным системам и информационно-телекоммуникационным сетям</dt><dd itemProp="comNet">Планируется доступ через «Синтагму»; готовность полного цикла обучения требует проверки.</dd></div>
+              <div><dt>Доступ к информационным системам и информационно-телекоммуникационным сетям</dt><dd itemProp="comNet">Доступ к СДО «Синтагма» через Интернет по индивидуальной учётной записи. Проверяющему доступны подготовленный курс и учебные материалы; приём и обучение до получения лицензии не проводятся.</dd></div>
               <div><dt>Доступ к информационным системам для инвалидов и лиц с ОВЗ</dt><dd itemProp="comNetOvz">Требует фактической проверки доступности.</dd></div>
-              <div><dt>Электронные образовательные ресурсы</dt><dd itemProp="erList">Перечень и доступность ресурсов в «Синтагме» требуют окончательной проверки.</dd></div>
+              <div><dt>Электронные образовательные ресурсы</dt><dd itemProp="erList">Учебные материалы, нормативные документы, инструкции и ссылки на видеоматериалы размещены в модулях курса на 178 часов в СДО «Синтагма».</dd></div>
               <div><dt>Электронные образовательные ресурсы для инвалидов и лиц с ОВЗ</dt><dd itemProp="erListOvz">Требуют фактической проверки доступности.</dd></div>
               <div><dt>Специальные технические средства обучения коллективного и индивидуального пользования</dt><dd itemProp="techOvz">Наличие и применимость требуют подтверждения.</dd></div>
               <div><dt>Общежитие</dt><dd itemProp="hostelInfo">Наличие или отсутствие требует подтверждения по документам организации.</dd></div>
@@ -368,7 +376,7 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           <section className="info-section" id="paid">
             <div className="info-heading"><span>10</span><h2>Платные образовательные услуги</h2></div>
             <dl className="info-table">
-              <div><dt>Порядок оказания платных образовательных услуг</dt><dd itemProp="paidEdu">Утверждённый электронный документ не размещён; проект подготовлен к подписанию.</dd></div>
+              <div><dt>Порядок оказания платных образовательных услуг</dt><dd itemProp="paidEdu"><LocalActStatus /></dd></div>
               <div><dt>Образец договора об оказании платных образовательных услуг</dt><dd itemProp="paidDog">Утверждённая редакция не размещена; проект подготовлен к подписанию.</dd></div>
               <div><dt>Документ об утверждении стоимости обучения</dt><dd itemProp="paidSt">Не утверждён; требуется приказ до открытия набора и заключения первого договора.</dd></div>
               <div><dt>Плата, взимаемая с родителей (законных представителей)</dt><dd itemProp="paidParents">Не применяется к дополнительному профессиональному образованию.</dd></div>

@@ -51,6 +51,8 @@ const requiredFiles = [
   "out/documents/egrul-csz-2026-08-20.pdf",
   "out/documents/ustav-csz-public-20260907.pdf",
   "out/documents/utverzhdennye-pdf/02-prikaz-1-OD-i-polozhenie-uchebnogo-centra.pdf",
+  "out/documents/organizational/prikaz-1-od-20260730-signed.pdf",
+  "out/documents/organizational/prikaz-3-od-20260731-signed.pdf",
   ...programFiles.map((file) => `out/documents/program-178h/${file}`),
 ];
 
@@ -99,14 +101,16 @@ assert.match(sveden, /Программа не утверждена; подпис
 assert.doesNotMatch(sveden, /NO-GO|встречная подпись|01-dogovor-sintagma\.pdf/);
 assert.match(sveden, /Выписка из ЕГРЮЛ от 20\.08\.2026/);
 assert.match(sveden, /\/documents\/egrul-csz-2026-08-20\.pdf/);
-assert.match(sveden, /Курс на 178 часов и электронная библиотека проходят подготовку и проверку/);
+assert.match(sveden, /Курс на 178 часов и электронные учебные материалы доступны проверяющему после входа в СДО/);
 assert.match(sveden, /Общежитие/);
 assert.match(sveden, /Интернат/);
 assert.match(sveden, /значение 0 без документального основания не заявляется/);
 assert.doesNotMatch(sveden, /количество мест — 0/);
 assert.match(sveden, /Сведения уточняются перед публикацией окончательного комплекта документов/);
 assert.doesNotMatch(sveden, /Предписания органов контроля<\/strong><span>Отсутствуют|Объекты питания и охраны здоровья отсутствуют/);
-assert.doesNotMatch(sveden, /№ 2-ОД|№ 3-ОД|факсимил|Кравченко Вероника Юрьевна|проект назначения/iu);
+assert.doesNotMatch(sveden, /№ 2-ОД|факсимил|Кравченко Вероника Юрьевна|проект назначения/iu);
+assert.match(sveden, /приказ № 3-ОД от 31\.07\.2026 \(PDF\)/u);
+assert.match(sveden, /Актуальная редакция программы на 178 часов представлена выше отдельно для утверждения/u);
 assert.doesNotMatch(sveden, /ul-1037728048819-20260722152711\.pdf/);
 assert.doesNotMatch(sveden, /18 документов PDF|19 документов PDF|komplekt-utverzhdennyh-pdf\.zip/);
 assert.doesNotMatch(
@@ -130,7 +134,7 @@ assert.match(program, /5 учебных недель по календарном
 assert.match(program, /Итого: 178 часов/);
 assert.equal(program.match(/class=["']plan-row["']/g)?.length, 12);
 assert.match(program, /Монтаж, техническое обслуживание и ремонт первичных средств пожаротушения/);
-assert.match(program, /Курс на 178 часов и электронная библиотека на платформе «Синтагма» проходят подготовку и проверку/);
+assert.match(program, /Курс на 178 часов и электронные учебные материалы на платформе «Синтагма» доступны проверяющему после входа в СДО/);
 assert.match(program, /Проект программы повышения квалификации/);
 assert.match(program, /наблюдение в реальном времени реального объекта с установленным противопожарным занавесом/);
 assert.match(program, /только при наличии объекта, права на его показ, ответственного лица, расписания и работающей синхронной связи/);
