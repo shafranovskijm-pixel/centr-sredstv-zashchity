@@ -57,8 +57,8 @@ function DraftNotice({ children }: { children: React.ReactNode }) {
   return <div className="draft-notice"><strong>Готовится к публикации</strong><p>{children}</p></div>;
 }
 
-function LocalActStatus() {
-  return <span>Решение об утверждении — <a href="/documents/organizational/prikaz-3-od-20260731-signed.pdf" download>приказ № 3-ОД от 31.07.2026 (PDF)</a>. Электронная копия полного текста акта пока не размещена.</span>;
+function LocalActStatus({ file }: { file: string }) {
+  return <span><a href={`/documents/local-acts/${file}`} download>Полный текст — проект для утверждения (PDF)</a></span>;
 }
 
 export default function SvedenContent({ onlySection }: { onlySection?: SvedenSectionId }) {
@@ -137,8 +137,8 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
               <div><dt>Положение о структурном подразделении</dt><dd><a className="text-link" itemProp="divisionClauseDocLink" href="/documents/organizational/prikaz-1-od-20260730-signed.pdf" download>Подписанный приказ о создании и Положение об Учебном центре (PDF)</a></dd></div>
             </dl>
             <p>Приказом от 30.07.2026 № 1-ОД создано специализированное структурное образовательное подразделение «Учебный центр».</p>
-            <p itemProp="filInfo">По выписке ЕГРЮЛ от 20.08.2026 сведения о филиалах не отражены; окончательное подтверждение по уставу требуется перед публикацией.</p>
-            <p itemProp="repInfo">Сведения о представительствах требуют подтверждения перед окончательной публикацией.</p>
+            <p itemProp="filInfo">По выписке ЕГРЮЛ от 20.08.2026 сведения о филиалах не отражены.</p>
+            <p itemProp="repInfo">По выписке ЕГРЮЛ от 20.08.2026 сведения о представительствах не отражены.</p>
           </section>
           )}
 
@@ -178,22 +178,24 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
             </div>
             <p>Приказ № 3-ОД относится к июльским документам и предусматривает их введение в действие с даты предоставления лицензии. Актуальная редакция программы на 178 часов представлена выше отдельно для утверждения.</p>
             <h3 className="official-documents-title">Статус официальных документов</h3>
+            <p>Ниже доступны полные тексты проектов локальных актов и образец договора для утверждения. Подписанные редакции будут размещены после оформления.</p>
             <div className="document-list">
               <a className="egrul-download" itemProp="ustavDocLink" href="/documents/ustav-csz-public-20260907.pdf" download>
                 <strong>Устав организации и изменения к нему</strong>
                 <span>PDF · 21 страница · публичная копия; паспортные данные и домашние адреса скрыты</span>
               </a>
-              <div itemProp="localActStud"><strong>Правила внутреннего распорядка обучающихся</strong><LocalActStatus /></div>
-              <div itemProp="localActOrder"><strong>Правила внутреннего трудового распорядка</strong><span>Электронная копия для размещения отсутствует</span></div>
-              <div itemProp="priemDocLink"><strong>Правила приёма обучающихся</strong><LocalActStatus /></div>
-              <div itemProp="modeDocLink"><strong>Режим занятий обучающихся</strong><LocalActStatus /></div>
-              <div itemProp="tekKontrolDocLink"><strong>Формы, периодичность и порядок текущего контроля и промежуточной аттестации</strong><LocalActStatus /></div>
-              <div itemProp="perevodDocLink"><strong>Порядок и основания перевода, отчисления и восстановления обучающихся</strong><LocalActStatus /></div>
-              <div itemProp="vozDocLink"><strong>Порядок оформления возникновения, приостановления и прекращения образовательных отношений</strong><LocalActStatus /></div>
+              <div itemProp="localActStud"><strong>Правила внутреннего распорядка обучающихся</strong><LocalActStatus file="student-rules-for-approval-20260915.pdf" /></div>
+              <div itemProp="localActOrder"><strong>Правила внутреннего трудового распорядка</strong><LocalActStatus file="work-rules-for-approval-20260915.pdf" /></div>
+              <div itemProp="priemDocLink"><strong>Правила приёма обучающихся</strong><LocalActStatus file="admission-rules-for-approval-20260915.pdf" /></div>
+              <div itemProp="modeDocLink"><strong>Режим занятий обучающихся</strong><LocalActStatus file="class-schedule-rules-for-approval-20260915.pdf" /></div>
+              <div itemProp="tekKontrolDocLink"><strong>Формы, периодичность и порядок текущего контроля и промежуточной аттестации</strong><LocalActStatus file="assessment-rules-for-approval-20260915.pdf" /></div>
+              <div itemProp="perevodDocLink"><strong>Порядок и основания перевода, отчисления и восстановления обучающихся</strong><LocalActStatus file="transfer-expulsion-reinstatement-for-approval-20260915.pdf" /></div>
+              <div itemProp="vozDocLink"><strong>Порядок оформления возникновения, приостановления и прекращения образовательных отношений</strong><LocalActStatus file="educational-relations-for-approval-20260915.pdf" /></div>
+              <div><strong>Положение об оказании платных образовательных услуг</strong><LocalActStatus file="paid-education-rules-for-approval-20260915.pdf" /></div>
               <div itemProp="localActCollec"><strong>Коллективный договор</strong><span>Наличие или отсутствие требует подтверждения работодателя</span></div>
               <div itemProp="reportEduDocLink"><strong>Отчёт о результатах самообследования</strong><span>Электронный документ не размещён; статус и необходимость подготовки требуют подтверждения</span></div>
               <div itemProp="prescriptionDocLink"><strong>Предписания органов контроля</strong><span>Сведения уточняются перед публикацией окончательного комплекта документов</span></div>
-              <div><strong>Образец договора на оказание платных образовательных услуг</strong><span>Утверждённая редакция отсутствует; проект подготовлен к подписанию</span></div>
+              <div><strong>Образец договора на оказание платных образовательных услуг</strong><LocalActStatus file="education-contract-sample-for-approval-20260915.pdf" /></div>
               <div><strong>Лицензия на образовательную деятельность</strong><span>Не предоставлена; организация готовится к лицензированию</span></div>
             </div>
           </section>
@@ -288,7 +290,7 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
             <div className="info-heading"><span>06</span><h2>Руководство</h2></div>
             <dl className="person-card" itemProp="rucovodstvo"><div><dt>Ф.И.О.</dt><dd itemProp="fio">Баранов Олег Павлович</dd></div><div><dt>Должность</dt><dd itemProp="post">Генеральный директор</dd></div><div><dt>Телефон организации</dt><dd><a itemProp="telephone" href="tel:+74953363555">+7 495 336-35-55</a></dd></div><div><dt>Электронная почта организации</dt><dd><a itemProp="email" href="mailto:CSZDPO@YA.RU">CSZDPO@YA.RU</a></dd></div></dl>
             <dl className="person-card" itemProp="rucovodstvoZam"><div><dt>Ф.И.О.</dt><dd itemProp="fio">Требует подтверждения.</dd></div><div><dt>Должность</dt><dd itemProp="post">Сведения о наличии заместителей руководителя требуют подтверждения.</dd></div><div><dt>Телефон</dt><dd itemProp="telephone">Требует подтверждения.</dd></div><div><dt>Электронная почта</dt><dd itemProp="email">Требует подтверждения.</dd></div></dl>
-            <dl className="person-card" itemProp="rucovodstvoFil"><div><dt>Наименование филиала</dt><dd itemProp="nameFil">Требует подтверждения по уставу и актуальной выписке ЕГРЮЛ.</dd></div><div><dt>Ф.И.О. руководителя филиала</dt><dd itemProp="fio">Требует подтверждения.</dd></div><div><dt>Должность</dt><dd itemProp="post">Требует подтверждения.</dd></div><div><dt>Телефон</dt><dd itemProp="telephone">Требует подтверждения.</dd></div><div><dt>Электронная почта</dt><dd itemProp="email">Требует подтверждения.</dd></div></dl>
+            <p itemProp="rucovodstvoFil"><span itemProp="nameFil">По выписке ЕГРЮЛ от 20.08.2026 сведения о филиалах не отражены.</span></p>
           </section>
           )}
 
@@ -376,8 +378,8 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           <section className="info-section" id="paid">
             <div className="info-heading"><span>10</span><h2>Платные образовательные услуги</h2></div>
             <dl className="info-table">
-              <div><dt>Порядок оказания платных образовательных услуг</dt><dd itemProp="paidEdu"><LocalActStatus /></dd></div>
-              <div><dt>Образец договора об оказании платных образовательных услуг</dt><dd itemProp="paidDog">Утверждённая редакция не размещена; проект подготовлен к подписанию.</dd></div>
+              <div><dt>Порядок оказания платных образовательных услуг</dt><dd itemProp="paidEdu"><LocalActStatus file="paid-education-rules-for-approval-20260915.pdf" /></dd></div>
+              <div><dt>Образец договора об оказании платных образовательных услуг</dt><dd itemProp="paidDog"><LocalActStatus file="education-contract-sample-for-approval-20260915.pdf" /></dd></div>
               <div><dt>Документ об утверждении стоимости обучения</dt><dd itemProp="paidSt">Не утверждён; требуется приказ до открытия набора и заключения первого договора.</dd></div>
               <div><dt>Плата, взимаемая с родителей (законных представителей)</dt><dd itemProp="paidParents">Не применяется к дополнительному профессиональному образованию.</dd></div>
             </dl>

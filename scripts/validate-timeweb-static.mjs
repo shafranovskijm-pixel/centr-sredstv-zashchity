@@ -109,7 +109,7 @@ assert.doesNotMatch(sveden, /количество мест — 0/);
 assert.match(sveden, /Сведения уточняются перед публикацией окончательного комплекта документов/);
 assert.doesNotMatch(sveden, /Предписания органов контроля<\/strong><span>Отсутствуют|Объекты питания и охраны здоровья отсутствуют/);
 assert.doesNotMatch(sveden, /№ 2-ОД|факсимил|Кравченко Вероника Юрьевна|проект назначения/iu);
-assert.match(sveden, /приказ № 3-ОД от 31\.07\.2026 \(PDF\)/u);
+assert.match(sveden, /href="\/documents\/organizational\/prikaz-3-od-20260731-signed\.pdf" download=""/u);
 assert.match(sveden, /Актуальная редакция программы на 178 часов представлена выше отдельно для утверждения/u);
 assert.doesNotMatch(sveden, /ul-1037728048819-20260722152711\.pdf/);
 assert.doesNotMatch(sveden, /18 документов PDF|19 документов PDF|komplekt-utverzhdennyh-pdf\.zip/);
@@ -297,7 +297,7 @@ function assertSectionNesting(slug, markup) {
     managers: [
       ["rucovodstvo", ["fio", "post", "telephone", "email"]],
       ["rucovodstvoZam", ["fio", "post", "telephone", "email"]],
-      ["rucovodstvoFil", ["nameFil", "fio", "post", "telephone", "email"]],
+      ["rucovodstvoFil", ["nameFil"]],
     ],
     employees: [["teachingStaff", ["fio", "post", "teachingDiscipline", "teachingLevel", "degree", "academStat", "qualification", "profDevelopment", "specExperience", "teachingOp"]]],
     objects: [
