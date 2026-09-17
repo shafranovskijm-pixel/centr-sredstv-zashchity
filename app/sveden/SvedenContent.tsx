@@ -27,7 +27,8 @@ const documentGroups = [
     title: "Организационные документы",
     documents: [
       ["Приказ № 1-ОД от 30.07.2026 и Положение об Учебном центре", "prikaz-1-od-20260730-signed.pdf"],
-      ["Приказ № 3-ОД от 31.07.2026 об утверждении локальных актов", "prikaz-3-od-20260731-signed.pdf"],
+      ["Приказ об утверждении локальных актов и образца договора — подписанный экземпляр (в документе: № 3-ОД от 31.07.2026)", "prikaz-3-od-signed-received-20260917.pdf"],
+      ["Приказ об утверждении программы на 178 часов — подписанный экземпляр (в документе: № 4-ОД от 31.07.2026)", "prikaz-4-od-signed-received-20260917.pdf"],
     ],
   },
 ] as const;
@@ -57,8 +58,8 @@ function DraftNotice({ children }: { children: React.ReactNode }) {
   return <div className="draft-notice"><strong>Готовится к публикации</strong><p>{children}</p></div>;
 }
 
-function LocalActStatus({ file }: { file: string }) {
-  return <span><a href={`/documents/local-acts/${file}`} download>Полный текст — проект для утверждения (PDF)</a></span>;
+function LocalActStatus({ file, draft = false }: { file: string; draft?: boolean }) {
+  return <span><a href={`/documents/local-acts/${file}`} download>{draft ? "Полный текст — проект для заполнения (PDF)" : "Полный текст — подписанный экземпляр (PDF)"}</a>{draft && <small>Подписанная окончательная редакция будет размещена после заполнения режима работы, дат выплаты заработной платы и сведений об учёте мнения работников.</small>}</span>;
 }
 
 export default function SvedenContent({ onlySection }: { onlySection?: SvedenSectionId }) {
@@ -113,8 +114,8 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
               <div><dt>Сведения сверены</dt><dd>По выписке ЕГРЮЛ от 20 августа 2026 года № ЮЭ9965-26-159179567</dd></div>
               <div><dt>Язык образования</dt><dd>Русский</dd></div>
               <div><dt>Лицензия на образовательную деятельность</dt><dd itemProp="licenseDocLink">Лицензия не предоставлена; выписка из реестра лицензий отсутствует</dd></div>
-              <div><dt>Места осуществления образовательной деятельности при использовании сетевой формы</dt><dd itemProp="addressPlaceSet">Не применяется: сетевая форма реализации проекта программы не предусмотрена.</dd></div>
-              <div><dt>Места проведения практики</dt><dd itemProp="addressPlacePrac">Не определены; необходимость и основания указания мест требуют подтверждения до утверждения программы.</dd></div>
+              <div><dt>Места осуществления образовательной деятельности при использовании сетевой формы</dt><dd itemProp="addressPlaceSet">Не применяется: сетевая форма реализации программы не предусмотрена.</dd></div>
+              <div><dt>Места проведения практики</dt><dd itemProp="addressPlacePrac">Не определены; необходимость и основания указания мест требуют подтверждения с учётом дистанционных практических занятий программы.</dd></div>
               <div><dt>Места проведения практической подготовки</dt><dd itemProp="addressPlacePodg">Для самостоятельных документарных заданий отдельное место не требуется. Реальный объект для синхронного дистанционного занятия модуля 8 пока не определён; до его определения занятие не проводится и не засчитывается.</dd></div>
               <div><dt>Места проведения государственной итоговой аттестации</dt><dd itemProp="addressPlaceGia">Не применяется: государственная итоговая аттестация по дополнительной профессиональной программе не проводится.</dd></div>
               <div><dt>Место осуществления дополнительного профессионального образования</dt><dd itemProp="addressPlaceDop">Образовательная деятельность по ДПП не осуществляется; место осуществления не определено до получения лицензии</dd></div>
@@ -145,12 +146,12 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           {sectionIsVisible("document") && (
           <section className="info-section" id="document">
             <div className="info-heading"><span>03</span><h2>Документы</h2></div>
-            <div className="draft-notice"><strong>Статус учебных документов</strong><p>Проект программы на 178 часов и учебные документы доступны ниже в PDF для ознакомления и утверждения. Утверждённые редакции будут размещены после оформления. До получения лицензии образовательная деятельность не осуществляется.</p></div>
+            <div className="draft-notice"><strong>Статус учебных документов</strong><p>Ниже размещены подписанные экземпляры программы на 178 часов и учебных документов, полученные от организации 17 сентября 2026 года. В документах указан приказ № 4-ОД от 31.07.2026. До получения лицензии образовательная деятельность не осуществляется.</p></div>
             <div className="download-pack">
               <div>
                 <span>Программа повышения квалификации</span>
                 <strong>178 академических часов · 11 модулей</strong>
-                <p>Доступны полный текст ДПП, рабочие программы, задания и порядок контроля. Программа не утверждена; подписанная редакция пока не опубликована.</p>
+                <p>Доступны подписанные экземпляры полного текста ДПП, рабочих программ, методических материалов и порядка контроля. Приём и обучение до получения лицензии не проводятся.</p>
                 <a className="text-link" href="#program-files">Открыть и скачать документы →</a>
               </div>
             </div>
@@ -168,7 +169,7 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
                   <div className="draft-document-list">
                     {group.documents.map(([title, file]) => (
                       <a key={file} href={`/documents/organizational/${file}`} download>
-                        <span><strong>{title}</strong><small>PDF · скан подписанного документа</small></span>
+                        <span><strong>{title}</strong><small>PDF · подписанный экземпляр</small></span>
                         <b aria-hidden="true">↓</b>
                       </a>
                     ))}
@@ -176,26 +177,26 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
                 </section>
               ))}
             </div>
-            <p>Приказ № 3-ОД относится к июльским документам и предусматривает их введение в действие с даты предоставления лицензии. Актуальная редакция программы на 178 часов представлена выше отдельно для утверждения.</p>
+            <p>Размещены последние полученные подписанные экземпляры приказов и приложений. Реквизиты приведены по самим документам. Программа на 178 часов и приказ о ней размещены отдельно от локальных актов.</p>
             <h3 className="official-documents-title">Статус официальных документов</h3>
-            <p>Ниже доступны полные тексты проектов локальных актов и образец договора для утверждения. Подписанные редакции будут размещены после оформления.</p>
+            <p>Ниже доступны полные тексты восьми подписанных документов: семи локальных актов и образца договора. В них указан приказ № 3-ОД от 31.07.2026. Правила внутреннего трудового распорядка остаются проектом до заполнения фактических сведений.</p>
             <div className="document-list">
               <a className="egrul-download" itemProp="ustavDocLink" href="/documents/ustav-csz-public-20260907.pdf" download>
                 <strong>Устав организации и изменения к нему</strong>
                 <span>PDF · 21 страница · публичная копия; паспортные данные и домашние адреса скрыты</span>
               </a>
-              <div itemProp="localActStud"><strong>Правила внутреннего распорядка обучающихся</strong><LocalActStatus file="student-rules-for-approval-20260915.pdf" /></div>
-              <div itemProp="localActOrder"><strong>Правила внутреннего трудового распорядка</strong><LocalActStatus file="work-rules-for-approval-20260915.pdf" /></div>
-              <div itemProp="priemDocLink"><strong>Правила приёма обучающихся</strong><LocalActStatus file="admission-rules-for-approval-20260915.pdf" /></div>
-              <div itemProp="modeDocLink"><strong>Режим занятий обучающихся</strong><LocalActStatus file="class-schedule-rules-for-approval-20260915.pdf" /></div>
-              <div itemProp="tekKontrolDocLink"><strong>Формы, периодичность и порядок текущего контроля и промежуточной аттестации</strong><LocalActStatus file="assessment-rules-for-approval-20260915.pdf" /></div>
-              <div itemProp="perevodDocLink"><strong>Порядок и основания перевода, отчисления и восстановления обучающихся</strong><LocalActStatus file="transfer-expulsion-reinstatement-for-approval-20260915.pdf" /></div>
-              <div itemProp="vozDocLink"><strong>Порядок оформления возникновения, приостановления и прекращения образовательных отношений</strong><LocalActStatus file="educational-relations-for-approval-20260915.pdf" /></div>
-              <div><strong>Положение об оказании платных образовательных услуг</strong><LocalActStatus file="paid-education-rules-for-approval-20260915.pdf" /></div>
+              <div itemProp="localActStud"><strong>Правила внутреннего распорядка обучающихся</strong><LocalActStatus file="student-rules-signed-received-20260917.pdf" /></div>
+              <div itemProp="localActOrder"><strong>Правила внутреннего трудового распорядка</strong><LocalActStatus file="work-rules-for-approval-20260915.pdf" draft /></div>
+              <div itemProp="priemDocLink"><strong>Правила приёма обучающихся</strong><LocalActStatus file="admission-rules-signed-received-20260917.pdf" /></div>
+              <div itemProp="modeDocLink"><strong>Режим занятий обучающихся</strong><LocalActStatus file="class-schedule-rules-signed-received-20260917.pdf" /></div>
+              <div itemProp="tekKontrolDocLink"><strong>Формы, периодичность и порядок текущего контроля и промежуточной аттестации</strong><LocalActStatus file="assessment-rules-signed-received-20260917.pdf" /></div>
+              <div itemProp="perevodDocLink"><strong>Порядок и основания перевода, отчисления и восстановления обучающихся</strong><LocalActStatus file="transfer-expulsion-reinstatement-signed-received-20260917.pdf" /></div>
+              <div itemProp="vozDocLink"><strong>Порядок оформления возникновения, приостановления и прекращения образовательных отношений</strong><LocalActStatus file="educational-relations-signed-received-20260917.pdf" /></div>
+              <div><strong>Положение об оказании платных образовательных услуг</strong><LocalActStatus file="paid-education-rules-signed-received-20260917.pdf" /></div>
               <div itemProp="localActCollec"><strong>Коллективный договор</strong><span>Наличие или отсутствие требует подтверждения работодателя</span></div>
               <div itemProp="reportEduDocLink"><strong>Отчёт о результатах самообследования</strong><span>Электронный документ не размещён; статус и необходимость подготовки требуют подтверждения</span></div>
               <div itemProp="prescriptionDocLink"><strong>Предписания органов контроля</strong><span>Сведения уточняются перед публикацией окончательного комплекта документов</span></div>
-              <div><strong>Образец договора на оказание платных образовательных услуг</strong><LocalActStatus file="education-contract-sample-for-approval-20260915.pdf" /></div>
+              <div><strong>Образец договора на оказание платных образовательных услуг</strong><LocalActStatus file="education-contract-sample-signed-received-20260917.pdf" /></div>
               <div><strong>Лицензия на образовательную деятельность</strong><span>Не предоставлена; организация готовится к лицензированию</span></div>
             </div>
           </section>
@@ -204,7 +205,7 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           {sectionIsVisible("education") && (
           <section className="info-section" id="education">
             <div className="info-heading"><span>04</span><h2>Образование</h2></div>
-            <div className="draft-notice"><strong>Реализуемые программы отсутствуют</strong><p>До получения лицензии приём и обучение не осуществляются. Приведённая ниже программа является неутверждённым проектом и не включена в сведения о реализуемых программах.</p></div>
+            <div className="draft-notice"><strong>Реализуемые программы отсутствуют</strong><p>До получения лицензии приём и обучение не осуществляются. Ниже размещён подписанный экземпляр программы для подготовки к лицензированию; программа ещё не реализуется.</p></div>
             <dl className="info-table" itemProp="eduAccred">
               <div><dt>Код или шифр реализуемой программы</dt><dd itemProp="eduCode">Не применяется: реализуемые образовательные программы отсутствуют.</dd></div>
               <div><dt>Наименование реализуемой программы</dt><dd itemProp="eduName">Не применяется: реализуемые образовательные программы отсутствуют.</dd></div>
@@ -215,22 +216,22 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
               <div><dt>Учебные предметы, курсы, дисциплины и модули</dt><dd itemProp="eduPred">Не применяется: реализуемые образовательные программы отсутствуют.</dd></div>
               <div><dt>Практика</dt><dd itemProp="eduPrac">Не применяется: реализуемые образовательные программы отсутствуют.</dd></div>
             </dl>
-            <p itemProp="languageEl">Сведения о языке реализуемых программ отсутствуют; для проекта программы предусмотрен русский язык.</p>
+            <p itemProp="languageEl">Сведения о языке реализуемых программ отсутствуют; в размещённой программе предусмотрен русский язык.</p>
             <p itemProp="eduChislenEl">Обучающиеся по образовательным программам отсутствуют: лицензия не получена, приём закрыт.</p>
             <p itemProp="eduPriemEl">Результаты приёма отсутствуют: приём не проводился.</p>
             <p itemProp="eduPerevodEl">Результаты перевода, восстановления и отчисления отсутствуют: обучающиеся отсутствуют.</p>
             <dl className="info-table" itemProp="eduOp">
-              <div><dt>Код или шифр программы</dt><dd itemProp="eduCode">Не применяется: утверждённые реализуемые программы отсутствуют.</dd></div>
-              <div><dt>Наименование программы</dt><dd itemProp="eduName">Не применяется: утверждённые реализуемые программы отсутствуют.</dd></div>
-              <div><dt>Уровень образования</dt><dd itemProp="eduLevel">Не применяется: утверждённые реализуемые программы отсутствуют.</dd></div>
-              <div><dt>Профессия, специальность или направление подготовки</dt><dd itemProp="eduProf">Не применяется: утверждённые реализуемые программы отсутствуют.</dd></div>
-              <div><dt>Форма обучения</dt><dd itemProp="eduForm">Не применяется: утверждённые реализуемые программы отсутствуют.</dd></div>
-              <div><dt>Описание образовательной программы</dt><dd itemProp="opMain">Отсутствует: утверждённая реализуемая программа не размещена.</dd></div>
-              <div><dt>Учебный план</dt><dd itemProp="educationPlan">Отсутствует: утверждённый учебный план не размещён.</dd></div>
-              <div><dt>Рабочие программы</dt><dd itemProp="educationRpd">Отсутствуют: утверждённые рабочие программы не размещены.</dd></div>
-              <div><dt>Календарный учебный график</dt><dd itemProp="educationShedule">Отсутствует: утверждённый календарный учебный график не размещён.</dd></div>
-              <div><dt>Практика</dt><dd itemProp="eduPr">Не применяется: утверждённые реализуемые программы отсутствуют.</dd></div>
-              <div><dt>Методические и иные документы</dt><dd itemProp="methodology">Отсутствуют: документы по утверждённой реализуемой программе не размещены.</dd></div>
+              <div><dt>Код или шифр реализуемой программы</dt><dd itemProp="eduCode">Не применяется: обучение ещё не начато, реализуемые программы отсутствуют.</dd></div>
+              <div><dt>Наименование опубликованной программы</dt><dd itemProp="eduName">«Деятельность по монтажу, техническому обслуживанию и ремонту средств обеспечения пожарной безопасности зданий и сооружений». Подписанный экземпляр размещён для подготовки к лицензированию; обучение ещё не начато.</dd></div>
+              <div><dt>Вид образования</dt><dd itemProp="eduLevel">Дополнительное профессиональное образование — повышение квалификации.</dd></div>
+              <div><dt>Профессия, специальность или направление подготовки</dt><dd itemProp="eduProf">Дополнительная профессиональная программа повышения квалификации объёмом 178 академических часов.</dd></div>
+              <div><dt>Форма обучения</dt><dd itemProp="eduForm">Заочная, исключительно с применением электронного обучения и дистанционных образовательных технологий.</dd></div>
+              <div><dt>Описание образовательной программы</dt><dd itemProp="opMain"><a href="/documents/program-178h/dpp-178h-signed-received-20260917.pdf" download>Полный текст программы — подписанный экземпляр (PDF)</a>. Обучение до получения лицензии не проводится.</dd></div>
+              <div><dt>Учебный план</dt><dd itemProp="educationPlan"><a href="/documents/program-178h/dpp-178h-signed-received-20260917.pdf" download>Учебный план в составе подписанного экземпляра программы (PDF)</a>.</dd></div>
+              <div><dt>Рабочие программы</dt><dd itemProp="educationRpd"><a href="/documents/program-178h/module-programs-178h-signed-received-20260917.pdf" download>Рабочие программы 11 модулей — подписанный экземпляр (PDF)</a>.</dd></div>
+              <div><dt>Календарный учебный график</dt><dd itemProp="educationShedule"><a href="/documents/program-178h/dpp-178h-signed-received-20260917.pdf" download>Календарный учебный график в составе подписанного экземпляра программы (PDF)</a>. Обучение ещё не начато.</dd></div>
+              <div><dt>Практика</dt><dd itemProp="eduPr">В программе предусмотрены 22 академических часа практических занятий. <a href="/documents/program-178h/assignments-178h-signed-received-20260917.pdf" download>Методические материалы — подписанный экземпляр (PDF)</a>. Обучение ещё не начато.</dd></div>
+              <div><dt>Методические и иные документы</dt><dd itemProp="methodology"><a href="/documents/program-178h/assignments-178h-signed-received-20260917.pdf" download>Методические материалы (PDF)</a>; <a href="/documents/program-178h/assessment-procedure-178h-signed-received-20260917.pdf" download>Порядок дистанционного контроля и аттестации (PDF)</a>. Подписанные экземпляры.</dd></div>
             </dl>
             <dl className="info-table" itemProp="eduNir">
               <div><dt>Код или шифр</dt><dd itemProp="eduCode">Не применяется: научно-исследовательская деятельность в рамках реализуемых программ отсутствует.</dd></div>
@@ -250,25 +251,25 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
               <div><dt>Трудоустроенные выпускники</dt><dd itemProp="t1">Не применяется: выпускники отсутствуют.</dd></div>
             </dl>
             <p itemProp="accreditationDocLink">Государственная аккредитация дополнительных профессиональных программ не проводится.</p>
-            <article className="program-record" data-program-status="unapproved-project">
-              <p className="eyebrow">Проект дополнительной профессиональной программы</p>
+            <article className="program-record" data-program-status="signed-copy">
+              <p className="eyebrow">Подписанный экземпляр дополнительной профессиональной программы</p>
               <h3>«Деятельность по монтажу, техническому обслуживанию и ремонту средств обеспечения пожарной безопасности зданий и сооружений»</h3>
-              <p><strong>Статус:</strong> Программа не утверждена, приём и обучение не проводятся.</p>
+              <p><strong>Статус:</strong> Размещён подписанный экземпляр. В документе указан приказ № 4-ОД от 31.07.2026. Приём и обучение до получения лицензии не проводятся.</p>
               <dl>
                 <div><dt>Вид образования</dt><dd>Дополнительное образование</dd></div>
                 <div><dt>Подвид образования</dt><dd>Дополнительное профессиональное образование</dd></div>
                 <div><dt>Вид ДПП</dt><dd>Программа повышения квалификации</dd></div>
                 <div><dt>Виды работ</dt><dd>Все десять профессиональных модулей приложения 3 к приказу МЧС России от 15.11.2022 № 1156; полный перечень приведён в учебном плане</dd></div>
                 <div><dt>Объём</dt><dd>178 академических часов</dd></div>
-                <div><dt>Срок освоения</dt><dd>5 учебных недель по календарному графику проекта</dd></div>
+                <div><dt>Срок освоения</dt><dd>5 учебных недель по календарному учебному графику</dd></div>
                 <div><dt>Учебная нагрузка</dt><dd>154 часа теории, 20 часов самостоятельных документарных заданий, 2 часа синхронного дистанционного практического занятия модуля 8 и 2 часа итоговой аттестации</dd></div>
                 <div><dt>Форма обучения</dt><dd>Заочная; с применением исключительно электронного обучения и дистанционных образовательных технологий</dd></div>
                 <div><dt>Язык</dt><dd>Русский</dd></div>
               </dl>
-              <a className="text-link" itemProp="addRef" href="/programmy/pozharnaya-bezopasnost">Описание проекта программы и проект учебного плана →</a>
-              <p><Link className="text-link" itemProp="addRef" href="/sveden/document/#program-files">Проект программы и учебные документы для утверждения (PDF) →</Link></p>
+              <a className="text-link" itemProp="addRef" href="/programmy/pozharnaya-bezopasnost">Описание программы и учебный план →</a>
+              <p><Link className="text-link" itemProp="addRef" href="/sveden/document/#program-files">Подписанные экземпляры программы и учебных документов (PDF) →</Link></p>
             </article>
-            <p>Размещены описание и полные учебные документы для утверждения. Подписанная утверждённая редакция пока не опубликована. До получения лицензии реализация программы не начинается.</p>
+            <p>Размещены описание и полные подписанные экземпляры учебных документов. До получения лицензии реализация программы не начинается.</p>
           </section>
           )}
 
@@ -276,12 +277,12 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           <section className="info-section" id="eduStandarts">
             <div className="info-heading"><span>05</span><h2>Образовательные стандарты и требования</h2></div>
             <dl className="info-table">
-              <div><dt>Федеральные государственные образовательные стандарты</dt><dd itemProp="eduFedDoc">Не применяются к проекту дополнительной профессиональной программы.</dd></div>
-              <div><dt>Самостоятельно устанавливаемые образовательные стандарты</dt><dd itemProp="eduStandartDoc">Не применяются: организация не устанавливает собственные образовательные стандарты для проекта ДПП.</dd></div>
-              <div><dt>Федеральные государственные требования</dt><dd itemProp="eduFedTreb">Не применяются к проекту дополнительной профессиональной программы.</dd></div>
-              <div><dt>Самостоятельно устанавливаемые требования</dt><dd itemProp="eduStandartTreb">Не применяются: самостоятельно устанавливаемые требования для проекта ДПП не используются.</dd></div>
+              <div><dt>Федеральные государственные образовательные стандарты</dt><dd itemProp="eduFedDoc">Не применяются к дополнительной профессиональной программе.</dd></div>
+              <div><dt>Самостоятельно устанавливаемые образовательные стандарты</dt><dd itemProp="eduStandartDoc">Не применяются: организация не устанавливает собственные образовательные стандарты для ДПП.</dd></div>
+              <div><dt>Федеральные государственные требования</dt><dd itemProp="eduFedTreb">Не применяются к дополнительной профессиональной программе.</dd></div>
+              <div><dt>Самостоятельно устанавливаемые требования</dt><dd itemProp="eduStandartTreb">Не применяются: самостоятельно устанавливаемые требования для ДПП не используются.</dd></div>
             </dl>
-            <p>Нормативной основой проекта программы является типовая дополнительная профессиональная программа из приложения № 3 к приказу МЧС России от 15.11.2022 № 1156. Этот приказ не является ФГОС или ФГТ.</p>
+            <p>Нормативной основой программы является типовая дополнительная профессиональная программа из приложения № 3 к приказу МЧС России от 15.11.2022 № 1156. Этот приказ не является ФГОС или ФГТ.</p>
           </section>
           )}
 
@@ -297,18 +298,18 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           {sectionIsVisible("employees") && (
           <section className="info-section" id="employees">
             <div className="info-heading"><span>07</span><h2>Педагогический состав</h2></div>
-            <DraftNotice>Кадровое обеспечение проекта программы и подтверждающие документы требуют оформления до начала обучения.</DraftNotice>
+            <DraftNotice>Кадровое обеспечение программы и подтверждающие документы требуют оформления до начала обучения.</DraftNotice>
             <dl className="info-table" itemProp="teachingStaff">
               <div><dt>Ф.И.О.</dt><dd itemProp="fio">Персональный состав требует подтверждения кадровыми документами.</dd></div>
               <div><dt>Должность</dt><dd itemProp="post">Требует подтверждения кадровыми документами.</dd></div>
-              <div><dt>Преподаваемые дисциплины</dt><dd itemProp="teachingDiscipline">Распределение по модулям проекта программы не утверждено.</dd></div>
+              <div><dt>Преподаваемые дисциплины</dt><dd itemProp="teachingDiscipline">Распределение преподавателей по модулям программы требует оформления.</dd></div>
               <div><dt>Уровень образования</dt><dd itemProp="teachingLevel">Требует подтверждения документами об образовании.</dd></div>
               <div><dt>Учёная степень</dt><dd itemProp="degree">Требует подтверждения.</dd></div>
               <div><dt>Учёное звание</dt><dd itemProp="academStat">Требует подтверждения.</dd></div>
               <div><dt>Квалификация</dt><dd itemProp="qualification">Требует подтверждения документами об образовании и квалификации.</dd></div>
               <div><dt>Повышение квалификации и профессиональная переподготовка</dt><dd itemProp="profDevelopment">Требует подтверждения.</dd></div>
               <div><dt>Стаж работы по специальности</dt><dd itemProp="specExperience">Требует подтверждения.</dd></div>
-              <div><dt>Образовательные программы</dt><dd itemProp="teachingOp">Не определены: программа не утверждена и не реализуется.</dd></div>
+              <div><dt>Образовательные программы</dt><dd itemProp="teachingOp">Распределение преподавателей по программе требует оформления; обучение до получения лицензии не проводится.</dd></div>
             </dl>
           </section>
           )}
@@ -316,7 +317,7 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           {sectionIsVisible("objects") && (
           <section className="info-section" id="objects">
             <div className="info-heading"><span>08</span><h2>Материально-техническое обеспечение и оснащённость образовательного процесса. Доступная среда</h2></div>
-            <p>Для подготовки к обучению используется электронная образовательная среда «Синтагма». Курс на 178 часов и электронные учебные материалы доступны проверяющему после входа в СДО. Предусмотрены 11 модулей: 20 часов самостоятельных документарных заданий и 2 часа синхронного дистанционного наблюдения реального объекта в модуле 8. Программа не утверждена; набор закрыт до получения образовательной лицензии, доступ к обучению пока не открыт.</p>
+            <p>Для подготовки к обучению используется электронная образовательная среда «Синтагма». Курс на 178 часов и электронные учебные материалы доступны проверяющему после входа в СДО. Предусмотрены 11 модулей: 20 часов самостоятельных документарных заданий и 2 часа синхронного дистанционного наблюдения реального объекта в модуле 8. Подписанный экземпляр программы опубликован; набор закрыт до получения образовательной лицензии, доступ к обучению пока не открыт.</p>
             <p><a className="text-link" href="https://синтагма.рф/review/course/7630559a-6caf-42e7-97f9-1cd0e4598c39" target="_blank" rel="noopener noreferrer">Курс и учебные материалы для проверяющего →</a> Доступ предоставляется по индивидуальной учётной записи.</p>
             <p>Веб-интерфейс СДО СИНТАГМА размещён на хостинге Timeweb Cloud. Серверная часть — Global/Lovable Cloud.</p>
             <dl className="info-table" itemProp="purposeCab">
@@ -327,7 +328,7 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
             </dl>
             <dl className="info-table" itemProp="purposePrac">
               <div><dt>Адрес объекта для практических занятий</dt><dd itemProp="addressPrac">Для синхронного дистанционного занятия модуля 8 реальный объект пока не определён. До определения объекта, права на показ, ответственного лица, расписания и связи занятие не проводится и не засчитывается.</dd></div>
-              <div><dt>Наименование объекта для практических занятий</dt><dd itemProp="namePrac">Не определено; требует подтверждения до утверждения программы.</dd></div>
+              <div><dt>Наименование объекта для практических занятий</dt><dd itemProp="namePrac">Не определено; требует подтверждения для проведения синхронного практического занятия модуля 8.</dd></div>
               <div><dt>Оснащённость объекта</dt><dd itemProp="osnPrac">Требует подтверждения.</dd></div>
               <div><dt>Приспособленность для использования инвалидами и лицами с ОВЗ</dt><dd itemProp="ovzPrac">Требует фактической проверки и подтверждения.</dd></div>
             </dl>
@@ -337,7 +338,7 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
               <div><dt>Доступность для инвалидов и лиц с ОВЗ</dt><dd itemProp="objOvz">Требует фактической проверки.</dd></div>
             </dl>
             <dl className="info-table" itemProp="purposeSport">
-              <div><dt>Наименование объекта спорта</dt><dd itemProp="objName">Не применяется: проект программы не предусматривает занятия физической культурой и спортом.</dd></div>
+              <div><dt>Наименование объекта спорта</dt><dd itemProp="objName">Не применяется: программа не предусматривает занятия физической культурой и спортом.</dd></div>
               <div><dt>Адрес</dt><dd itemProp="objAddress">Не применяется.</dd></div>
               <div><dt>Доступность для инвалидов и лиц с ОВЗ</dt><dd itemProp="objOvz">Не применяется.</dd></div>
             </dl>
@@ -361,7 +362,7 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
               <div><dt>Локальный нормативный акт о наличии и условиях предоставления обучающимся стипендий, мер социальной поддержки</dt><dd itemProp="localActObSt">Требует подтверждения.</dd></div>
               <div><dt>Локальный нормативный акт о размере платы за пользование жилым помещением и коммунальные услуги</dt><dd itemProp="localActObPred">Требует подтверждения после проверки наличия общежития и интерната.</dd></div>
             </dl>
-            <p>Проект предусматривает заочную форму исключительно с применением электронного обучения и дистанционных образовательных технологий.</p>
+            <p>Программа предусматривает заочную форму исключительно с применением электронного обучения и дистанционных образовательных технологий.</p>
             <p>{module8Notice}</p>
           </section>
           )}
@@ -378,8 +379,8 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           <section className="info-section" id="paid">
             <div className="info-heading"><span>10</span><h2>Платные образовательные услуги</h2></div>
             <dl className="info-table">
-              <div><dt>Порядок оказания платных образовательных услуг</dt><dd itemProp="paidEdu"><LocalActStatus file="paid-education-rules-for-approval-20260915.pdf" /></dd></div>
-              <div><dt>Образец договора об оказании платных образовательных услуг</dt><dd itemProp="paidDog"><LocalActStatus file="education-contract-sample-for-approval-20260915.pdf" /></dd></div>
+              <div><dt>Порядок оказания платных образовательных услуг</dt><dd itemProp="paidEdu"><LocalActStatus file="paid-education-rules-signed-received-20260917.pdf" /></dd></div>
+              <div><dt>Образец договора об оказании платных образовательных услуг</dt><dd itemProp="paidDog"><LocalActStatus file="education-contract-sample-signed-received-20260917.pdf" /></dd></div>
               <div><dt>Документ об утверждении стоимости обучения</dt><dd itemProp="paidSt">Не утверждён; требуется приказ до открытия набора и заключения первого договора.</dd></div>
               <div><dt>Плата, взимаемая с родителей (законных представителей)</dt><dd itemProp="paidParents">Не применяется к дополнительному профессиональному образованию.</dd></div>
             </dl>
@@ -408,16 +409,16 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           <section className="info-section" id="vacant">
             <div className="info-heading"><span>12</span><h2>Вакантные места для приёма (перевода) обучающихся</h2></div>
             <dl className="info-table" itemProp="vacant">
-              <div><dt>Код или шифр программы</dt><dd itemProp="eduCode">Не применяется: утверждённая программа отсутствует.</dd></div>
-              <div><dt>Наименование программы</dt><dd itemProp="eduName">Не применяется: утверждённая программа отсутствует.</dd></div>
-              <div><dt>Уровень образования</dt><dd itemProp="eduLevel">Не применяется: утверждённая программа отсутствует.</dd></div>
-              <div><dt>Профессия, специальность или направление подготовки</dt><dd itemProp="eduProf">Не применяется: утверждённая программа отсутствует.</dd></div>
+              <div><dt>Код или шифр программы</dt><dd itemProp="eduCode">Не применяется: приём до получения лицензии не открыт.</dd></div>
+              <div><dt>Наименование программы</dt><dd itemProp="eduName">Вакантные места не объявлены: приём до получения лицензии не открыт.</dd></div>
+              <div><dt>Уровень образования</dt><dd itemProp="eduLevel">Не применяется: приём до получения лицензии не открыт.</dd></div>
+              <div><dt>Профессия, специальность или направление подготовки</dt><dd itemProp="eduProf">Не применяется: приём до получения лицензии не открыт.</dd></div>
               <div><dt>Курс обучения</dt><dd itemProp="eduCourse">Не применяется: обучение не проводится.</dd></div>
               <div><dt>Форма обучения</dt><dd itemProp="eduForm">Не применяется: обучение не проводится.</dd></div>
-              <div><dt>Места за счёт федерального бюджета</dt><dd itemProp="numberBFVacant">Не определены: программа не утверждена, приём не открыт.</dd></div>
-              <div><dt>Места за счёт бюджета субъекта Российской Федерации</dt><dd itemProp="numberBRVacant">Не определены: программа не утверждена, приём не открыт.</dd></div>
-              <div><dt>Места за счёт местного бюджета</dt><dd itemProp="numberBMVacant">Не определены: программа не утверждена, приём не открыт.</dd></div>
-              <div><dt>Места по договорам об оказании платных образовательных услуг</dt><dd itemProp="numberPVacant">Не определены: программа не утверждена, приём не открыт.</dd></div>
+              <div><dt>Места за счёт федерального бюджета</dt><dd itemProp="numberBFVacant">Не определены: приём до получения лицензии не открыт.</dd></div>
+              <div><dt>Места за счёт бюджета субъекта Российской Федерации</dt><dd itemProp="numberBRVacant">Не определены: приём до получения лицензии не открыт.</dd></div>
+              <div><dt>Места за счёт местного бюджета</dt><dd itemProp="numberBMVacant">Не определены: приём до получения лицензии не открыт.</dd></div>
+              <div><dt>Места по договорам об оказании платных образовательных услуг</dt><dd itemProp="numberPVacant">Не определены: приём до получения лицензии не открыт.</dd></div>
             </dl>
           </section>
           )}
@@ -437,8 +438,8 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           <section className="info-section" id="catering">
             <div className="info-heading"><span>14</span><h2>Организация питания в образовательной организации</h2></div>
             <dl className="info-table" itemProp="meals">
-              <div><dt>Наименование объекта питания</dt><dd itemProp="objName">Отсутствует: проект предусматривает исключительно дистанционное обучение без присутствия обучающихся в учебном центре.</dd></div>
-              <div><dt>Адрес объекта питания</dt><dd itemProp="objAddress">Не применяется при исключительно дистанционной реализации проекта программы.</dd></div>
+              <div><dt>Наименование объекта питания</dt><dd itemProp="objName">Отсутствует: программа предусматривает исключительно дистанционное обучение без присутствия обучающихся в учебном центре.</dd></div>
+              <div><dt>Адрес объекта питания</dt><dd itemProp="objAddress">Не применяется при исключительно дистанционной реализации программы.</dd></div>
               <div><dt>Доступность объекта питания для инвалидов и лиц с ОВЗ</dt><dd itemProp="objOvz">Не применяется при отсутствии объекта питания.</dd></div>
             </dl>
             <p itemProp="health">Порядок охраны здоровья обучающихся при дистанционной реализации требует утверждения и публикации до открытия приёма.</p>

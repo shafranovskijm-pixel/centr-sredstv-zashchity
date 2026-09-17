@@ -47,7 +47,7 @@ test("renders the production canonical and official IDN site", async () => {
   assert.match(html, /<strong>178<\/strong> академических часов/u);
   assert.match(html, /14 часов теории и 2 часа самостоятельного документарного ситуационного задания/u);
   assert.match(html, /14 часов теории и 2 часа синхронного дистанционного наблюдения реального объекта с индивидуальным отчётом/u);
-  assertProjectStatus(html);
+  assertSignedStatus(html);
   assert.match(html, /Деятельность по монтажу, техническому обслуживанию и ремонту\s+средств обеспечения пожарной безопасности зданий и сооружений/u);
 });
 
@@ -81,7 +81,7 @@ test("renders the licensing-program structure and official canonical", async () 
   assert.match(html, /Итого: 178 часов/u);
   assert.match(html, /Промежуточная аттестация проводится по каждому из 11 модулей/u);
   assert.match(html, /Курс на 178 часов и электронные учебные материалы на платформе «Синтагма» доступны проверяющему после входа в СДО/u);
-  assert.match(html, /Проект программы повышения квалификации/u);
+  assert.match(html, /Программа повышения квалификации/u);
   assert.match(html, /<dt>Вид образования<\/dt><dd>Дополнительное образование<\/dd>/u);
   assert.match(html, /<dt>Подвид образования<\/dt><dd>Дополнительное профессиональное образование<\/dd>/u);
   assert.match(html, /<dt>Вид ДПП<\/dt><dd>Программа повышения квалификации<\/dd>/u);
@@ -91,19 +91,19 @@ test("renders the licensing-program structure and official canonical", async () 
   assert.match(html, /отдельное синхронное дистанционное практическое занятие продолжительностью 2 академических часа/u);
   assert.match(html, /Занятие проводится только при наличии объекта, права на его показ, ответственного лица, расписания и работающей синхронной связи/u);
   assert.doesNotMatch(html, /30\.07\.2026 № 2-ОД/u);
-  assert.match(html, /5 учебных недель по календарному графику проекта/u);
+  assert.match(html, /5 учебных недель по календарному учебному графику/u);
   assert.match(html, /Комплексный экзамен, 2 академических часа/u);
   assert.equal(html.match(/class=["']plan-row["']/g)?.length, 12);
   for (const title of expectedModuleTitles) assert.ok(html.includes(title), title);
-  assertProjectStatus(html);
+  assertSignedStatus(html);
 });
 
 test("ships the synchronized 178-hour programme files", () => {
   const expected = {
-    "dpp-178h-for-approval-20260913.pdf": [463619, "884bf08f907b188a4000809e0dbe719f60106a4c7d4ff20b9557e4a5d75cdbc2"],
-    "module-programs-178h-for-approval-20260913.pdf": [387576, "52c5ddf9e2ed889ee4fe1fb4263358a122e05135699e6933d9647cada94b02b9"],
-    "assignments-178h-for-approval-20260913.pdf": [491960, "6a9b91c9e189d33ad612dfe930773e9b407c27d4476fd9f10a7d7fca2258e7ae"],
-    "assessment-procedure-178h-for-approval-20260913.pdf": [197817, "a0bf013055bd567d40638ef247bca9c1b4830a9fe1c39901751ef75092f55132"],
+    "dpp-178h-signed-received-20260917.pdf": [623080, "e80842ca4c5e78c98a299014d1fff58ed3ace90f8b0498e4ed33f5923f540f32"],
+    "module-programs-178h-signed-received-20260917.pdf": [567414, "97656e33d1a3bb012297f58f5e6b7cd2c78544eac44cd2ff08d661f4d5be9e0b"],
+    "assignments-178h-signed-received-20260917.pdf": [650635, "ccc8f4abdc8145937bf250ca001a28647e6f4b23cadb6dfe6f511ef20a9eb2b3"],
+    "assessment-procedure-178h-signed-received-20260917.pdf": [420840, "b526eecc46a5a1a2ab06c2935f939a4b3764e221a807625085605b200633f8ef"],
   };
   for (const [file, [bytes, hash]] of Object.entries(expected)) {
     const data = readFileSync(new URL(`../public/documents/program-178h/${file}`, import.meta.url));
@@ -144,14 +144,14 @@ test("keeps working documents out of the public education-information package", 
   assert.match(html, /<dt>Вид ДПП<\/dt><dd>Программа повышения квалификации<\/dd>/u);
   assert.match(html, /№ 1156/u);
   assert.doesNotMatch(html, /№1156/u);
-  assert.match(html, /Программа не утверждена; подписанная редакция пока не опубликована/u);
+  assert.match(html, /[Пп]одписанный экземпляр/u);
   assert.doesNotMatch(html, /NO-GO|встречная подпись|01-dogovor-sintagma\.pdf/u);
   assert.doesNotMatch(html, /№ 2-ОД|факсимил/iu);
-  assert.match(html, /приказ № 3-ОД от 31\.07\.2026 \(PDF\)/u);
+  assert.match(html, /prikaz-3-od-signed-received-20260917\.pdf/u);
   assert.doesNotMatch(html, /Кравченко Вероника Юрьевна|проект назначения/iu);
-  assert.match(html, /Кадровое обеспечение проекта программы и подтверждающие документы требуют оформления/u);
+  assert.match(html, /Кадровое обеспечение программы и подтверждающие документы требуют оформления/u);
   assert.match(html, /Курс на 178 часов и электронные учебные материалы доступны проверяющему после входа в СДО/u);
-  assertProjectStatus(html);
+  assertSignedStatus(html);
   const objects = html.slice(html.indexOf('id="objects"'), html.indexOf('id="grants"'));
   const grants = html.slice(html.indexOf('id="grants"'), html.indexOf('id="paid"'));
   assert.match(objects, /Общежитие/u);
@@ -244,12 +244,12 @@ test("renders all 14 v10 education-information subsection routes", async () => {
     if (slug === "education") assert.ok(itemProps.has("accreditationDocLink"));
     else assert.ok(!itemProps.has("accreditationDocLink"), `${slug}: accreditationDocLink must be absent`);
     if (slug === "education") {
-      const project = markup.match(/<article(?=[^>]*data-program-status=["']unapproved-project["'])[^>]*>[\s\S]*?<\/article>/u)?.[0];
-      assert.ok(project, "education: unapproved project marker missing");
+      const project = markup.match(/<article(?=[^>]*data-program-status=["']signed-copy["'])[^>]*>[\s\S]*?<\/article>/u)?.[0];
+      assert.ok(project, "education: signed copy marker missing");
       assert.doesNotMatch(project, /\bitemProp=["'](?:eduAccred|eduOp|eduNir|graduateJob)["']/u);
     }
     assert.doesNotMatch(markup, /Общепрофессиональный модуль и все десять видов работ/u, slug);
-    assertProjectStatusOrCleanSubsection(html);
+    assertSignedStatusOrCleanSubsection(html);
   }
 
   assert.equal(titles.size, expectedSvedenSections.length);
@@ -312,14 +312,14 @@ const expectedModuleTitles = [
   "Монтаж, техническое обслуживание и ремонт первичных средств пожаротушения"
 ];
 
-function assertProjectStatus(html) {
-  assert.match(html, /[Пп]рограмма не утверждена/u);
+function assertSignedStatus(html) {
+  assert.match(html, /[Пп]одписанный экземпляр/u);
   assert.match(html, /набор закрыт до получения образовательной лицензии/iu);
   assert.doesNotMatch(html, /34(?:<\/strong>)?[^<]{0,25}(?:академических|час)|program-34h|35 уроков|67 вопросов|8 учебных элементов|22 вопроса/u);
   assert.doesNotMatch(html, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
 }
 
-function assertProjectStatusOrCleanSubsection(html) {
+function assertSignedStatusOrCleanSubsection(html) {
   assert.doesNotMatch(html, /34(?:<\/strong>)?[^<]{0,25}(?:академических|час)|program-34h|35 уроков|67 вопросов|8 учебных элементов|22 вопроса/u);
   assert.doesNotMatch(html, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
 }

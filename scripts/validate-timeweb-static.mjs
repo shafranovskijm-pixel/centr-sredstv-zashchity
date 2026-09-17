@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { access, readFile, readdir } from "node:fs/promises";
 
 const programFiles = [
-  "dpp-178h-for-approval-20260913.pdf",
-  "module-programs-178h-for-approval-20260913.pdf",
-  "assignments-178h-for-approval-20260913.pdf",
-  "assessment-procedure-178h-for-approval-20260913.pdf",
+  "dpp-178h-signed-received-20260917.pdf",
+  "module-programs-178h-signed-received-20260917.pdf",
+  "assignments-178h-signed-received-20260917.pdf",
+  "assessment-procedure-178h-signed-received-20260917.pdf",
 ];
 
 const svedenSections = [
@@ -97,7 +97,7 @@ for (const [id, slug] of svedenSections) {
   assert.match(sveden, new RegExp(`href="/sveden/${slug}/"`));
   assert.match(sveden, new RegExp(`id="${id}"`));
 }
-assert.match(sveden, /Программа не утверждена; подписанная редакция пока не опубликована/);
+assert.match(sveden, /[Пп]одписанный экземпляр/);
 assert.doesNotMatch(sveden, /NO-GO|встречная подпись|01-dogovor-sintagma\.pdf/);
 assert.match(sveden, /Выписка из ЕГРЮЛ от 20\.08\.2026/);
 assert.match(sveden, /\/documents\/egrul-csz-2026-08-20\.pdf/);
@@ -109,8 +109,8 @@ assert.doesNotMatch(sveden, /количество мест — 0/);
 assert.match(sveden, /Сведения уточняются перед публикацией окончательного комплекта документов/);
 assert.doesNotMatch(sveden, /Предписания органов контроля<\/strong><span>Отсутствуют|Объекты питания и охраны здоровья отсутствуют/);
 assert.doesNotMatch(sveden, /№ 2-ОД|факсимил|Кравченко Вероника Юрьевна|проект назначения/iu);
-assert.match(sveden, /href="\/documents\/organizational\/prikaz-3-od-20260731-signed\.pdf" download=""/u);
-assert.match(sveden, /Актуальная редакция программы на 178 часов представлена выше отдельно для утверждения/u);
+assert.match(sveden, /href="\/documents\/organizational\/prikaz-3-od-signed-received-20260917\.pdf" download=""/u);
+assert.match(sveden, /[Пп]одписанный экземпляр/u);
 assert.doesNotMatch(sveden, /ul-1037728048819-20260722152711\.pdf/);
 assert.doesNotMatch(sveden, /18 документов PDF|19 документов PDF|komplekt-utverzhdennyh-pdf\.zip/);
 assert.doesNotMatch(
@@ -123,33 +123,33 @@ const program = await readFile(
   "utf8",
 );
 assert.match(program, /Общепрофессиональный модуль/);
-assert.match(program, /download="proekt-programmy-csz.html"/);
+assert.match(program, /download="programma-csz.html"/);
 assert.match(program, /id="vision-toggle"/);
 assert.match(program, /aria-label="Учебный план" tabindex="0"/);
 assert.match(program, /154 часа теории \+ 22 часа практических работ \+ 2 часа итоговой аттестации/);
 assert.match(program, /Каждый из 11 модулей включает 14 часов теории и 2 часа практических занятий/);
 assert.match(program, /десять самостоятельных документарных ситуационных заданий общей продолжительностью 20 часов/);
 assert.match(program, /отдельное двухчасовое синхронное дистанционное наблюдение реального объекта/);
-assert.match(program, /5 учебных недель по календарному графику проекта/);
+assert.match(program, /5 учебных недель по календарному учебному графику/);
 assert.match(program, /Итого: 178 часов/);
 assert.equal(program.match(/class=["']plan-row["']/g)?.length, 12);
 assert.match(program, /Монтаж, техническое обслуживание и ремонт первичных средств пожаротушения/);
 assert.match(program, /Курс на 178 часов и электронные учебные материалы на платформе «Синтагма» доступны проверяющему после входа в СДО/);
-assert.match(program, /Проект программы повышения квалификации/);
+assert.match(program, /Программа повышения квалификации/);
 assert.match(program, /наблюдение в реальном времени реального объекта с установленным противопожарным занавесом/);
 assert.match(program, /только при наличии объекта, права на его показ, ответственного лица, расписания и работающей синхронной связи/);
 assert.match(program, /до выполнения этих условий занятие переносится и не засчитывается/);
 assert.doesNotMatch(program, /30\.07\.2026 № 2-ОД/);
 
-// Public assets are limited to four approval drafts; the assessment answer keys remain private.
-assert.deepEqual((await readdir("out/documents/program-178h")).sort(), [...programFiles].sort());
+// Four signed public documents plus compatible legacy URLs; assessment answer keys remain private.
+assert.deepEqual((await readdir("out/documents/program-178h")).sort(), [...programFiles, ...programFiles.map(file => file.replace("signed-received-20260917", "for-approval-20260913"))].sort());
 for (const file of programFiles) {
   const pdf = await readFile(`out/documents/program-178h/${file}`);
   assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
   for (const page of [sveden, program]) {
     assert.ok(page.includes(`href="/documents/program-178h/${file}"`));
     assert.ok(page.includes(`download="${file}"`));
-    assert.match(page, /подписанная утверждённая версия пока не опубликована/);
+    assert.match(page, /[Пп]одписанные экземпляры/);
   }
 }
 
@@ -191,11 +191,11 @@ for (const [id, slug, title] of svedenSections) {
   assertSectionNesting(slug, markup);
 
   if (slug === "education") {
-    const project = markup.match(/<article(?=[^>]*data-program-status="unapproved-project")[^>]*>[\s\S]*?<\/article>/u)?.[0];
-    assert.ok(project, "education: unapproved project marker missing");
+    const project = markup.match(/<article(?=[^>]*data-program-status="signed-copy")[^>]*>[\s\S]*?<\/article>/u)?.[0];
+    assert.ok(project, "education: signed copy marker missing");
     assert.doesNotMatch(project, /\bitemProp="(?:eduAccred|eduOp|eduNir|graduateJob)"/u);
-    assert.match(project, /Проект дополнительной профессиональной программы/u);
-    assert.match(project, /Программа не утверждена|неутверждённ/u);
+    assert.match(project, /Подписанный экземпляр дополнительной профессиональной программы/u);
+    assert.match(project, /[Пп]одписанный экземпляр/u);
   }
 }
 
@@ -209,7 +209,7 @@ assert.notEqual(sectionPages[0], home);
 
 for (const page of [home, sveden, program]) {
   assert.doesNotMatch(page, /34(?:<\/strong>)?[^<]{0,30}(?:академических|час)|program-34h|35 уроков|67 вопросов|8 учебных элементов|22 вопроса/);
-  assert.match(page, /[Пп]рограмма не утверждена/);
+  assert.match(page, /[Пп]одписанный экземпляр/);
   assert.match(page, /набор закрыт до получения образовательной лицензии/i);
   assert.doesNotMatch(page, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
 }
@@ -221,7 +221,7 @@ for (const page of sectionPages) {
 
 for (const slug of ["document", "education", "objects"]) {
   const page = sectionPages[svedenSections.findIndex(([, candidate]) => candidate === slug)];
-  assert.match(page, /[Пп]рограмма не утверждена|Подписанная утверждённая редакция пока не опубликована/);
+  assert.match(page, /[Пп]одписанный экземпляр/);
   assert.match(page, /набор закрыт до получения образовательной лицензии|До получения лицензии/iu);
 }
 
@@ -241,7 +241,7 @@ const expectedModuleTitles = [
 ];
 for (const title of expectedModuleTitles) assert.ok(program.includes(title), title);
 
-console.log("Timeweb static export validated: CSZ178 project pages, 14 real /sveden/ subsection routes with v10 microdata, four approval PDFs and existing public downloads are present in out/.");
+console.log("Timeweb static export validated: CSZ178 signed-copy pages, 14 /sveden/ subsection routes, four signed teaching PDFs and compatible legacy URLs are present in out/.");
 
 function visibleMarkup(document) {
   const marker = document.indexOf("<script>self.__next_f.push");
