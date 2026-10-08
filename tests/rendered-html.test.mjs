@@ -78,7 +78,7 @@ test("renders the licensing-program structure and official canonical", async () 
   assert.match(html, /140 часов теории \+ 20 часов практических учебных работ \+ 2 часа итоговой аттестации/u);
   assert.match(html, /Итого: 162 часа/u);
   assert.match(html, /Модульный тест: не менее 4 верных ответов из 5/u);
-  assert.match(html, /Учебные материалы новой редакции подготовлены для размещения в СДО «СИНТАГМА»/u);
+  assert.ok(html.includes("Учебные материалы новой редакции размещены в СДО «СИНТАГМА»"), "Programme page must state that course materials are uploaded");
   assert.match(html, /Программа повышения квалификации/u);
   assert.match(html, /<dt>Вид образования<\/dt><dd>Дополнительное образование<\/dd>/u);
   assert.match(html, /<dt>Подвид образования<\/dt><dd>Дополнительное профессиональное образование<\/dd>/u);
@@ -149,7 +149,7 @@ test("keeps working documents out of the public education-information package", 
   assert.ok(technicalStaff, "Separate technical-teacher status remains present");
   assert.doesNotMatch(technicalStaff, /Кравченко Вероника Юрьевна|№ 2-ОД/iu);
   assert.match(html, /Кадровое обеспечение программы: сведения о назначении преподавателей конкретных дисциплин пока не подтверждены/u);
-  assert.match(html, /Учебные материалы подготовлены; загрузка новой редакции и проверка доступа в СДО завершаются отдельно/u);
+  assert.ok(html.includes("Учебные материалы новой редакции размещены в СДО"), "Sveden must state that course materials are uploaded");
   assertPreparedStatus(html);
   const archive = html.match(/<details(?=[^>]*id="program-archive")[^>]*>[\s\S]*?<\/details>/u)?.[0];
   assert.ok(archive, "Signed archive remains accessible");
