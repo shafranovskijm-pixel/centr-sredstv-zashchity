@@ -1,39 +1,37 @@
-const documents = [
-  { title: "ДПП повышения квалификации — 178 часов", file: "dpp-178h-signed-received-20260917.pdf" },
-  { title: "Рабочие программы 11 модулей", file: "module-programs-178h-signed-received-20260917.pdf" },
-  { title: "Методические материалы практических занятий", file: "assignments-178h-signed-received-20260917.pdf" },
-  { title: "Порядок дистанционного контроля и аттестации", file: "assessment-procedure-178h-signed-received-20260917.pdf" },
-] as const;
-
-const pdfMetadata: Partial<Record<(typeof documents)[number]["file"], { pages: number; size: string }>> = {
-  "dpp-178h-signed-received-20260917.pdf": { pages: 20, size: "608,5 КБ" },
-  "module-programs-178h-signed-received-20260917.pdf": { pages: 14, size: "554,1 КБ" },
-  "assignments-178h-signed-received-20260917.pdf": { pages: 28, size: "635,4 КБ" },
-  "assessment-procedure-178h-signed-received-20260917.pdf": { pages: 3, size: "411 КБ" },
-};
+import { programDocumentUrl, programStatus } from "./program-data";
 
 export default function ProgramDownloads() {
   return (
     <section className="program-downloads" id="program-files" aria-labelledby="program-files-title">
-      <h3 id="program-files-title">Программа и учебные документы</h3>
-      <p>Полные тексты доступны без регистрации. Опубликованы подписанные экземпляры программы и учебных документов. В документах указан приказ от 31 июля 2026 года № 4-ОД.</p>
+      <h3 id="program-files-title">Программа и учебные документы — 162 часа</h3>
+      <p><strong>{programStatus}.</strong> Единый документ содержит ДПП, учебный план, календарный учебный график, рабочие программы десяти модулей, оценочные и методические материалы. Утверждённые дата и номер приказа новой редакции пока не присвоены.</p>
       <div className="program-file-list">
-        {documents.map((document) => {
-          const metadata = pdfMetadata[document.file];
-          return (
-            <article className="program-file" key={document.file}>
-              <div>
-                <h4>{document.title}</h4>
-                <p>PDF{metadata ? ` · ${metadata.pages} стр. · ${metadata.size}` : ""} · подписанный документ</p>
-              </div>
-              <div className="program-file-actions">
-                <a href={`/documents/program-178h/${document.file}`} target="_blank" rel="noopener noreferrer" aria-label={`Открыть: ${document.title} (PDF)`}>Открыть PDF</a>
-                <a href={`/documents/program-178h/${document.file}`} download={document.file} aria-label={`Скачать: ${document.title} (PDF)`}>Скачать PDF</a>
-              </div>
-            </article>
-          );
-        })}
+        <article className="program-file">
+          <div><h4>ДПП повышения квалификации — 162 академических часа</h4><p>PDF · подготовлена на утверждение · редакция от 8 октября 2026 года</p></div>
+          <div className="program-file-actions">
+            <a href={programDocumentUrl} target="_blank" rel="noopener noreferrer" aria-label="Открыть программу на 162 часа (PDF)">Открыть PDF</a>
+            <a href={programDocumentUrl} download="dpp-162h-20261008.pdf" aria-label="Скачать программу на 162 часа (PDF)">Скачать PDF</a>
+          </div>
+        </article>
       </div>
     </section>
+  );
+}
+
+const archivedDocuments = [
+  ["ДПП на 178 часов — прежняя версия", "/documents/program-178h/dpp-178h-signed-received-20260917.pdf"],
+  ["Рабочие программы 11 модулей — прежняя версия", "/documents/program-178h/module-programs-178h-signed-received-20260917.pdf"],
+  ["Методические материалы — прежняя версия", "/documents/program-178h/assignments-178h-signed-received-20260917.pdf"],
+  ["Порядок контроля и аттестации — прежняя версия", "/documents/program-178h/assessment-procedure-178h-signed-received-20260917.pdf"],
+  ["Приказ об утверждении прежней программы на 178 часов — № 4-ОД от 31.07.2026 по тексту документа", "/documents/organizational/prikaz-4-od-signed-received-20260917.pdf"],
+] as const;
+
+export function ArchivedProgramDownloads() {
+  return (
+    <details className="program-downloads" id="program-archive">
+      <summary>Архив учебных документов: прежняя программа на 178 часов</summary>
+      <p>Сохранены подписанные экземпляры, полученные 17 сентября 2026 года. Они относятся к прежней программе на 178 часов; её приказ и подписи не распространяются на новую редакцию на 162 часа.</p>
+      <ul>{archivedDocuments.map(([title, href]) => <li key={href}><a href={href} download>{title} (PDF)</a></li>)}</ul>
+    </details>
   );
 }

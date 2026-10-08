@@ -14,73 +14,71 @@ const programCanonical =
 
 const sha256 = (data) => createHash("sha256").update(data).digest("hex");
 
-test("renders the production canonical and official IDN site", async () => {
+// Timeweb checks the real Next.js static export. The default runner still exercises Vinext.
+const testTarget = process.env.CSZ_TEST_TARGET ?? "vinext";
+assert.ok(["vinext", "timeweb"].includes(testTarget), "CSZ_TEST_TARGET must be vinext or timeweb");
+console.info(`Rendered HTML test target: ${testTarget}`);
+let workerSequence = 0;
+
+async function fetchVinext(pathname) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
+  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${workerSequence++}`);
   const { default: worker } = await import(workerUrl.href);
-
-  const response = await worker.fetch(
-    new Request("http://localhost/", {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
+  return worker.fetch(
+    new Request(`http://localhost${pathname}`, { headers: { accept: "text/html" } }),
+    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
+    { waitUntil() {}, passThroughOnException() {} },
   );
+}
 
-  assert.equal(response.status, 200);
-  assert.match(
-    response.headers.get("content-type") ?? "",
-    /^text\/html\b/i,
-  );
-  const html = await response.text();
+async function loadRenderedHtml(pathname) {
+  assert.match(pathname, /^\/(?:[a-zA-Z0-9_-]+\/)*$/, "Expected a static directory route");
+  if (testTarget === "timeweb") {
+    // A missing static file fails the test; no HTTP status or server build is simulated.
+    return readFileSync(new URL(`../out/${pathname.slice(1)}index.html`, import.meta.url), "utf8");
+  }
+  const response = await fetchVinext(pathname);
+  assert.equal(response.status, 200, pathname);
+  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i, pathname);
+  return response.text();
+}
+
+async function assertMissingRoute() {
+  if (testTarget === "timeweb") {
+    assert.equal(existsSync(new URL("../out/sveden/__missing__/index.html", import.meta.url)), false);
+    const notFound = readFileSync(new URL("../out/404.html", import.meta.url), "utf8");
+    assert.match(notFound, /<html\b/i, "The static 404 document must exist");
+    return;
+  }
+  const response = await fetchVinext("/sveden/__missing__/");
+  assert.equal(response.status, 404);
+}
+
+
+test("renders the production canonical and official IDN site", async () => {
+  const html = await loadRenderedHtml("/");
   assert.doesNotMatch(html, developmentPreviewMeta);
   assert.match(html, productionCanonical);
   assert.match(html, officialSiteHref);
   assert.match(html, /центр-средств-защиты\.рф/u);
-  assert.match(html, /<strong>178<\/strong> академических часов/u);
-  assert.match(html, /14 часов теории и 2 часа самостоятельного документарного ситуационного задания/u);
-  assert.match(html, /14 часов теории и 2 часа синхронного дистанционного наблюдения реального объекта с индивидуальным отчётом/u);
-  assertSignedStatus(html);
+  assert.match(html, /<strong>162<\/strong> академических часа/u);
+  assert.match(html, /14 часов теории и 2 часа практической учебной работы с письменным результатом с дистанционной проверкой/u);
+  assert.equal(html.match(/class=["']curriculum-card["']/g)?.length, 10);
+  assert.deepEqual([...html.matchAll(/class=["']curriculum-card["'][^>]*>\s*<span>(\d+)<\/span>/g)].map((match) => match[1]), ["01", "02", "03", "04", "05", "06", "07", "09", "10", "11"]);
+  assertPreparedStatus(html);
   assert.match(html, /Деятельность по монтажу, техническому обслуживанию и ремонту\s+средств обеспечения пожарной безопасности зданий и сооружений/u);
 });
 
 test("renders the licensing-program structure and official canonical", async () => {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-program`);
-  const { default: worker } = await import(workerUrl.href);
-
-  const response = await worker.fetch(
-    new Request("http://localhost/programmy/pozharnaya-bezopasnost/", {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
-  );
-
-  assert.equal(response.status, 200);
-  const html = await response.text();
+  const html = await loadRenderedHtml("/programmy/pozharnaya-bezopasnost/");
   assert.match(html, programCanonical);
   assert.match(html, officialSiteHref);
   assert.match(html, /Заочная; исключительно с применением электронного обучения и дистанционных образовательных технологий/u);
   assert.match(html, /Общепрофессиональный модуль/u);
-  assert.match(html, /154 часа теории \+ 22 часа практических работ \+ 2 часа итоговой аттестации/u);
-  assert.match(html, /Итого: 178 часов/u);
-  assert.match(html, /Промежуточная аттестация проводится по каждому из 11 модулей/u);
-  assert.match(html, /Курс на 178 часов и электронные учебные материалы на платформе «Синтагма» доступны проверяющему после входа в СДО/u);
+  assert.match(html, /140 часов теории \+ 20 часов практических учебных работ \+ 2 часа итоговой аттестации/u);
+  assert.match(html, /Итого: 162 часа/u);
+  assert.match(html, /Модульный тест: не менее 4 верных ответов из 5/u);
+  assert.match(html, /Учебные материалы новой редакции подготовлены для размещения в СДО «СИНТАГМА»/u);
   assert.match(html, /Программа повышения квалификации/u);
   assert.match(html, /<dt>Вид образования<\/dt><dd>Дополнительное образование<\/dd>/u);
   assert.match(html, /<dt>Подвид образования<\/dt><dd>Дополнительное профессиональное образование<\/dd>/u);
@@ -88,17 +86,26 @@ test("renders the licensing-program structure and official canonical", async () 
   assert.match(html, /№ 1156/u);
   assert.doesNotMatch(html, /№1156/u);
   assert.doesNotMatch(html, /NO-GO/u);
-  assert.match(html, /отдельное синхронное дистанционное практическое занятие продолжительностью 2 академических часа/u);
-  assert.match(html, /Занятие проводится только при наличии объекта, права на его показ, ответственного лица, расписания и работающей синхронной связи/u);
+  assert.match(html, /Итоговый тест: не менее 9 из 12/u);
+  assert.match(html, /Профессиональный модуль о противопожарных занавесах и завесах в программу не включён/u);
   assert.doesNotMatch(html, /30\.07\.2026 № 2-ОД/u);
-  assert.match(html, /5 учебных недель по календарному учебному графику/u);
-  assert.match(html, /Комплексный экзамен, 2 академических часа/u);
-  assert.equal(html.match(/class=["']plan-row["']/g)?.length, 12);
+  assert.match(html, /21 учебный день; 5 учебных недель: 40, 40, 40, 40 и 2 академических часа/u);
+  assert.match(html, /Тест — 30 минут и письменная работа — 60 минут; всего 2 академических часа/u);
+  assert.equal(html.match(/class=["']plan-row["']/g)?.length, 11);
   for (const title of expectedModuleTitles) assert.ok(html.includes(title), title);
-  assertSignedStatus(html);
+  assert.ok(html.includes('href="/documents/program-162h-20261008/dpp-162h-20261008.pdf"'));
+  assert.ok(html.includes('download="dpp-162h-20261008.pdf"'));
+  assert.doesNotMatch(html, /program-178h|№ 4-ОД|signed-copy/);
+  assertPreparedStatus(html);
 });
 
-test("ships the synchronized 178-hour programme files", () => {
+test("ships the current unified 162-hour programme PDF", () => {
+  const current = readFileSync(new URL("../public/documents/program-162h-20261008/dpp-162h-20261008.pdf", import.meta.url));
+  assert.equal(current.subarray(0, 5).toString("ascii"), "%PDF-");
+  assert.ok(current.length > 10_000);
+});
+
+test("preserves the signed 178-hour archive without altering source documents", () => {
   const expected = {
     "dpp-178h-signed-received-20260917.pdf": [623080, "e80842ca4c5e78c98a299014d1fff58ed3ace90f8b0498e4ed33f5923f540f32"],
     "module-programs-178h-signed-received-20260917.pdf": [567414, "97656e33d1a3bb012297f58f5e6b7cd2c78544eac44cd2ff08d661f4d5be9e0b"],
@@ -117,28 +124,8 @@ test("ships the synchronized 178-hour programme files", () => {
 });
 
 test("keeps working documents out of the public education-information package", async () => {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-sveden`);
-  const { default: worker } = await import(workerUrl.href);
-
-  const response = await worker.fetch(
-    new Request("http://localhost/sveden/", {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
-  );
-
-  assert.equal(response.status, 200);
-  const html = await response.text();
-  assert.match(html, /178 академических часов · 11 модулей/u);
+  const html = await loadRenderedHtml("/sveden/");
+  assert.match(html, /162 академических часа · 10 модулей/u);
   assert.match(html, /<dt>Вид образования<\/dt><dd>Дополнительное образование<\/dd>/u);
   assert.match(html, /<dt>Подвид образования<\/dt><dd>Дополнительное профессиональное образование<\/dd>/u);
   assert.match(html, /<dt>Вид ДПП<\/dt><dd>Программа повышения квалификации<\/dd>/u);
@@ -160,8 +147,16 @@ test("keeps working documents out of the public education-information package", 
   assert.ok(technicalStaff, "Separate technical-teacher status remains present");
   assert.doesNotMatch(technicalStaff, /Кравченко Вероника Юрьевна|№ 2-ОД/iu);
   assert.match(html, /Кадровое обеспечение программы: сведения о назначении преподавателей конкретных дисциплин пока не подтверждены/u);
-  assert.match(html, /Курс на 178 часов и электронные учебные материалы доступны проверяющему после входа в СДО/u);
-  assertSignedStatus(html);
+  assert.match(html, /Учебные материалы подготовлены; загрузка новой редакции и проверка доступа в СДО завершаются отдельно/u);
+  assertPreparedStatus(html);
+  const archive = html.match(/<details(?=[^>]*id="program-archive")[^>]*>[\s\S]*?<\/details>/u)?.[0];
+  assert.ok(archive, "Signed archive remains accessible");
+  assert.match(archive, /прежняя программа на 178 часов/u);
+  assert.match(archive, /prikaz-4-od-signed-received-20260917\.pdf/u);
+  for (const file of ["dpp", "module-programs", "assignments", "assessment-procedure"]) {
+    assert.ok(archive.includes(`/documents/program-178h/${file}-178h-signed-received-20260917.pdf`));
+  }
+  assert.ok(html.includes('href="/documents/program-162h-20261008/dpp-162h-20261008.pdf"'));
   const objects = html.slice(html.indexOf('id="objects"'), html.indexOf('id="grants"'));
   const grants = html.slice(html.indexOf('id="grants"'), html.indexOf('id="paid"'));
   assert.match(objects, /Общежитие/u);
@@ -172,7 +167,7 @@ test("keeps working documents out of the public education-information package", 
   assert.doesNotMatch(html, /18 документов PDF|komplekt-utverzhdennyh-pdf\.zip/u);
   assert.doesNotMatch(html, /03-prikaz-2-OD-ob-utverzhdenii-programmy\.pdf|04-programma-178-chasov\.pdf|05-prikaz-3-OD-ob-utverzhdenii-lokalnyh-aktov\.pdf|18-svedeniya-o-mto-i-eios\.pdf/u);
   assert.match(html, /Кравченко Владимир Антонович — доля 50%; доля, принадлежащая обществу, — 50%/u);
-  assert.match(html, /Для подготовки к обучению используется электронная образовательная среда «Синтагма»/u);
+  assert.match(html, /Для дистанционной реализации предусмотрена образовательная среда «СИНТАГМА»/u);
   assert.match(html, /Выписка из ЕГРЮЛ от 20\.08\.2026/u);
   assert.match(html, /\/documents\/egrul-csz-2026-08-20\.pdf/u);
   assert.doesNotMatch(html, /ul-1037728048819-20260722152711\.pdf/u);
@@ -208,31 +203,12 @@ test("keeps working documents out of the public education-information package", 
 });
 
 test("renders all 14 v10 education-information subsection routes", async () => {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-sveden-subsections`);
-  const { default: worker } = await import(workerUrl.href);
   const titles = new Set();
   const headings = new Set();
   const canonicals = new Set();
 
   for (const [id, slug, title] of expectedSvedenSections) {
-    const response = await worker.fetch(
-      new Request(`http://localhost/sveden/${slug}/`, {
-        headers: { accept: "text/html" },
-      }),
-      {
-        ASSETS: {
-          fetch: async () => new Response("Not found", { status: 404 }),
-        },
-      },
-      {
-        waitUntil() {},
-        passThroughOnException() {},
-      },
-    );
-
-    assert.equal(response.status, 200, slug);
-    const html = await response.text();
+    const html = await loadRenderedHtml(`/sveden/${slug}/`);
     const markup = visibleMarkup(html);
     const titleMatch = markup.match(/<title>([^<]+)<\/title>/u);
     const headingMatch = markup.match(/<h1>([^<]+)<\/h1>/u);
@@ -254,24 +230,19 @@ test("renders all 14 v10 education-information subsection routes", async () => {
     if (slug === "education") assert.ok(itemProps.has("accreditationDocLink"));
     else assert.ok(!itemProps.has("accreditationDocLink"), `${slug}: accreditationDocLink must be absent`);
     if (slug === "education") {
-      const project = markup.match(/<article(?=[^>]*data-program-status=["']signed-copy["'])[^>]*>[\s\S]*?<\/article>/u)?.[0];
-      assert.ok(project, "education: signed copy marker missing");
+      const project = markup.match(/<article(?=[^>]*data-program-status=["']prepared-for-approval["'])[^>]*>[\s\S]*?<\/article>/u)?.[0];
+      assert.ok(project, "education: prepared programme marker missing");
       assert.doesNotMatch(project, /\bitemProp=["'](?:eduAccred|eduOp|eduNir|graduateJob)["']/u);
     }
     assert.doesNotMatch(markup, /Общепрофессиональный модуль и все десять видов работ/u, slug);
-    assertSignedStatusOrCleanSubsection(html);
+    assertCleanSubsection(html);
   }
 
   assert.equal(titles.size, expectedSvedenSections.length);
   assert.equal(headings.size, expectedSvedenSections.length);
   assert.equal(canonicals.size, expectedSvedenSections.length);
 
-  const missingResponse = await worker.fetch(
-    new Request("http://localhost/sveden/__missing__/", { headers: { accept: "text/html" } }),
-    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
-    { waitUntil() {}, passThroughOnException() {} },
-  );
-  assert.equal(missingResponse.status, 404);
+  await assertMissingRoute();
 });
 
 const expectedSvedenSections = [
@@ -316,21 +287,20 @@ const expectedModuleTitles = [
   "Монтаж, техническое обслуживание и ремонт автоматических систем (элементов автоматических систем) противодымной вентиляции, включая диспетчеризацию и проведение пусконаладочных работ",
   "Монтаж, техническое обслуживание и ремонт систем оповещения и эвакуации при пожаре и их элементов, включая диспетчеризацию и проведение пусконаладочных работ, в том числе фотолюминесцентных эвакуационных систем и их элементов",
   "Монтаж, техническое обслуживание и ремонт автоматических систем (элементов автоматических систем) передачи извещений о пожаре, включая диспетчеризацию и проведение пусконаладочных работ",
-  "Монтаж, техническое обслуживание и ремонт противопожарных занавесов и завес, включая диспетчеризацию и проведение пусконаладочных работ",
   "Монтаж, техническое обслуживание и ремонт заполнений проемов в противопожарных преградах",
   "Выполнение работ по огнезащите материалов, изделий и конструкций",
   "Монтаж, техническое обслуживание и ремонт первичных средств пожаротушения"
 ];
 
-function assertSignedStatus(html) {
-  assert.match(html, /[Пп]одписанный экземпляр/u);
-  assert.match(html, /набор закрыт до получения образовательной лицензии/iu);
-  assert.doesNotMatch(html, /34(?:<\/strong>)?[^<]{0,25}(?:академических|час)|program-34h|35 уроков|67 вопросов|8 учебных элементов|22 вопроса/u);
+function assertPreparedStatus(html) {
+  assert.match(html, /[Пп]одготовлена на утверждение/u);
+  assert.match(html, /набор закрыт до получения образовательной лицензии|Приём и обучение до получения образовательной лицензии не проводятся|До получения лицензии образовательная деятельность не осуществляется/iu);
+  assert.doesNotMatch(html, /35 уроков|67 вопросов|8 учебных элементов|модуля 8|модуле 8/u);
   assert.doesNotMatch(html, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
 }
 
-function assertSignedStatusOrCleanSubsection(html) {
-  assert.doesNotMatch(html, /34(?:<\/strong>)?[^<]{0,25}(?:академических|час)|program-34h|35 уроков|67 вопросов|8 учебных элементов|22 вопроса/u);
+function assertCleanSubsection(html) {
+  assert.doesNotMatch(html, /35 уроков|67 вопросов|8 учебных элементов|модуля 8|модуле 8/u);
   assert.doesNotMatch(html, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
 }
 

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { access, readFile, readdir } from "node:fs/promises";
 
+const currentProgramPath = "/documents/program-162h-20261008/dpp-162h-20261008.pdf";
 const programFiles = [
   "dpp-178h-signed-received-20260917.pdf",
   "module-programs-178h-signed-received-20260917.pdf",
@@ -44,6 +45,7 @@ const requiredItemPropsBySlug = {
 
 const requiredFiles = [
   "out/index.html",
+  `out${currentProgramPath}`,
   "out/404.html",
   "out/sveden/index.html",
   ...svedenSections.map(([, slug]) => `out/sveden/${slug}/index.html`),
@@ -86,7 +88,7 @@ await Promise.all(forbiddenFiles.map((file) => assert.rejects(() => access(file)
 
 const sveden = await readFile("out/sveden/index.html", "utf8");
 assert.match(sveden, /<html lang="ru" data-scroll-behavior="smooth">/);
-assert.match(sveden, /178 академических часов · 11 модулей/);
+assert.match(sveden, /162 академических часа · 10 модулей/);
 assert.match(sveden, /href="\/sveden\/" download="svedeniya-csz.html"/);
 assert.match(sveden, /href="\/documents\/ustav-csz-public-20260907.pdf" download=""/);
 assert.match(sveden, /itemProp="email"/);
@@ -101,7 +103,7 @@ assert.match(sveden, /[Пп]одписанный экземпляр/);
 assert.doesNotMatch(sveden, /NO-GO|встречная подпись|01-dogovor-sintagma\.pdf/);
 assert.match(sveden, /Выписка из ЕГРЮЛ от 20\.08\.2026/);
 assert.match(sveden, /\/documents\/egrul-csz-2026-08-20\.pdf/);
-assert.match(sveden, /Курс на 178 часов и электронные учебные материалы доступны проверяющему после входа в СДО/);
+assert.match(sveden, /Учебные материалы подготовлены; загрузка новой редакции и проверка доступа в СДО завершаются отдельно/);
 assert.match(sveden, /Общежитие/);
 assert.match(sveden, /Интернат/);
 assert.match(sveden, /значение 0 без документального основания не заявляется/);
@@ -137,19 +139,20 @@ assert.match(program, /Общепрофессиональный модуль/);
 assert.match(program, /download="programma-csz.html"/);
 assert.match(program, /id="vision-toggle"/);
 assert.match(program, /aria-label="Учебный план" tabindex="0"/);
-assert.match(program, /154 часа теории \+ 22 часа практических работ \+ 2 часа итоговой аттестации/);
-assert.match(program, /Каждый из 11 модулей включает 14 часов теории и 2 часа практических занятий/);
-assert.match(program, /десять самостоятельных документарных ситуационных заданий общей продолжительностью 20 часов/);
-assert.match(program, /отдельное двухчасовое синхронное дистанционное наблюдение реального объекта/);
-assert.match(program, /5 учебных недель по календарному учебному графику/);
-assert.match(program, /Итого: 178 часов/);
-assert.equal(program.match(/class=["']plan-row["']/g)?.length, 12);
+assert.match(program, /140 часов теории \+ 20 часов практических учебных работ \+ 2 часа итоговой аттестации/);
+assert.match(program, /Каждый из десяти модулей включает 14 часов теории и 2 часа практической учебной работы с письменным результатом/);
+assert.match(program, /десять практических учебных работ, десять модульных тестов и итоговая аттестация/);
+assert.match(program, /Итоговый тест: не менее 9 из 12/);
+assert.match(program, /21 учебный день; 5 учебных недель: 40, 40, 40, 40 и 2 академических часа/);
+assert.match(program, /Итого: 162 часа/);
+assert.equal(program.match(/class=["']plan-row["']/g)?.length, 11);
+assert.deepEqual([...program.matchAll(/class=["']plan-row["'][^>]*>\s*<span role=["']cell["']>(\d+)<\/span>/g)].map((match) => Number(match[1])), [1, 2, 3, 4, 5, 6, 7, 9, 10, 11]);
 assert.match(program, /Монтаж, техническое обслуживание и ремонт первичных средств пожаротушения/);
-assert.match(program, /Курс на 178 часов и электронные учебные материалы на платформе «Синтагма» доступны проверяющему после входа в СДО/);
+assert.match(program, /Учебные материалы новой редакции подготовлены для размещения в СДО «СИНТАГМА»/);
 assert.match(program, /Программа повышения квалификации/);
-assert.match(program, /наблюдение в реальном времени реального объекта с установленным противопожарным занавесом/);
-assert.match(program, /только при наличии объекта, права на его показ, ответственного лица, расписания и работающей синхронной связи/);
-assert.match(program, /до выполнения этих условий занятие переносится и не засчитывается/);
+assert.match(program, /Модульный тест: не менее 4 верных ответов из 5/);
+assert.match(program, /Профессиональный модуль о противопожарных занавесах и завесах в программу не включён/);
+assert.match(program, /Тест — 30 минут и письменная работа — 60 минут; всего 2 академических часа/);
 assert.doesNotMatch(program, /30\.07\.2026 № 2-ОД/);
 
 // Four signed public documents plus compatible legacy URLs; assessment answer keys remain private.
@@ -157,16 +160,26 @@ assert.deepEqual((await readdir("out/documents/program-178h")).sort(), [...progr
 for (const file of programFiles) {
   const pdf = await readFile(`out/documents/program-178h/${file}`);
   assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
-  for (const page of [sveden, program]) {
-    assert.ok(page.includes(`href="/documents/program-178h/${file}"`));
-    assert.ok(page.includes(`download="${file}"`));
-    assert.match(page, /[Пп]одписанные экземпляры/);
-  }
+  assert.ok(sveden.includes(`href="/documents/program-178h/${file}"`), `Archive missing: ${file}`);
+  assert.ok(!program.includes(`/documents/program-178h/${file}`), "Current programme must not link to the old programme as its document");
+}
+assert.match(sveden, /id="program-archive"/);
+assert.match(sveden, /Архив учебных документов: прежняя программа на 178 часов/);
+assert.match(sveden, /её приказ и подписи не распространяются на новую редакцию на 162 часа/);
+assert.ok(sveden.includes('href="/documents/organizational/prikaz-4-od-signed-received-20260917.pdf"'));
+const currentPdf = await readFile(`out${currentProgramPath}`);
+assert.equal(currentPdf.subarray(0, 5).toString("ascii"), "%PDF-");
+assert.ok(currentPdf.length > 10_000, "Current programme PDF must contain actual document content");
+for (const page of [sveden, program]) {
+  assert.ok(page.includes(`href="${currentProgramPath}"`));
+  assert.ok(page.includes('download="dpp-162h-20261008.pdf"'));
+  assert.match(page, /Подготовлена на утверждение/);
 }
 
 const home = await readFile("out/index.html", "utf8");
-assert.match(home, /<strong>178<\/strong> академических часов/);
-assert.match(home, /Общепрофессиональный модуль и все десять видов работ/);
+assert.match(home, /<strong>162<\/strong> академических часа/);
+assert.match(home, /Общепрофессиональный модуль и девять видов работ/);
+assert.equal(home.match(/class="curriculum-card"/g)?.length, 10);
 assert.match(home, /доступ к обучению пока не открыт/);
 
 const sectionPages = [];
@@ -202,11 +215,12 @@ for (const [id, slug, title] of svedenSections) {
   assertSectionNesting(slug, markup);
 
   if (slug === "education") {
-    const project = markup.match(/<article(?=[^>]*data-program-status="signed-copy")[^>]*>[\s\S]*?<\/article>/u)?.[0];
-    assert.ok(project, "education: signed copy marker missing");
+    const project = markup.match(/<article(?=[^>]*data-program-status="prepared-for-approval")[^>]*>[\s\S]*?<\/article>/u)?.[0];
+    assert.ok(project, "education: prepared programme marker missing");
     assert.doesNotMatch(project, /\bitemProp="(?:eduAccred|eduOp|eduNir|graduateJob)"/u);
-    assert.match(project, /Подписанный экземпляр дополнительной профессиональной программы/u);
-    assert.match(project, /[Пп]одписанный экземпляр/u);
+    assert.match(project, /Дополнительная профессиональная программа на 162 часа/u);
+    assert.match(project, /Подготовлена на утверждение/u);
+    assert.doesNotMatch(project, /№ 4-ОД|178 академических/);
   }
 }
 
@@ -215,24 +229,24 @@ assert.equal(sectionHeadings.size, svedenSections.length, "section h1 values mus
 assert.equal(sectionCanonicals.size, svedenSections.length, "section canonicals must be unique");
 await assert.rejects(() => access("out/sveden/__missing__/index.html"));
 
-assert.match(sectionPages[svedenSections.findIndex(([, slug]) => slug === "education")], /178 академических часов/);
+assert.match(sectionPages[svedenSections.findIndex(([, slug]) => slug === "education")], /162 академических часа/);
 assert.notEqual(sectionPages[0], home);
 
 for (const page of [home, sveden, program]) {
-  assert.doesNotMatch(page, /34(?:<\/strong>)?[^<]{0,30}(?:академических|час)|program-34h|35 уроков|67 вопросов|8 учебных элементов|22 вопроса/);
-  assert.match(page, /[Пп]одписанный экземпляр/);
-  assert.match(page, /набор закрыт до получения образовательной лицензии/i);
+  assert.doesNotMatch(page, /35 уроков|67 вопросов|8 учебных элементов|модуля 8|модуле 8/);
+  assert.match(page, /[Пп]одготовлена на утверждение/);
+  assert.match(page, /набор закрыт до получения образовательной лицензии|Приём и обучение до получения образовательной лицензии не проводятся|До получения лицензии образовательная деятельность не осуществляется/i);
   assert.doesNotMatch(page, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
 }
 
 for (const page of sectionPages) {
-  assert.doesNotMatch(page, /34(?:<\/strong>)?[^<]{0,30}(?:академических|час)|program-34h|35 уроков|67 вопросов|8 учебных элементов|22 вопроса/);
+  assert.doesNotMatch(page, /35 уроков|67 вопросов|8 учебных элементов|модуля 8|модуле 8/);
   assert.doesNotMatch(page, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
 }
 
 for (const slug of ["document", "education", "objects"]) {
   const page = sectionPages[svedenSections.findIndex(([, candidate]) => candidate === slug)];
-  assert.match(page, /[Пп]одписанный экземпляр/);
+  assert.match(page, /[Пп]одготовлена на утверждение/);
   assert.match(page, /набор закрыт до получения образовательной лицензии|До получения лицензии/iu);
 }
 
@@ -245,14 +259,13 @@ const expectedModuleTitles = [
   "Монтаж, техническое обслуживание и ремонт автоматических систем (элементов автоматических систем) противодымной вентиляции, включая диспетчеризацию и проведение пусконаладочных работ",
   "Монтаж, техническое обслуживание и ремонт систем оповещения и эвакуации при пожаре и их элементов, включая диспетчеризацию и проведение пусконаладочных работ, в том числе фотолюминесцентных эвакуационных систем и их элементов",
   "Монтаж, техническое обслуживание и ремонт автоматических систем (элементов автоматических систем) передачи извещений о пожаре, включая диспетчеризацию и проведение пусконаладочных работ",
-  "Монтаж, техническое обслуживание и ремонт противопожарных занавесов и завес, включая диспетчеризацию и проведение пусконаладочных работ",
   "Монтаж, техническое обслуживание и ремонт заполнений проемов в противопожарных преградах",
   "Выполнение работ по огнезащите материалов, изделий и конструкций",
   "Монтаж, техническое обслуживание и ремонт первичных средств пожаротушения"
 ];
 for (const title of expectedModuleTitles) assert.ok(program.includes(title), title);
 
-console.log("Timeweb static export validated: CSZ178 signed-copy pages, 14 /sveden/ subsection routes, four signed teaching PDFs and compatible legacy URLs are present in out/.");
+console.log("Timeweb static export validated: CSZ162 prepared-for-approval pages, 14 /sveden/ subsection routes, current unified PDF and preserved signed 178-hour archive are present in out/.");
 
 function visibleMarkup(document) {
   const marker = document.indexOf("<script>self.__next_f.push");
