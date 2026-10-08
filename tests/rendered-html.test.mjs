@@ -95,6 +95,8 @@ test("renders the licensing-program structure and official canonical", async () 
   for (const title of expectedModuleTitles) assert.ok(html.includes(title), title);
   assert.ok(html.includes('href="/documents/program-162h-20261008/dpp-162h-20261008.pdf"'));
   assert.ok(html.includes('download="dpp-162h-20261008.pdf"'));
+  assert.ok(html.includes('href="/documents/program-162h-20261008/trainer-p3.html"'));
+  assert.ok(html.includes('download="trainer-p3.html"'));
   assert.doesNotMatch(html, /program-178h|№ 4-ОД|signed-copy/);
   assertPreparedStatus(html);
 });

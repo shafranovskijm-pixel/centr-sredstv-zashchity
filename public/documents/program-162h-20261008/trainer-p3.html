@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Т3 — учебный конфигуратор пожарной сигнализации</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:#162638;font:16px/1.55 system-ui,Segoe UI,sans-serif}main{max-width:1100px;margin:0 auto;padding:26px 22px 70px}h1{font-size:30px;line-height:1.2;margin:8px 0 16px}h2{font-size:21px;margin:0 0 14px}p{margin:8px 0 14px}.eyebrow{font-weight:650;font-size:13px;letter-spacing:.08em;color:#40617b}.card{background:white;border:1px solid #c9d7e4;border-radius:12px;padding:22px;margin:20px 0}.notice{background:#eef5fd;border-left:4px solid #245e9a;padding:14px 18px}.warning{color:#85420c}.muted{color:#45596b}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;vertical-align:top;border-bottom:1px solid #ccd8e3;padding:10px 8px}th{background:#f2f6fa}select,input,textarea,button{font:inherit}select,input,textarea{padding:8px;border:1px solid #8fa6ba;border-radius:6px;background:white;color:#162638}select{min-width:72px}input.label{width:160px}textarea{width:100%;min-height:90px;resize:vertical}button{border:1px solid #244f7b;border-radius:7px;padding:10px 16px;background:#245e9a;color:white;cursor:pointer;font-weight:600}button.secondary{background:white;color:#244f7b}button:disabled{opacity:.5;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #d58a19;outline-offset:2px}.buttons{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.good{color:#116042;font-weight:650}.bad{color:#a42924;font-weight:650}.summary{font-weight:600}label.block{display:block;margin-top:12px}.small{font-size:13px}#status{min-height:28px}details{margin:14px 0}summary{cursor:pointer;font-weight:650}.empty{color:#596d7f;padding:14px}.badge{padding:3px 8px;border-radius:5px;background:#e5eef7;font-size:12px}.footer{font-size:13px;color:#45596b}ol{padding-left:22px}@media(max-width:640px){main{padding:18px 12px 45px}.card{padding:16px}h1{font-size:25px}th,td{padding:8px 5px}input.label{width:125px}}@media print{body{background:white}.buttons,select,input.label{display:none}main{max-width:none;padding:0}.card{break-inside:avoid;border:1px solid #888}details{display:block}}
+</style></head>
+<body><main>
+<div class="eyebrow">ЦСЗ · МОДУЛЬ 3 · ПРАКТИЧЕСКАЯ РАБОТА П3</div>
+<h1>Учебный конфигуратор сигнализации Т3</h1>
+<p class="notice">Измените привязки устройств и запустите контрольные события. Программа вычисляет сообщения и команды из введенной конфигурации. Это условная программная модель: она не подключается к приборам и не управляет реальной пожарной сигнализацией.</p>
+<section class="card"><h2>1. Прочитайте учебную карту</h2>
+<div class="tablewrap"><table><thead><tr><th>Адрес</th><th>Помещение</th><th>Зона по карте</th><th>Группа по карте</th></tr></thead><tbody><tr><td>101</td><td>А</td><td>Z1</td><td>Г1</td></tr><tr><td>102</td><td>Б</td><td>Z1</td><td>Г1</td></tr><tr><td>201</td><td>В</td><td>Z2</td><td>Г2</td></tr></tbody></table></div>
+<p>У1 — пульт отображает адрес, помещение и зону по карте. У2 — событие Z1 направляется группе Г1, событие Z2 — группе Г2. У3 — журнал сохраняет входное событие и результат. Изменение одной подписи не исправляет функциональную привязку.</p>
+<p class="small muted">Эти условия относятся только к заданию Т3. Они не являются универсальным алгоритмом, нормой законодательства или конфигурацией конкретного производителя. Работа с программой входит в П3: 25 минут исходный разбор, 40 минут конфигуратор, 25 минут отчет. Всего 90 минут, без дополнительных часов.</p>
+</section>
+<section class="card"><h2>2. Измените конфигурацию модели</h2>
+<p>Сначала запустите исходную конфигурацию. Затем исправьте только доказанные расхождения и повторно проверьте все три адреса. Подпись — произвольный текст для отображения; она не меняет зону или группу команды.</p>
+<div class="tablewrap"><table><thead><tr><th>Адрес</th><th>Помещение</th><th>Зона</th><th>Группа команды</th><th>Подпись</th></tr></thead><tbody id="configuration"></tbody></table></div>
+<div class="buttons"><button id="run-all" type="button">Прогнать все три адреса</button><select id="event-address" aria-label="Адрес отдельного события"><option>101</option><option>102</option><option>201</option></select><button id="run-one" type="button" class="secondary">Одно событие</button><button id="reset-config" type="button" class="secondary">Вернуть исходную конфигурацию</button></div>
+<p id="status" role="status" aria-live="polite">Прогонов пока нет. Результат появится после запуска.</p>
+</section>
+<section class="card"><h2>3. Сравните результат с картой</h2>
+<div class="tablewrap"><table><thead><tr><th>Входное событие</th><th>Сообщение модели</th><th>Команда</th><th>Сопоставление с Т3</th></tr></thead><tbody id="results"><tr><td colspan="4" class="empty">Контрольные события еще не запускались.</td></tr></tbody></table></div>
+<p class="small muted">Соответствие Т3 означает только совпадение выходов данной модели с учебной картой. Это не оценка преподавателя, не допуск к работе и не акт испытания реального оборудования.</p>
+<details><summary>История прогонов и конфигураций</summary><div id="history" class="small">История пуста.</div></details>
+</section>
+<section class="card"><h2>4. Сохраните результат для преподавателя</h2>
+<label class="block" for="reason">Что установлено по исходным данным и какое изменение обосновано?</label><textarea id="reason" maxlength="4000" placeholder="Отделите установленное расхождение конфигурации от гипотезы об аппаратной неисправности."></textarea>
+<label class="block" for="conclusion">Какие контрольные события проверены и каковы ограничения вывода?</label><textarea id="conclusion" maxlength="4000" placeholder="Укажите результаты до/после изменения и сохранность правильных привязок."></textarea>
+<div class="buttons"><button id="save-txt" disabled type="button">Скачать отчет TXT</button><button id="save-json" disabled type="button" class="secondary">Скачать журнал JSON</button></div>
+<p class="small muted">Загрузите сохраненный отчет в задание П3 в Синтагме вместе со своим ответом. Можно добавить журнал JSON. В этой странице не запрашиваются персональные данные и нет автоматической отправки. При закрытии страницы несохраненные результаты исчезнут. Время в отчете берется с вашего устройства; оно не подтверждает личность или продолжительность обучения.</p>
+</section>
+<details class="card"><summary>Как работает модель и что она не воспроизводит</summary><p>Для каждого входного адреса программа находит строку текущей конфигурации, формирует сообщение из адреса, помещения и зоны и выдает выбранную группу команды. Затем отдельно сравнивает три параметра с картой Т3. Каждому прогону сохраняются введенные значения и вычисленные выходы. Если конфигурация изменена после прогона, интерфейс предлагает повторить его.</p><p>Не моделируются электрические цепи, линии связи, чувствительность извещателей, протокол производителя, реальные исполнительные устройства и сертификация. В модели нет автоматической замены конфигурации на правильную. Проверку и обоснование выполняет слушатель, оценку работы — преподаватель.</p></details>
+<p class="footer">Версия CSZ-T3-1.0.0 · Учебная модель по условию П3 программы ЦСЗ. Самостоятельный HTML-файл, без внешних библиотек и сети.</p>
+<noscript><p class="warning">Для вычисления модели включите JavaScript в браузере. Без него прогон не выполняется.</p></noscript>
+</main>
+<script>(function (global) {
+  'use strict';
+  const VERSION = 'CSZ-T3-1.0.0';
+  const PLAN = Object.freeze([
+    Object.freeze({ address: '101', room: 'А', zone: 'Z1', group: 'Г1' }),
+    Object.freeze({ address: '102', room: 'Б', zone: 'Z1', group: 'Г1' }),
+    Object.freeze({ address: '201', room: 'В', zone: 'Z2', group: 'Г2' })
+  ]);
+  const clone = value => JSON.parse(JSON.stringify(value));
+  function initialConfig() {
+    return PLAN.map(row => ({ ...row, zone: 'Z1', group: 'Г1', label: `Адрес ${row.address}` }));
+  }
+  function validate(config) {
+    if (!Array.isArray(config) || config.length !== PLAN.length) throw new Error('Конфигурация должна содержать три адреса.');
+    const seen = new Set();
+    return config.map(row => {
+      if (!row || !PLAN.some(p => p.address === row.address) || seen.has(row.address)) throw new Error('Неизвестный или повторяющийся адрес.');
+      seen.add(row.address);
+      if (!['А', 'Б', 'В'].includes(row.room)) throw new Error('Помещение: А, Б или В.');
+      if (!['Z1', 'Z2'].includes(row.zone)) throw new Error('Зона: Z1 или Z2.');
+      if (!['Г1', 'Г2'].includes(row.group)) throw new Error('Группа: Г1 или Г2.');
+      if (typeof row.label !== 'string' || row.label.length > 80) throw new Error('Подпись: не более 80 символов.');
+      return {address: row.address, room: row.room, zone: row.zone, group: row.group, label: row.label};
+    });
+  }
+  function run(config, addresses, sequence) {
+    const snapshot = validate(config);
+    if (!Array.isArray(addresses) || addresses.length === 0) throw new Error('Выберите хотя бы одно событие.');
+    if (!Number.isSafeInteger(sequence) || sequence < 1) throw new Error('Неверный номер прогона.');
+    const results = addresses.map(address => {
+      const actual = snapshot.find(row => row.address === address);
+      const expected = PLAN.find(row => row.address === address);
+      if (!actual || !expected) throw new Error('Неизвестный адрес события.');
+      const mismatch = ['room', 'zone', 'group'].filter(key => actual[key] !== expected[key]);
+      return {input: {event: 'учебное контрольное событие', address},
+        output: {address, display: `${actual.address}, ${actual.room}, ${actual.zone}`, label: actual.label,
+          room: actual.room, zone: actual.zone, command: actual.group},
+        expected: clone(expected), mismatch, matchesTrainingMap: mismatch.length === 0};
+    });
+    return {sequence, version: VERSION, configuration: clone(snapshot), results,
+      completeThreeAddressRun: PLAN.every(p => addresses.includes(p.address)),
+      allSelectedMatch: results.every(row => row.matchesTrainingMap)};
+  }
+  global.TrainingModel = Object.freeze({VERSION, PLAN, initialConfig, validate, run});
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+</script>
+<script>
+'use strict';
+const model = TrainingModel;
+let config = model.initialConfig();
+const runs = [];
+let revision = 0;
+let lastRunRevision = -1;
+const byId = id => document.getElementById(id);
+const fields = {room:['А','Б','В'],zone:['Z1','Z2'],group:['Г1','Г2']};
+const fieldNames = {room:'помещение',zone:'зона',group:'группа'};
+function cell(row,text,className=''){const td=document.createElement('td');td.textContent=text;td.className=className;row.appendChild(td);return td;}
+function setStatus(text,kind=''){byId('status').textContent=text;byId('status').className=kind;}
+function changed(){revision++;setStatus('Конфигурация изменена. Запустите контрольные события для этой версии.','warning');}
+function renderConfig(){
+  byId('configuration').replaceChildren();
+  config.forEach((row,index)=>{const tr=document.createElement('tr');cell(tr,row.address);
+    Object.entries(fields).forEach(([key,values])=>{const td=cell(tr,'');const select=document.createElement('select');select.setAttribute('aria-label',`${fieldNames[key]} адреса ${row.address}`);select.dataset.address=row.address;select.dataset.field=key;
+      values.forEach(value=>{const option=document.createElement('option');option.value=value;option.textContent=value;select.appendChild(option);});select.value=row[key];select.addEventListener('change',()=>{config[index][key]=select.value;changed();});td.appendChild(select);});
+    const td=cell(tr,'');const input=document.createElement('input');input.className='label';input.maxLength=80;input.value=row.label;input.setAttribute('aria-label',`Подпись адреса ${row.address}`);input.dataset.address=row.address;input.dataset.field='label';input.addEventListener('input',()=>{config[index].label=input.value;changed();});td.appendChild(input);byId('configuration').appendChild(tr);});
+}
+function renderRun(run){
+  byId('results').replaceChildren();
+  run.results.forEach(result=>{const tr=document.createElement('tr');cell(tr,result.input.address);cell(tr,`${result.output.display}\nПодпись: ${result.output.label}`);cell(tr,result.output.command);cell(tr,result.matchesTrainingMap?'Совпадает с Т3':`Расхождение: ${result.mismatch.map(k=>fieldNames[k]).join(', ')}`,result.matchesTrainingMap?'good':'bad');byId('results').appendChild(tr);});
+  const completeness=run.completeThreeAddressRun?'Проверены все три адреса.':'Выполнено только выбранное событие; остальные адреса не проверены этим прогоном.';
+  setStatus(`Прогон ${run.sequence}. ${run.allSelectedMatch?'Выходы выбранных событий совпадают с Т3.':'Есть расхождения с Т3.'} ${completeness}`,run.allSelectedMatch?'good':'bad');
+  byId('history').replaceChildren();
+  runs.slice().reverse().forEach(item=>{const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent=`Прогон ${item.sequence}: события ${item.results.map(r=>r.input.address).join(', ')}; ${item.allSelectedMatch?'совпадение':'расхождение'}`;details.appendChild(summary);const pre=document.createElement('pre');pre.style.whiteSpace='pre-wrap';pre.textContent=JSON.stringify(item,null,2);details.appendChild(pre);byId('history').appendChild(details);});
+  byId('save-txt').disabled=false;byId('save-json').disabled=false;
+}
+function run(addresses){try {if(runs.length>=50){setStatus('Сохраните отчет: предел этой сессии — 50 прогонов. Для новой сессии откройте файл заново.','warning');return;}const result=model.run(config,addresses,runs.length+1);result.localTimestamp=new Date().toISOString();result.configurationRevision=revision;runs.push(result);lastRunRevision=revision;renderRun(result);}catch(error){setStatus(error.message,'bad');}}
+function report(){return {type:'Учебный отчет П3, не протокол реального объекта',version:model.VERSION,generatedAtDevice:new Date().toISOString(),currentConfiguration:model.validate(config),currentConfigurationHasRun:lastRunRevision===revision,trainingMap:model.PLAN,runs,learnerReason:byId('reason').value,learnerConclusion:byId('conclusion').value,limits:'Вычисления учебной модели; без реальных приборов и автоматической аттестации. Время устройства не доказывает личность или длительность обучения.'};}
+function textReport(data){const lines=['П3 — УЧЕБНЫЙ КОНФИГУРАТОР Т3',data.version,`Сформировано по часам устройства: ${data.generatedAtDevice}`,data.limits,'',data.currentConfigurationHasRun?'Текущая конфигурация имеет прогон.':'ВНИМАНИЕ: конфигурация изменена после последнего прогона.',''];data.runs.forEach(item=>{lines.push(`ПРОГОН ${item.sequence}`,'Конфигурация:');item.configuration.forEach(r=>lines.push(`${r.address}: помещение ${r.room}, зона ${r.zone}, группа ${r.group}, подпись ${r.label}`));lines.push('Вычисленные выходы:');item.results.forEach(r=>lines.push(`${r.input.address} → ${r.output.display}; команда ${r.output.command}; ${r.matchesTrainingMap?'совпадает с Т3':'расхождение: '+r.mismatch.map(k=>fieldNames[k]).join(', ')}`));lines.push(item.completeThreeAddressRun?'Все три адреса запускались.':'Запускались не все адреса.','');});lines.push('ОБОСНОВАНИЕ СЛУШАТЕЛЯ',data.learnerReason||'[не заполнено]','','ВЫВОД И ОГРАНИЧЕНИЯ',data.learnerConclusion||'[не заполнено]');return lines.join('\r\n');}
+function save(format){if(!runs.length)return;const data=report();const content=format==='json'?JSON.stringify(data,null,2):textReport(data);const blob=new Blob([format==='txt'?'\ufeff':'',content],{type:format==='json'?'application/json;charset=utf-8':'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`P3_T3_report.${format}`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);if(!data.currentConfigurationHasRun)setStatus('Отчет содержит предупреждение: после последнего прогона конфигурация изменялась. Повторите события и сохраните отчет снова.','warning');}
+byId('run-all').addEventListener('click',()=>run(model.PLAN.map(p=>p.address)));
+byId('run-one').addEventListener('click',()=>run([byId('event-address').value]));
+byId('reset-config').addEventListener('click',()=>{config=model.initialConfig();renderConfig();changed();});
+byId('save-txt').addEventListener('click',()=>save('txt'));byId('save-json').addEventListener('click',()=>save('json'));renderConfig();
+</script></body></html>

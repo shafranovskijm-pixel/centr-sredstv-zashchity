@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { access, readFile, readdir } from "node:fs/promises";
 
 const currentProgramPath = "/documents/program-162h-20261008/dpp-162h-20261008.pdf";
+const trainerPath = "/documents/program-162h-20261008/trainer-p3.html";
 const programFiles = [
   "dpp-178h-signed-received-20260917.pdf",
   "module-programs-178h-signed-received-20260917.pdf",
@@ -46,6 +47,7 @@ const requiredItemPropsBySlug = {
 const requiredFiles = [
   "out/index.html",
   `out${currentProgramPath}`,
+  `out${trainerPath}`,
   "out/404.html",
   "out/sveden/index.html",
   ...svedenSections.map(([, slug]) => `out/sveden/${slug}/index.html`),
@@ -174,7 +176,13 @@ for (const page of [sveden, program]) {
   assert.ok(page.includes(`href="${currentProgramPath}"`));
   assert.ok(page.includes('download="dpp-162h-20261008.pdf"'));
   assert.match(page, /Подготовлена на утверждение/);
+  assert.ok(page.includes(`href="${trainerPath}"`));
 }
+const trainer = await readFile(`out${trainerPath}`, "utf8");
+assert.match(trainer, /CSZ-T3-1\.0\.0/);
+assert.match(trainer, /connect-src 'none'/);
+assert.match(trainer, /Скачать отчет TXT/);
+assert.doesNotMatch(trainer, /<script[^>]+src=/i);
 
 const home = await readFile("out/index.html", "utf8");
 assert.match(home, /<strong>162<\/strong> академических часа/);

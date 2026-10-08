@@ -13,6 +13,13 @@ export default function ProgramDownloads() {
             <a href={programDocumentUrl} download="dpp-162h-20261008.pdf" aria-label="Скачать программу на 162 часа (PDF)">Скачать PDF</a>
           </div>
         </article>
+        <article className="program-file">
+          <div><h4>Учебный конфигуратор П3 — пожарная сигнализация</h4><p>Автономная модель для настройки привязок, запуска контрольных событий и сохранения отчёта. Не подключается к реальному оборудованию.</p></div>
+          <div className="program-file-actions">
+            <a href="/documents/program-162h-20261008/trainer-p3.html" target="_blank" rel="noopener noreferrer">Открыть конфигуратор</a>
+            <a href="/documents/program-162h-20261008/trainer-p3.html" download="trainer-p3.html">Скачать для работы без Интернета</a>
+          </div>
+        </article>
       </div>
     </section>
   );
