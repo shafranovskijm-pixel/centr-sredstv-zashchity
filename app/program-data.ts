@@ -14,5 +14,5 @@ export const programModules = [
 
 export const sourceModuleNumbers = [1, 2, 3, 4, 5, 6, 7, 9, 10, 11] as const;
 export const programDocumentUrl = "/documents/program-162h-20261008/dpp-162h-20261008.pdf";
-export const programStatus = "Подготовлена на утверждение";
+export const programStatus = "ДПП повышения квалификации — 162 часа";
 export const remoteWorkNotice = "Предусмотрены дистанционные практические учебные работы по документам, схемам и условным исходным данным с индивидуальным письменным результатом и проверкой преподавателя. Профессиональный модуль о противопожарных занавесах и завесах в программу не включён.";

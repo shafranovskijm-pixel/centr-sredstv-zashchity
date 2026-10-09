@@ -11,18 +11,18 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const documentBase = "/documents/license-client-20261010-v3";
+const documentBase = "/documents/license-client-20261010-v4";
 const checks = [
   {
     title: "Заявление и сведения, включая МТО",
-    result: "Новые формы по приказу ДОНМ № Пр-792: заявление — 5 страниц, сведения о реализации программ (приложение 3) — 14 страниц. Подготовлены для подписания.",
-    status: "На подпись",
+    result: "Формы по приказу ДОНМ № Пр-792: заявление — 5 страниц, сведения о реализации программ (приложение 3) — 14 страниц.",
+    status: "Документы",
     pending: true,
   },
   {
     title: "Программа ДПО",
-    result: "Единая ДПП на 162 часа: дистанционное обучение, рабочие программы, ФОС и связь с профстандартами 696н и 580н. Ожидаем утверждение и подписанную копию.",
-    status: "На утверждение",
+    result: "Единая ДПП на 162 часа: дистанционное обучение, рабочие программы, ФОС и связь с профстандартами 696н и 580н.",
+    status: "Документы",
     pending: true,
   },
   {
@@ -53,7 +53,7 @@ export default function LicenseClientPage() {
       </header>
       <main id="main" className={styles.main}>
         <div className={styles.intro}>
-          <span className={styles.status}>На утверждение</span>
+          <span className={styles.status}>Документы</span>
           <h1>Документы для<br className={styles.desktopBreak} /> повторной подачи</h1>
           <p>Обновлённый комплект по замечаниям от 7 октября. Скачайте документы, подпишите и загрузите их обратно на этой странице.</p>
           <nav className={styles.sectionNav} aria-label="Разделы страницы">
@@ -91,10 +91,10 @@ export default function LicenseClientPage() {
 
         <section id="documents" className={styles.section} aria-labelledby="documents-title">
           <div className={styles.sectionHeading}>
-            <div><span className={styles.sectionNumber}>02</span><h2 id="documents-title">Документы на подпись</h2></div>
+            <div><span className={styles.sectionNumber}>02</span><h2 id="documents-title">Скачать документы</h2></div>
             <a className={styles.zipLink} href={`${documentBase}/csz-signature-package.zip`} download><DownloadIcon />Весь комплект · ZIP</a>
           </div>
-          <p className={styles.sectionNote}>Версия 3 от 10.10.2026. ФОС включён в программу (приложение 5); отдельно подписывать его не нужно. PDF — для просмотра и подписи. DOCX — для внесения реквизитов в ДПП и приказ.</p>
+          <p className={styles.sectionNote}>Версия 4 от 10.10.2026. ФОС включён в программу (приложение 5); отдельно подписывать его не нужно. PDF — для просмотра и подписи. DOCX — для внесения реквизитов в ДПП и приказ.</p>
           <ul className={styles.documents}>
             {documentTypes.map((document, index) => {
               const original = document.id === "application" || document.id === "appendix5" ? null : "docx";
@@ -117,7 +117,7 @@ export default function LicenseClientPage() {
           <details className={styles.remarkDetails}>
             <summary>Где поставить даты и подписи</summary>
             <ul>
-              <li>ДПП и приказ: внесите в DOCX одну фактическую дату утверждения и один номер приказа. Уберите пометку «НА УТВЕРЖДЕНИЕ», сохраните PDF и подпишите. Программа на 162 часа утверждается целиком, включая ФОС в приложении 5.</li>
+              <li>ДПП и приказ: внесите в DOCX одну фактическую дату утверждения и один номер приказа, сохраните PDF и подпишите. Программа на 162 часа утверждается целиком, включая ФОС в приложении 5.</li>
               <li>Заявление: подписи на страницах 1, 3 и 5; дата заполнения — на странице 1.</li>
               <li>Сведения: подписи на страницах 12, 13 и 14; даты на листах продолжения 13–14. Верните все 14 страниц.</li>
               <li>Перед подписью сверьте реквизиты и фактическое оснащение. Печать — при наличии, в предусмотренных полях.</li>
@@ -133,7 +133,7 @@ export default function LicenseClientPage() {
           <ol className={styles.steps}>
             {steps.map((step, index) => <li key={step}><span aria-hidden="true">{index + 1}</span><p>{step}</p></li>)}
           </ol>
-          <p className={styles.submissionStatus}>Комплект подготовлен для подписания. Загрузка файлов означает их получение; готовность к подаче подтверждаем после итоговой сверки.</p>
+          <p className={styles.submissionStatus}>Загрузка файлов означает их получение; готовность к подаче подтверждаем после итоговой сверки.</p>
         </section>
       </main>
       <footer className={styles.footer}>

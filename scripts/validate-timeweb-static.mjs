@@ -173,7 +173,8 @@ assert.ok(currentPdf.length > 10_000, "Current programme PDF must contain actual
 for (const page of [sveden, program]) {
   assert.ok(page.includes(`href="${currentProgramPath}"`));
   assert.ok(page.includes('download="dpp-162h-20261008.pdf"'));
-  assert.match(page, /Подготовлена на утверждение/);
+  assert.match(page, /162(?: академических)? часа/u);
+  assert.doesNotMatch(page, /на утверждение/iu);
   assert.ok(page.includes(`href="${trainerPath}"`));
 }
 const trainer = await readFile(`out${trainerPath}`, "utf8");
@@ -225,7 +226,8 @@ for (const [id, slug, title] of svedenSections) {
     assert.ok(project, "education: prepared programme marker missing");
     assert.doesNotMatch(project, /\bitemProp="(?:eduAccred|eduOp|eduNir|graduateJob)"/u);
     assert.match(project, /Дополнительная профессиональная программа на 162 часа/u);
-    assert.match(project, /Подготовлена на утверждение/u);
+    assert.match(project, /Приём и обучение до получения лицензии не проводятся/u);
+    assert.doesNotMatch(project, /на утверждение/iu);
     assert.doesNotMatch(project, /№ 4-ОД|178 академических/);
   }
 }
@@ -240,7 +242,8 @@ assert.notEqual(sectionPages[0], home);
 
 for (const page of [home, sveden, program]) {
   assert.doesNotMatch(page, /35 уроков|67 вопросов|8 учебных элементов|модуля 8|модуле 8/);
-  assert.match(page, /[Пп]одготовлена на утверждение/);
+  assert.match(page, /162(?: академических)? часа/u);
+  assert.doesNotMatch(page, /на утверждение/iu);
   assert.match(page, /набор закрыт до получения образовательной лицензии|Приём и обучение до получения образовательной лицензии не проводятся|До получения лицензии образовательная деятельность не осуществляется/i);
   assert.doesNotMatch(page, /примерная программа|28-ФЗ|ГОЧС|Институт Гипноза|Пыжив/iu);
 }
@@ -252,7 +255,8 @@ for (const page of sectionPages) {
 
 for (const slug of ["document", "education", "objects"]) {
   const page = sectionPages[svedenSections.findIndex(([, candidate]) => candidate === slug)];
-  assert.match(page, /[Пп]одготовлена на утверждение/);
+  assert.match(page, /162(?: академических)? часа/u);
+  assert.doesNotMatch(page, /на утверждение/iu);
   assert.match(page, /набор закрыт до получения образовательной лицензии|До получения лицензии/iu);
 }
 
@@ -271,7 +275,7 @@ const expectedModuleTitles = [
 ];
 for (const title of expectedModuleTitles) assert.ok(program.includes(title), title);
 
-console.log("Timeweb static export validated: CSZ162 prepared-for-approval pages, 14 /sveden/ subsection routes, current unified PDF and preserved signed 178-hour archive are present in out/.");
+console.log("Timeweb static export validated: CSZ162 programme pages, 14 /sveden/ subsection routes, current unified PDF and preserved signed 178-hour archive are present in out/.");
 
 function visibleMarkup(document) {
   const marker = document.indexOf("<script>self.__next_f.push");
