@@ -9,7 +9,6 @@ export const config = {
 export const documentTypes = [
   { id: "programme", title: "Единая ДПП — 162 часа" },
   { id: "order", title: "Приказ об утверждении" },
-  { id: "fos", title: "Фонд оценочных средств" },
   { id: "application", title: "Заявление" },
   { id: "appendix5", title: "Сведения о реализации образовательных программ (приложение 3)" },
 ] as const;

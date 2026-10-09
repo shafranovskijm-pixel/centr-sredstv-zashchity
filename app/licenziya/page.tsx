@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const documentBase = "/documents/license-client-20261009-v2";
+const documentBase = "/documents/license-client-20261010-v3";
 const checks = [
   {
     title: "Заявление и сведения, включая МТО",
@@ -21,7 +21,7 @@ const checks = [
   },
   {
     title: "Программа ДПО",
-    result: "Единая ДПП на 162 часа: дистанционное обучение, рабочие программы и связь с профстандартами 696н и 580н. Ожидаем утверждение и подписанную копию.",
+    result: "Единая ДПП на 162 часа: дистанционное обучение, рабочие программы, ФОС и связь с профстандартами 696н и 580н. Ожидаем утверждение и подписанную копию.",
     status: "На утверждение",
     pending: true,
   },
@@ -49,7 +49,7 @@ export default function LicenseClientPage() {
       <a className="skip-link" href="#main">Перейти к содержанию</a>
       <header className={styles.header}>
         <Link href="/" className={styles.brand}>Центр средств защиты</Link>
-        <span>Обновлено <time dateTime="2026-10-09">09.10.2026</time></span>
+        <span>Обновлено <time dateTime="2026-10-10">10.10.2026</time></span>
       </header>
       <main id="main" className={styles.main}>
         <div className={styles.intro}>
@@ -94,7 +94,7 @@ export default function LicenseClientPage() {
             <div><span className={styles.sectionNumber}>02</span><h2 id="documents-title">Документы на подпись</h2></div>
             <a className={styles.zipLink} href={`${documentBase}/csz-signature-package.zip`} download><DownloadIcon />Весь комплект · ZIP</a>
           </div>
-          <p className={styles.sectionNote}>Версия 2 от 09.10.2026. PDF — для просмотра и подписи. DOCX — для внесения реквизитов в ДПП, приказ и ФОС.</p>
+          <p className={styles.sectionNote}>Версия 3 от 10.10.2026. ФОС включён в программу (приложение 5); отдельно подписывать его не нужно. PDF — для просмотра и подписи. DOCX — для внесения реквизитов в ДПП и приказ.</p>
           <ul className={styles.documents}>
             {documentTypes.map((document, index) => {
               const original = document.id === "application" || document.id === "appendix5" ? null : "docx";
@@ -117,10 +117,10 @@ export default function LicenseClientPage() {
           <details className={styles.remarkDetails}>
             <summary>Где поставить даты и подписи</summary>
             <ul>
-              <li>ДПП, приказ и ФОС: внесите в DOCX одну фактическую дату утверждения и один номер приказа. Уберите пометку «НА УТВЕРЖДЕНИЕ», сохраните PDF и подпишите. Объём программы — 162 часа.</li>
+              <li>ДПП и приказ: внесите в DOCX одну фактическую дату утверждения и один номер приказа. Уберите пометку «НА УТВЕРЖДЕНИЕ», сохраните PDF и подпишите. Программа на 162 часа утверждается целиком, включая ФОС в приложении 5.</li>
               <li>Заявление: подписи на страницах 1, 3 и 5; дата заполнения — на странице 1.</li>
               <li>Сведения: подписи на страницах 12, 13 и 14; даты на листах продолжения 13–14. Верните все 14 страниц.</li>
-              <li>Перед подписью сверьте реквизиты и фактическое оснащение. Печать — при наличии, в предусмотренных полях. Служебный ФОС предназначен для преподавателя.</li>
+              <li>Перед подписью сверьте реквизиты и фактическое оснащение. Печать — при наличии, в предусмотренных полях.</li>
             </ul>
           </details>
           <UploadDocuments />
