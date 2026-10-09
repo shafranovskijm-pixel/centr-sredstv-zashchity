@@ -157,18 +157,16 @@ assert.match(program, /Профессиональный модуль о прот
 assert.match(program, /Тест — 30 минут и письменная работа — 60 минут; всего 2 академических часа/);
 assert.doesNotMatch(program, /30\.07\.2026 № 2-ОД/);
 
-// Four signed public documents plus compatible legacy URLs; assessment answer keys remain private.
+// Preserve historical file URLs, but keep them out of the current programme navigation.
 assert.deepEqual((await readdir("out/documents/program-178h")).sort(), [...programFiles, ...programFiles.map(file => file.replace("signed-received-20260917", "for-approval-20260913"))].sort());
 for (const file of programFiles) {
   const pdf = await readFile(`out/documents/program-178h/${file}`);
   assert.equal(pdf.subarray(0, 5).toString("ascii"), "%PDF-");
-  assert.ok(sveden.includes(`href="/documents/program-178h/${file}"`), `Archive missing: ${file}`);
+  assert.ok(!sveden.includes(`href="/documents/program-178h/${file}"`), `Old programme link remains: ${file}`);
   assert.ok(!program.includes(`/documents/program-178h/${file}`), "Current programme must not link to the old programme as its document");
 }
-assert.match(sveden, /id="program-archive"/);
-assert.match(sveden, /Архив учебных документов: прежняя программа на 178 часов/);
-assert.match(sveden, /её приказ и подписи не распространяются на новую редакцию на 162 часа/);
-assert.ok(sveden.includes('href="/documents/organizational/prikaz-4-od-signed-received-20260917.pdf"'));
+assert.doesNotMatch(sveden, /id="program-archive"|program-178h|178 часов/);
+assert.ok(!sveden.includes('href="/documents/organizational/prikaz-4-od-signed-received-20260917.pdf"'));
 const currentPdf = await readFile(`out${currentProgramPath}`);
 assert.equal(currentPdf.subarray(0, 5).toString("ascii"), "%PDF-");
 assert.ok(currentPdf.length > 10_000, "Current programme PDF must contain actual document content");

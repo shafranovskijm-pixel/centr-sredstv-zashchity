@@ -1,6 +1,6 @@
 import Link from "next/link";
 import BrandEmblem from "../brand-emblem";
-import ProgramDownloads, { ArchivedProgramDownloads } from "../program-downloads";
+import ProgramDownloads from "../program-downloads";
 import { remoteWorkNotice } from "../program-data";
 
 export const svedenSections = [
@@ -145,7 +145,7 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
           {sectionIsVisible("document") && (
           <section className="info-section" id="document">
             <div className="info-heading"><span>03</span><h2>Документы</h2></div>
-            <div className="draft-notice"><strong>Статус учебных документов</strong><p>Новая программа на 162 часа подготовлена на утверждение. Единый документ размещён ниже; подписанные документы прежней программы на 178 часов сохранены в архиве. До получения лицензии образовательная деятельность не осуществляется.</p></div>
+            <div className="draft-notice"><strong>Статус учебных документов</strong><p>Программа на 162 часа подготовлена на утверждение. Единый документ размещён ниже. До получения лицензии образовательная деятельность не осуществляется.</p></div>
             <div className="download-pack">
               <div>
                 <span>Программа повышения квалификации</span>
@@ -155,7 +155,6 @@ export default function SvedenContent({ onlySection }: { onlySection?: SvedenSec
               </div>
             </div>
             <ProgramDownloads />
-            <ArchivedProgramDownloads />
             <div className="document-list">
               <a className="egrul-download" href="/documents/egrul-csz-2026-08-20.pdf" download>
                 <strong>Выписка из ЕГРЮЛ от 20.08.2026</strong>

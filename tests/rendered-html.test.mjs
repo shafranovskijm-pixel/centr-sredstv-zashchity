@@ -151,13 +151,8 @@ test("keeps working documents out of the public education-information package", 
   assert.match(html, /Кадровое обеспечение программы: сведения о назначении преподавателей конкретных дисциплин пока не подтверждены/u);
   assert.ok(html.includes("Учебные материалы новой редакции размещены в СДО"), "Sveden must state that course materials are uploaded");
   assertPreparedStatus(html);
-  const archive = html.match(/<details(?=[^>]*id="program-archive")[^>]*>[\s\S]*?<\/details>/u)?.[0];
-  assert.ok(archive, "Signed archive remains accessible");
-  assert.match(archive, /прежняя программа на 178 часов/u);
-  assert.match(archive, /prikaz-4-od-signed-received-20260917\.pdf/u);
-  for (const file of ["dpp", "module-programs", "assignments", "assessment-procedure"]) {
-    assert.ok(archive.includes(`/documents/program-178h/${file}-178h-signed-received-20260917.pdf`));
-  }
+  assert.doesNotMatch(html, /id="program-archive"|program-178h|178 часов/u);
+  assert.doesNotMatch(html, /prikaz-4-od-signed-received-20260917\.pdf/u);
   assert.ok(html.includes('href="/documents/program-162h-20261008/dpp-162h-20261008.pdf"'));
   const objects = html.slice(html.indexOf('id="objects"'), html.indexOf('id="grants"'));
   const grants = html.slice(html.indexOf('id="grants"'), html.indexOf('id="paid"'));
