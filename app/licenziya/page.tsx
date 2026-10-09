@@ -6,37 +6,37 @@ import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "ЦСЗ — документы для повторной подачи",
-  description: "Заявление и справка МТО, программа ДПО, учебные материалы и документы для подписания.",
+  description: "Актуальные заявление, сведения о реализации образовательных программ и ДПП на 162 часа: скачать, подписать и вернуть документы.",
   alternates: { canonical: "/licenziya/" },
   robots: { index: false, follow: false },
 };
 
-const documentBase = "/documents/license-client-20261009";
+const documentBase = "/documents/license-client-20261009-v2";
 const checks = [
   {
-    title: "Заявление и справка МТО",
-    result: "Формы, реквизиты, ссылки и объём 162 часа сведены в комплект. Ожидаем подпись.",
+    title: "Заявление и сведения, включая МТО",
+    result: "Новые формы по приказу ДОНМ № Пр-792: заявление — 5 страниц, сведения о реализации программ (приложение 3) — 14 страниц. Подготовлены для подписания.",
     status: "На подпись",
     pending: true,
   },
   {
     title: "Программа ДПО",
-    result: "162 часа; полностью дистанционная модель; связь компетенций с профстандартами 696н и 580н. Изменений по итогам проверки не требуется. Осталось утверждение.",
-    status: "Сверено 09.10",
-    pending: false,
+    result: "Единая ДПП на 162 часа: дистанционное обучение, рабочие программы и связь с профстандартами 696н и 580н. Ожидаем утверждение и подписанную копию.",
+    status: "На утверждение",
+    pending: true,
   },
   {
     title: "Учебные материалы СИНТАГМЫ",
-    result: "Материалы сопоставлены с ДПП на 162 часа: 32 элемента и 12 ресурсов библиотеки. Доступ проверяющего работает.",
-    status: "Сверено 09.10",
-    pending: false,
+    result: "Материалы сопоставлены с ДПП на 162 часа: 32 элемента и 12 ресурсов библиотеки. До подачи завершаем внедрение и проверку исправлений допуска к итоговой аттестации и оформления результатов.",
+    status: "Завершаем проверку",
+    pending: true,
   },
 ];
 const steps = [
-  "Утвердить ДПП, приказ и ФОС: указать фактические реквизиты и подписать документы.",
-  "Подписать заявление и приложение 5 фактической датой и загрузить подписанные файлы сюда.",
-  "Заменить PDF программы на сайте и в СДО утверждённой подписанной копией.",
-  "Подать новый комплект через портал и сохранить подтверждение подачи.",
+  "Скачайте комплект. Укажите фактические даты и номера, подпишите документы и поставьте печать там, где предусмотрено поле.",
+  "Отсканируйте все страницы каждого документа в один PDF и загрузите файлы ниже, выбрав соответствующий вид документа.",
+  "Мы сверим подписанные файлы, разместим утверждённую программу на сайте и в СДО и завершим проверку исправлений платформы.",
+  "После итоговой сверки подайте заявление и сведения через портал. Сохраните подтверждение подачи.",
 ];
 
 function DownloadIcon() {
@@ -55,7 +55,7 @@ export default function LicenseClientPage() {
         <div className={styles.intro}>
           <span className={styles.status}>На утверждение</span>
           <h1>Документы для<br className={styles.desktopBreak} /> повторной подачи</h1>
-          <p>Комплект по замечаниям от 7 октября. Скачайте документы, внесите фактические реквизиты и подпишите их.</p>
+          <p>Обновлённый комплект по замечаниям от 7 октября. Скачайте документы, подпишите и загрузите их обратно на этой странице.</p>
           <nav className={styles.sectionNav} aria-label="Разделы страницы">
             <a href="#corrections">Что проверяем <span>01</span></a>
             <a href="#documents">Документы <span>02</span></a>
@@ -94,22 +94,35 @@ export default function LicenseClientPage() {
             <div><span className={styles.sectionNumber}>02</span><h2 id="documents-title">Документы на подпись</h2></div>
             <a className={styles.zipLink} href={`${documentBase}/csz-signature-package.zip`} download><DownloadIcon />Весь комплект · ZIP</a>
           </div>
-          <p className={styles.sectionNote}>PDF — для просмотра и подписи. Исходник — для заполнения реквизитов.</p>
+          <p className={styles.sectionNote}>Версия 2 от 09.10.2026. PDF — для просмотра и подписи. DOCX — для внесения реквизитов в ДПП, приказ и ФОС.</p>
           <ul className={styles.documents}>
             {documentTypes.map((document, index) => {
-              const original = document.id === "application" || document.id === "appendix5" ? "xlsx" : "docx";
+              const original = document.id === "application" || document.id === "appendix5" ? null : "docx";
+              const filename = document.id === "appendix5" ? "information" : document.id;
+              const title = document.id === "appendix5"
+                ? "Сведения о реализации образовательных программ (приложение 3) — 14 страниц"
+                : document.id === "application" ? "Заявление — 5 страниц" : document.title;
               return (
                 <li className={styles.document} key={document.id}>
                   <span className={styles.documentNumber}>{String(index + 1).padStart(2, "0")}</span>
-                  <h3>{document.title}</h3>
+                  <h3>{title}</h3>
                   <div className={styles.documentLinks}>
-                    <a className={styles.pdfLink} href={`${documentBase}/${document.id}.pdf`} download aria-label={`Скачать PDF: ${document.title}`}><DownloadIcon />PDF</a>
-                    <a href={`${documentBase}/${document.id}.${original}`} download aria-label={`Скачать исходник ${original.toUpperCase()}: ${document.title}`}>{original.toUpperCase()}</a>
+                    <a className={styles.pdfLink} href={`${documentBase}/${filename}.pdf`} download aria-label={`Скачать PDF: ${title}`}><DownloadIcon />PDF</a>
+                    {original && <a href={`${documentBase}/${filename}.${original}`} download aria-label={`Скачать исходник ${original.toUpperCase()}: ${title}`}>{original.toUpperCase()}</a>}
                   </div>
                 </li>
               );
             })}
           </ul>
+          <details className={styles.remarkDetails}>
+            <summary>Где поставить даты и подписи</summary>
+            <ul>
+              <li>ДПП, приказ и ФОС: внесите в DOCX одну фактическую дату утверждения и один номер приказа. Уберите пометку «НА УТВЕРЖДЕНИЕ», сохраните PDF и подпишите. Объём программы — 162 часа.</li>
+              <li>Заявление: подписи на страницах 1, 3 и 5; дата заполнения — на странице 1.</li>
+              <li>Сведения: подписи на страницах 12, 13 и 14; даты на листах продолжения 13–14. Верните все 14 страниц.</li>
+              <li>Перед подписью сверьте реквизиты и фактическое оснащение. Печать — при наличии, в предусмотренных полях. Служебный ФОС предназначен для преподавателя.</li>
+            </ul>
+          </details>
           <UploadDocuments />
         </section>
 
@@ -120,7 +133,7 @@ export default function LicenseClientPage() {
           <ol className={styles.steps}>
             {steps.map((step, index) => <li key={step}><span aria-hidden="true">{index + 1}</span><p>{step}</p></li>)}
           </ol>
-          <p className={styles.submissionStatus}>Новая подача и решение ДОНМ пока не подтверждены.</p>
+          <p className={styles.submissionStatus}>Комплект подготовлен для подписания. Загрузка файлов означает их получение; готовность к подаче подтверждаем после итоговой сверки.</p>
         </section>
       </main>
       <footer className={styles.footer}>

@@ -11,5 +11,5 @@ export const documentTypes = [
   { id: "order", title: "Приказ об утверждении" },
   { id: "fos", title: "Фонд оценочных средств" },
   { id: "application", title: "Заявление" },
-  { id: "appendix5", title: "Приложение 5" },
+  { id: "appendix5", title: "Сведения о реализации образовательных программ (приложение 3)" },
 ] as const;
